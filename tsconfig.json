@@ -19,6 +19,8 @@
     },
     "include": [
         "src/ink/js/*",
-        "src/ink/js/**/*"
+        "src/ink/js/**/*",
+        "src/stories/*",
+        "src/stories/**/*"
     ]
 }
