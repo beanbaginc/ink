@@ -25,7 +25,8 @@
         "build-storybook": "storybook build",
         "build": "npm run build-less && npm run build-js && cp -av src/ink/less src/ink/images src/ink/ink.less lib",
         "full-build": "npm run clean && npm run build",
-        "storybook": "storybook dev -p 6006 --no-open"
+        "storybook": "storybook dev -p 6006 --no-open",
+        "test": "cross-env NODE_ENV=test jasmine"
     },
     "main": "lib/ink.js",
     "exports": {
@@ -44,6 +45,7 @@
         "@babel/plugin-external-helpers": "^7.23.3",
         "@beanbag/eslint-plugin": "^1.0.2",
         "@beanbag/frontend-buildkit": "^1.1.0",
+        "@beanbag/jasmine-suites": "^2.0.0",
         "@rollup/plugin-alias": "^5.1.0",
         "@storybook/addon-a11y": "^7.6.13",
         "@storybook/addon-essentials": "^7.6.13",
@@ -59,14 +61,16 @@
         "@storybook/react-webpack5": "^7.6.13",
         "@storybook/test": "^7.6.13",
         "@tabler/icons": "^2.46.0",
-        "@tabler/icons": "^2.46.0",
+        "@types/jasmine": "^5.1.4",
         "@vitejs/plugin-react": "^4.2.1",
         "axe-playwright": "^2.0.1",
+        "cross-env": "^7.0.3",
         "css-loader": "^6.10.0",
         "eslint": "^8.56.0",
-        "jasmine-core": "^5.1.2",
+        "jasmine": "^5.1.0",
+        "jasmine-spec-reporter": "^7.0.0",
         "jquery": "^3.7.1",
-        "less": "^4.2.0",
+        "jsdom": "^24.0.0",
         "less": "^4.2.0",
         "less-loader": "^12.2.0",
         "prop-types": "^15.8.1",
@@ -76,6 +80,7 @@
         "storybook": "^7.6.13",
         "storybook-preset-less": "^1.1.3",
         "style-loader": "^3.3.4",
+        "ts-node": "^10.9.2",
         "typescript": "^5.3.3"
     },
     "repository": {
