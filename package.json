@@ -43,7 +43,7 @@
     },
     "devDependencies": {
         "@babel/plugin-external-helpers": "^7.23.3",
-        "@beanbag/eslint-plugin": "^1.0.2",
+        "@beanbag/eslint-plugin": "^2.0.0",
         "@beanbag/frontend-buildkit": "^1.1.0",
         "@beanbag/jasmine-suites": "^2.0.0",
         "@rollup/plugin-alias": "^5.1.0",
@@ -88,7 +88,7 @@
         "url": "https://github.com/beanbaginc/ink"
     },
     "dependencies": {
-        "@beanbag/spina": "^3.0.0",
+        "@beanbag/spina": "^3.1.0",
         "babel-plugin-htm": "^3.0.0"
     }
 }
