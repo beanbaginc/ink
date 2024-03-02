@@ -24,7 +24,7 @@
         "build-auto-style": "lessc --include-path=src:node_modules --source-map=lib/ink-auto.css.map src/ink/less/auto/index.less lib/ink-auto.css",
         "build-js": "tsc -p ./tsconfig.build.json && rollup -c --bundleConfigAsCjs",
         "build-storybook": "storybook build",
-        "build": "npm run build-less && npm run build-js && npm run build-auto-style && cp -av src/ink/less src/ink/images src/ink/ink.less lib",
+        "build": "npm run build-less && npm run build-js && npm run build-auto-style && cp -av src/babel-preset src/ink/less src/ink/images src/ink/ink.less lib",
         "full-build": "npm run clean && npm run build",
         "storybook": "storybook dev -p 6006 --no-open",
         "test": "cross-env NODE_ENV=test jasmine"
@@ -34,7 +34,8 @@
         ".": {
             "import": "./lib/esm/index-all.js",
             "require": "./lib/cjs/index.js"
-        }
+        },
+        "./babel-preset": "./lib/babel-preset/index.js"
     },
     "files": [
         "lib/ink.css"
