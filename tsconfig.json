@@ -1,8 +1,6 @@
 {
     "compilerOptions": {
         "baseUrl": "./",
-        "declaration": true,
-        "declarationDir": "_build/_ts/",
         "emitDeclarationOnly": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,

@@ -21,7 +21,7 @@
     "scripts": {
         "clean": "rm -rf lib",
         "build-less": "lessc --include-path=src:node_modules --source-map=lib/ink/ink.css.map src/ink/ink.less lib/ink.css",
-        "build-js": "tsc && rollup -c --bundleConfigAsCjs",
+        "build-js": "tsc -p ./tsconfig.build.json && rollup -c --bundleConfigAsCjs",
         "build-storybook": "storybook build",
         "build": "npm run build-less && npm run build-js && cp -av src/ink/less src/ink/images src/ink/ink.less lib",
         "full-build": "npm run clean && npm run build",
