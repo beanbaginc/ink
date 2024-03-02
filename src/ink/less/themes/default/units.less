@@ -1,0 +1,97 @@
+#ink-ns-default-theme() {
+  /**
+   * Standard border radiuses.
+   */
+  .border-radiuses() {
+    #ink-ns-theme.add-unit-scale-vars(
+      @prefix: ink-u-border-radius;
+      @base-scale: 8px;
+      @scales: {
+        xs: 0.25;
+        s: 0.5;
+        m: 1;
+        l: 1.25;
+        xl: 2;
+        xxl: 4;
+      });
+
+    --ink-u-border-radius-std: var(--ink-u-border-radius-s);
+    --ink-u-border-radius-container: var(--ink-u-border-radius-std);
+  }
+
+  /**
+   * Standard border sizes.
+   */
+  .border-sizes() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-u-border;
+      @vars: {
+        thin: 1px;
+      });
+  }
+
+  /*
+   * Standard font sizes.
+   *
+   * We base these on rems. This ensures that we scale along with the user's
+   * specified font, which is an important aid for accessibility, doing a
+   * lot to help people maintain control over the pages they interact with.
+   */
+  .font-sizes() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-u-font;
+      @vars: {
+        s: var(--ink-u-rem-11px);
+        m: var(--ink-u-rem-13px);
+        std: var(--ink-u-font-s);
+      });
+  }
+
+  /**
+   * Standard icon sizes.
+   */
+  .icon-sizes() {
+    #ink-ns-theme.add-unit-scale-vars(
+      @prefix: ink-u-icon;
+      @base-scale: 16px;
+      @scales: {
+        s: 0.5;
+        m: 1;
+        l: 1.5;
+        xl: 2;
+      });
+  }
+
+  /**
+   * Standard border radiuses.
+   */
+  .rems() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-u-rem;
+      @vars: {
+        11px: 0.688rem;
+        13px: 0.813rem;
+        16px: 1rem;
+      });
+  }
+
+  /**
+   * Standard spacing units for gaps, margins, and padding.
+   */
+  .spacing() {
+    #ink-ns-theme.add-unit-scale-vars(
+      @prefix: ink-u-spacing;
+      @base-scale: 1em;
+      @scales: {
+        xs: 0.25;
+        s: 0.5;
+        sm: 0.75;
+        m: 1;
+        ml: 1.25;
+        l: 1.5;
+        xl: 2;
+      });
+
+    --ink-u-spacing-std: var(--ink-u-spacing-m);
+  }
+}

@@ -1,0 +1,56 @@
+#ink-ns-default-theme() {
+  /**
+   * Variables and rules related to animations.
+   */
+  .animations() {
+    --ink-anim-barber-pole-speed: 2s;
+
+    @media (prefers-reduced-motion) {
+      :root {
+        --ink-anim-barber-pole-speed: 4s;
+      }
+    }
+  }
+
+  /**
+   * Standard borders.
+   */
+  .borders() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-g-border;
+      @vars: {
+        container: var(--ink-u-border-thin)
+                   var(--ink-p-container-outline)
+                   solid;
+      });
+  }
+
+  /**
+   * Standard shadows.
+   */
+  .shadows() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-g-shadow;
+      @vars: {
+        std: 0px 2px 4px rgba(0, 0, 0, 0.1);
+      });
+  }
+
+  /**
+   * Standard z-indexes.
+   */
+  .z-indexes() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-z;
+      @vars: {
+        base: 1;
+        deco: 20;
+        event-overlay: 30;
+        banner: 100;
+        menu: 110;
+        dialog: 120;
+        page-overlay: 150;
+        dnd-overloay: 200;
+      });
+  }
+}

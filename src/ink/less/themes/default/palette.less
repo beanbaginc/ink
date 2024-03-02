@@ -1,0 +1,503 @@
+#ink-ns-default-theme() {
+  /*
+   * The standard Beanbag Ink palette can be found at:
+   *
+   * https://huetone.ardov.me/?palette=N4IgdghgtgpiBcIBCMJgEYQOYAICSYA1iADQgAWArjAM4IDaoksCIA4gE4wCepIAxgHsANoI5149EAGIAZgE4FCvtJjy1alQBMADLt0r%2BOo0ZXzzFlQHYbtlQFZHTlQBY37lQGZvPkAF0AXxImaDhEACUYLT4hUXEGGVlZGB0YexVZADYIAA5cjJ1M-iKVVE95cu0YAEYrWsNq1NSVCE9q9urrFP0VTMaIHQh-IJCWRCQOQQB3MBiRMQkpORgYKy0XDIAmfi10DbJpLX4Ifhy4A9OzzPQW%2BSsdF1kVHPl7CBcdXr37HSeD%2BysnnuNwOLnQnk2v2GwXAoVYAFlKDQAC4QDjRMixBYJOT8BSaA6yapqdDnGRpLQQeRDA4pPFWEEyXToLSeT4HdDHTKbTJmLQ5dCFawQe7VTYOKw-TbiwIw5hhEAATRgwlEUzmcUWiSSpPkGSSVh2%2BtkYPZ2pgsis4sJyXB6UJ6h0ToK-OdB1ZpLdMggWnkRk%2BstGCs4K1mmPm8Uk5K0shZGKZ1Vkbz1BwqK0yfxkmXsMG58ekLnk6HQ1Ryris8m5ni8APk1XtMmlmT6nQOegBemhQdYAGFuGgNdio3JEzHM9JTrIcklnjHfuPCzBNrIaTIdJ5Ob6VDpqvIXBBGdJ1xmcmajw8II5t9UIZVA7CxiAe4IRDgQ7xw5qcVOlIeYC4NHHfgXDxI4VEFdBZAMA5TzucEHDuexXlcHR7BcbIvE8FxPCvA4eQhD4uwfBUkGEahB0jJZZGXCAZ3dCAYEg8ddFzOiZEFXQ2OkHIBUUBcqVSa1GyBHJdhUMUwRZcSdB5QjAj8MhkUEMBaASRozUhM02TND4zR%2BM1Mi9e4zVPM15GdQIgA
+   */
+  .palettes() {
+    /**
+     * Light mode color palette.
+     *
+     * These are the colors used by default when in a light mode (default).
+     *
+     * For each color here, there must be a corresponding dark mode color.
+     * This is required in order for automatic color palette switching to
+     * work.
+     */
+    .light-mode() {
+      @black: #000000;
+      @white: #FFFFFF;
+
+      @grey-100: #F9F9F9;
+      @grey-150: #F3F3F3;
+      @grey-200: #E9E9E9;
+      @grey-300: #D0D0D0;
+      @grey-400: #C0C0C0;
+      @grey-450: #B1AFAF;
+      @grey-500: #999999;
+      @grey-600: #777777;
+      @grey-700: #555555;
+      @grey-800: #444444;
+      @grey-900: #333333;
+
+      @blue-100: #F2FAFF;
+      @blue-200: #DAEBFF;
+      @blue-300: #D0E6FF;
+      @blue-400: #B0D0FF;
+      @blue-500: #88B9FF;
+      @blue-600: #4A90E2;
+      @blue-700: #2378DB;
+      @blue-800: #124BBD;
+      @blue-900: #102640;
+
+      @brown-100: #FEE7D4;
+      @brown-200: #F2CDB4;
+      @brown-300: #DCAC8E;
+      @brown-400: #C88E6B;
+      @brown-500: #A9704F;
+      @brown-600: #895A40;
+      @brown-700: #6B450F;
+      @brown-800: #57370B;
+      @brown-900: #4B320F;
+
+      @cool-grey-100: #F8F9FB;
+      @cool-grey-200: #E4E9EF;
+      @cool-grey-300: #C4CFDC;
+      @cool-grey-400: #B0BFD0;
+      @cool-grey-500: #8097B3;
+      @cool-grey-600: #597595;
+      @cool-grey-700: #40546A;
+      @cool-grey-800: #334355;
+      @cool-grey-900: #263240;
+
+      @cyan-100: #F1FDFF;
+      @cyan-200: #C8F8FF;
+      @cyan-300: #8DF0FF;
+      @cyan-400: #49E2FA;
+      @cyan-500: #03BCD9;
+      @cyan-600: #0194AB;
+      @cyan-700: #036F80;
+      @cyan-800: #004A55;
+      @cyan-900: #013239;
+
+      @green-100: #EDFBDD;
+      @green-200: #D1F5A9;
+      @green-300: #93EE6F;
+      @green-400: #65E62D;
+      @green-500: #49BB18;
+      @green-600: #479623;
+      @green-700: #357915;
+      @green-800: #226611;
+      @green-900: #0D570D;
+
+      @mustard-100: #FCF9E9;
+      @mustard-200: #F1E9BE;
+      @mustard-300: #E5DA9A;
+      @mustard-400: #E0CF7B;
+      @mustard-500: #D0BD30;
+      @mustard-600: #BCA626;
+      @mustard-700: #9D8B06;
+      @mustard-800: #7A7012;
+      @mustard-900: #575022;
+
+      @red-100: #FFE0E5;
+      @red-200: #F6A8A8;
+      @red-300: #F06C6C;
+      @red-400: #EA3939;
+      @red-500: #DE1717;
+      @red-600: #C10E0E;
+      @red-700: #A31111;
+      @red-800: #7E0D0D;
+      @red-900: #610A0A;
+
+      @yellow-100: #FFFBE9;
+      @yellow-200: #FFF7CD;
+      @yellow-300: #FFF4B0;
+      @yellow-400: #FFEF72;
+      @yellow-500: #FFEB35;
+      @yellow-600: #F9E000;
+      @yellow-700: #F0D800;
+      @yellow-800: #D3BE00;
+      @yellow-900: #AD9C00;
+    }
+
+    /**
+     * Dark mode color palette.
+     *
+     * This is an inverse of the light mode palette, and is used when in
+     * dark mode.
+     *
+     * For each color here, there must be a corresponding light mode color.
+     * This is required in order for automatic color palette switching to
+     * work.
+     */
+    .dark-mode() {
+      @black: #000000;
+      @white: #FFFFFF;
+
+      @grey-100: #333333;
+      @grey-150: #4C4C4C;
+      @grey-200: #444444;
+      @grey-300: #555555;
+      @grey-400: #777777;
+      @grey-450: #999999;
+      @grey-500: #B1AFAF;
+      @grey-600: #C0C0C0;
+      @grey-700: #D0D0D0;
+      @grey-800: #E9E9E9;
+      @grey-900: #F9F9F9;
+
+      @blue-100: #102640;
+      @blue-200: #124BBD;
+      @blue-300: #2378DB;
+      @blue-400: #4A90E2;
+      @blue-500: #88B9FF;
+      @blue-600: #B0D0FF;
+      @blue-700: #D0E6FF;
+      @blue-800: #DAEBFF;
+      @blue-900: #F2FAFF;
+
+      @brown-100: #4B320F;
+      @brown-200: #57370B;
+      @brown-300: #6B450F;
+      @brown-400: #895A40;
+      @brown-500: #A9704F;
+      @brown-600: #C88E6B;
+      @brown-700: #DCAC8E;
+      @brown-800: #F2CDB4;
+      @brown-900: #FEE7D4;
+
+      @cool-grey-100: #263240;
+      @cool-grey-200: #334355;
+      @cool-grey-300: #40546A;
+      @cool-grey-400: #597595;
+      @cool-grey-500: #8097B3;
+      @cool-grey-600: #B0BFD0;
+      @cool-grey-700: #C4CFDC;
+      @cool-grey-800: #E4E9EF;
+      @cool-grey-900: #F8F9FB;
+
+      @cyan-100: #013239;
+      @cyan-200: #004A55;
+      @cyan-300: #036F80;
+      @cyan-400: #0194AB;
+      @cyan-500: #03BCD9;
+      @cyan-600: #49E2FA;
+      @cyan-700: #8DF0FF;
+      @cyan-800: #C8F8FF;
+      @cyan-900: #F1FDFF;
+
+      @green-100: #0D570D;
+      @green-200: #226611;
+      @green-300: #357915;
+      @green-400: #479623;
+      @green-500: #49BB18;
+      @green-600: #65E62D;
+      @green-700: #93EE6F;
+      @green-800: #D1F5A9;
+      @green-900: #EDFBDD;
+
+      @mustard-100: #575022;
+      @mustard-200: #7A7012;
+      @mustard-300: #9D8B06;
+      @mustard-400: #BCA626;
+      @mustard-500: #D0BD30;
+      @mustard-600: #E0CF7B;
+      @mustard-700: #E5DA9A;
+      @mustard-800: #F1E9BE;
+      @mustard-900: #FCF9E9;
+
+      @red-100: #610A0A;
+      @red-200: #7E0D0D;
+      @red-300: #A31111;
+      @red-400: #C10E0E;
+      @red-500: #DE1717;
+      @red-600: #EA3939;
+      @red-700: #F06C6C;
+      @red-800: #F6A8A8;
+      @red-900: #FFE0E5;
+
+      @yellow-100: #AD9C00;
+      @yellow-200: #D3BE00;
+      @yellow-300: #F0D800;
+      @yellow-400: #F9E000;
+      @yellow-500: #FFEB35;
+      @yellow-600: #FFEF72;
+      @yellow-700: #FFF4B0;
+      @yellow-800: #FFF7CD;
+      @yellow-900: #FFFBE9;
+    }
+
+    /**
+     * CSS variables that map to colors depending on light/dark modes.
+     */
+    .mode-palettes() {
+      each(#ink-ns-default-theme.palettes.light-mode(), {
+        @_key: replace(@key, '@(.*)', '$1');
+        @_var-key: e('--ink-p-@{_key}');
+        @{_var-key}:
+          e("var(--if-dark, var(--ink-p-dark__@{_key}))")
+          e("var(--if-light, var(--ink-p-light__@{_key}))");
+      });
+    }
+
+    /**
+     * Standard palette design tokens.
+     *
+     * These should be used instead of palette colors where possible, which
+     * helps to ensure that various UI elements are consistent in appearance.
+     */
+    .design-tokens() {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-p;
+        @vars: {
+          /*
+           * Standard surface background definitions.
+           *
+           * These define background colors for a Surface, where content and
+           * containers should be placed.
+           *
+           * These should be used for background page elements (such as the
+           * main background, header, footer, sidebars, etc.).
+           */
+          surface-bg:
+            var(--if-dark, #313338)
+            var(--if-light, var(--ink-p-grey-100));
+
+          surface-bright-bg:
+            var(--if-dark, #313338)
+            var(--if-light, var(--ink-p-white));
+
+          surface-dim-bg:
+            var(--if-dark, #313338)
+            var(--if-light, var(--ink-p-grey-200));
+
+          /*
+           * Standard "Surface" foreground definitions.
+           *
+           * These define foreground colors used for text, icons, etc. placed
+           * directly on a Surface.
+           */
+          surface-fg:
+            var(--if-dark, #F9F9F9)
+            var(--if-light, var(--ink-p-black));
+
+          surface-fg-weak:
+            var(--if-dark, #E9E9E9)
+            var(--if-light, var(--ink-p-grey-600));
+
+          /**
+           * Standard container background definitions.
+           *
+           * These define background colors for container elements (such as
+           * menus, tables, etc.) that are placed on a surface or in another
+           * container.
+           *
+           * There are a range of container colors used to add depth to a UI.
+           * The standard depth should be used in most cases.
+           */
+          container-bg:
+            var(--if-dark, #282828)
+            var(--if-light, var(--ink-p-grey-100));
+
+          container-active-bg:
+            var(--if-dark, rgba(255, 255, 255, 0.12))
+            var(--if-light, rgba(0, 0, 0, 0.12));
+
+          container-hover-bg:
+            var(--if-dark, rgba(255, 255, 255, 0.05))
+            var(--if-light, rgba(0, 0, 0, 0.05));
+
+          /**
+           * Standard "Container" foreground definitions.
+           *
+           * These define foreground colors for container elements.
+           *
+           * It's expected that any foreground color can display on any range
+           * of container background colors.
+           *
+           * By default, these use the same foreground colors for Surfaces.
+           */
+          container-fg: var(--ink-p-surface-fg);
+          container-fg-weak: var(--ink-p-surface-fg-weak);
+
+          /*
+           * Standard outline colors.
+           *
+           * These are used to provide an outline for a container.
+           */
+          container-outline:
+            var(--if-dark, rgba(255, 255, 255, 0.2))
+            var(--if-light, rgba(0, 0, 0, 0.2));
+
+          container-outline-strong:
+            var(--if-dark, rgba(255, 255, 255, 0.4))
+            var(--if-light, rgba(0, 0, 0, 0.4));
+
+          container-outline-weak:
+            var(--if-dark, rgba(255, 255, 255, 0.1))
+            var(--if-light, rgba(0, 0, 0, 0.1));
+
+          /*
+           * Standard accent background definitions.
+           *
+           * These define colors on the page that help indicate primary,
+           * secondary, and tertiary colors that can be used to indicate
+           * interactive controls.
+           *
+           * Accents can be altered for different pages.
+           */
+          accent-primary-bg:
+            var(--if-dark, var(--ink-p-blue-600))
+            var(--if-light, var(--ink-p-blue-700));
+
+          accent-secondary-bg:
+            var(--if-dark, var(--ink-p-blue-400))
+            var(--if-light, var(--ink-p-blue-600));
+
+          accent-tertiary-bg:
+            var(--if-dark, var(--ink-p-blue-500))
+            var(--if-light, var(--ink-p-blue-500));
+
+          accent-success-bg:
+            var(--if-dark, var(--ink-p-green-200))
+            var(--if-light, var(--ink-p-green-200));
+
+          accent-error-bg:
+            var(--if-dark, var(--ink-p-red-200))
+            var(--if-light, var(--ink-p-red-100));
+
+          accent-warning-bg:
+            var(--if-dark, var(--ink-p-yellow-200))
+            var(--if-light, var(--ink-p-yellow-300));
+
+          accent-info-bg:
+            var(--if-dark, var(--ink-p-blue-200))
+            var(--if-light, var(--ink-p-blue-200));
+
+          accent-highlight-bg:
+            var(--if-dark, var(--ink-p-yellow-800))
+            var(--if-light, var(--ink-p-yellow-200));
+
+          /*
+           * Standard accent foreground definitions.
+           */
+          accent-primary-fg:
+            var(--if-dark, var(--ink-p-black))
+            var(--if-light, var(--ink-p-white));
+
+          accent-secondary-fg:
+            var(--if-dark, var(--ink-p-white))
+            var(--if-light, var(--ink-p-black));
+
+          accent-tertiary-fg:
+            var(--if-dark, var(--ink-p-white))
+            var(--if-light, var(--ink-p-black));
+
+          accent-success-fg:
+            var(--if-dark, var(--ink-p-white))
+            var(--if-light, var(--ink-p-black));
+
+          accent-error-fg:
+            var(--if-dark, var(--ink-p-white))
+            var(--if-light, var(--ink-p-black));
+
+          accent-warning-fg:
+            var(--if-dark, var(--ink-p-black))
+            var(--if-light, var(--ink-p-black));
+
+          accent-info-fg:
+            var(--if-dark, var(--ink-p-white))
+            var(--if-light, var(--ink-p-black));
+
+          accent-highlight-fg:
+            var(--if-dark, var(--ink-p-black))
+            var(--if-light, var(--ink-p-black));
+
+          /*
+           * Standard accent outline colors.
+           */
+          accent-primary-outline:
+            var(--if-dark, rgba(0, 0, 0, 0.4))
+            var(--if-light, rgba(0, 0, 0, 0.4));
+
+          /*
+           * Page color definitions.
+           */
+          page-bg: var(--ink-p-surface-bg);
+
+          /*
+           * Text color definitions.
+           */
+          text-color: var(--ink-p-surface-fg);
+          text-weak-color: var(--ink-p-surface-fg-weak);
+
+          /*
+           * Link color definitions.
+           */
+          link-color:
+            var(--if-dark, #AEC9FF)
+            var(--if-light, var(--ink-p-blue-800));
+
+          link-hover-color:
+            var(--if-dark, darken(#AEC9FF, 10%))
+            var(--if-light, darken(@_light-palette[@blue-200], 10%));
+
+          /*
+           * Icon color definitions.
+           */
+          icon-color:
+            var(--ink-p-text);
+
+          /*
+           * Header color definitions.
+           */
+          header-bg:
+            var(--if-dark, #1E1F22)
+            var(--if-light, var(--ink-p-blue-300));
+
+          header-border-color:
+            var(--if-dark, transparent)
+            var(--if-light, var(--ink-p-border-color-light));
+
+          header-text-color:
+            var(--if-dark, var(--ink-p-text-on-dark-color))
+            var(--if-light, var(--ink-p-accent-tertiary-fg));
+
+          /* Footer color definitions. */
+          footer-bg:
+            var(--if-dark, var(--ink-p-header-bg))
+            var(--if-light, var(--ink-p-grey-200));
+
+          footer-border-color:
+            var(--if-dark, var(--ink-p-header-border-color))
+            var(--if-light, var(--ink-p-border-color-light));
+
+          footer-text-color:
+            var(--if-dark, var(--ink-p-header-text-color))
+            var(--if-light, var(--ink-p-surface-fg));
+
+          /*
+           * Input color definitions.
+           */
+          input-bg-color:
+            var(--if-dark, #282F32)
+            var(--if-light, var(--ink-p-white));
+
+          input-border-color:
+            var(--if-dark, var(--ink-p-black))
+            var(--if-light, var(--ink-p-grey-400));
+
+          input-text-color:
+            var(--if-dark, var(--ink-p-text-on-dark-color))
+            var(--if-light, var(--ink-p-text-on-light-color));
+
+          /*
+           * Sidebar color definitions.
+           */
+          sidebar-item-bg-color:
+            var(--ink-p-pane-bg-color);
+
+          /*
+           * Accent color definitions.
+           */
+          accent-default-bg:
+            var(--if-dark, #1E1F22)
+            var(--if-light, var(--ink-p-blue-300));
+
+          accent-default-border-color:
+            var(--ink-p-header-border-color);
+        });
+    }
+  }
+}

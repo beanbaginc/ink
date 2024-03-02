@@ -1,0 +1,47 @@
+/**
+ * Utilities for working with icons.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "../components/base.less";
+
+
+#ink-ns-ui() {
+  .icons() {
+    /**
+     * Place an SVG-based icon in a container.
+     *
+     * This will set the container's background to the icon, using the
+     * correct size and specified color.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @icon (string):
+     *         The name of the icon to use.
+     *
+     *     @color (any, optional):
+     *         The color to use for the icon.
+     *
+     *         This defaults to the current foreground color.
+     *
+     *     @size (any, optional):
+     *         The icon size to use.
+     */
+    .svg-icon(@icon;
+              @color: currentColor;
+              @size: var(--ink-u-icon-m)) {
+      background-color: @color;
+      background-repeat: no-repeat;
+      content: "";
+      display: inline-block;
+      mask-size: 100% 100%;
+      mask-image: @icon;
+      width: @size;
+      height: @size;
+    }
+  }
+}

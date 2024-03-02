@@ -1,0 +1,42 @@
+/**
+ * Utilities for animating elements.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+#ink-ns-ui() {
+  .animation() {
+    /**
+     * Add styling for a horizontal barber pole animation.
+     *
+     * This applies a slanted barber pole animation to an element, animating
+     * from left to right. It can indicate that content is loading or
+     * otherwise performing an action.
+     *
+     * The theme must define a ``--ink-anim-barber-pole-speed`` value.
+     *
+     * Args:
+     *     @bg (string):
+     *         The background color to use for the barber pole.
+     */
+    .barber-pole(@bg) {
+      animation: linear ink-anim-barber-pole var(--ink-anim-barber-pole-speed)
+                 infinite reverse;
+      background: linear-gradient(
+        -45deg,
+        @bg 25%,
+        transparent 25%,
+        transparent 50%,
+        @bg 50%,
+        @bg 75%,
+        transparent 75%,
+        transparent);
+      background-size: 200% 200%;
+    }
+  }
+}
+
+@keyframes ink-anim-barber-pole {
+  100% { background-position: 100% 100%; }
+}

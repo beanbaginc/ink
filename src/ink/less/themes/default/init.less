@@ -1,0 +1,50 @@
+@import (reference) "./globals.less";
+@import (reference) "./palette.less";
+@import (reference) "./resources.less";
+@import (reference) "./units.less";
+
+
+@_light-palette: #ink-ns-default-theme.palettes.light-mode();
+@_dark-palette: #ink-ns-default-theme.palettes.dark-mode();
+
+
+#ink-ns-theme.init(
+  @root-var-rules: {
+    /* Add the core color palettes to the root of the document. */
+    #ink-ns-theme.add-css-vars(@_light-palette;
+                               @prefix: 'ink-p-light__');
+    #ink-ns-theme.add-css-vars(@_dark-palette;
+                               @prefix: 'ink-p-dark__');
+  };
+  @theme-var-rules: {
+    /**********************************************************************
+     * Palettes                                                           *
+     **********************************************************************/
+    #ink-ns-default-theme.palettes.mode-palettes();
+    #ink-ns-default-theme.palettes.design-tokens();
+
+    /**********************************************************************
+     * Units
+     **********************************************************************/
+    #ink-ns-default-theme.border-radiuses();
+    #ink-ns-default-theme.border-sizes();
+    #ink-ns-default-theme.font-sizes();
+    #ink-ns-default-theme.icon-sizes();
+    #ink-ns-default-theme.rems();
+    #ink-ns-default-theme.spacing();
+
+    /**********************************************************************
+     * Resources
+     **********************************************************************/
+    #ink-ns-default-theme.font-families();
+    #ink-ns-default-theme.icons();
+
+    /**********************************************************************
+     * Misc. Global Definitions
+     **********************************************************************/
+    #ink-ns-default-theme.animations();
+    #ink-ns-default-theme.borders();
+    #ink-ns-default-theme.shadows();
+    #ink-ns-default-theme.z-indexes();
+  };
+);

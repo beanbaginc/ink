@@ -1,0 +1,49 @@
+#ink-ns-default-theme() {
+  /**
+   * Standard font families.
+   */
+  .font-families() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-ff;
+      @vars: {
+        monospace: "SF Mono", SFMono-Regular, ui-monospace, Menlo, Monaco,
+                   Consolas, "Liberation Mono", "Courier New", monospace;
+        sans-serif: DejaVu Sans, Verdana, Arial, Helvetica, Sans-Serif;
+        serif: Georgia, Cambria, "Times New Roman", Times, serif;
+      });
+  }
+
+  @icon-svg-paths: {
+    add: data-uri('@{tabler-path}/icons/plus.svg');
+    arrow-left:
+      data-uri('@{tabler-path}/icons/arrow-big-left-filled.svg');
+    arrow-left-first:
+      data-uri('@{tabler-path}/icons/arrow-badge-left-filled.svg');
+    arrow-right:
+      data-uri('@{tabler-path}/icons/arrow-big-right-filled.svg');
+    arrow-right-first:
+      data-uri('@{tabler-path}/icons/arrow-badge-right-filled.svg');
+    close: data-uri('@{tabler-path}/icons/x.svg');
+    dropdown: data-uri('@{tabler-path}/icons/caret-down-filled.svg');
+    error: data-uri('@{tabler-path}/icons/alert-circle-filled.svg');
+    info: data-uri('@{tabler-path}/icons/info-circle-filled.svg');
+    refresh: data-uri('@{tabler-path}/icons/refresh.svg');
+    settings: data-uri('@{tabler-path}/icons/settings-filled.svg');
+    sort-ascending: data-uri('@{tabler-path}/icons/sort-ascending.svg');
+    sort-descending: data-uri('@{tabler-path}/icons/sort-descending.svg');
+    success: data-uri('@{tabler-path}/icons/circle-check-filled.svg');
+    warning: data-uri('@{tabler-path}/icons/alert-triangle-filled.svg');
+  }
+
+  /**
+   * Standard icons.
+   *
+   * These are all SVGs embedded within the stylesheet. They can be used
+   * without an extra download.
+   */
+  .icons() {
+    #ink-ns-theme.add-css-vars(
+      @prefix: ink-i;
+      @vars: #ink-ns-default-theme[@icon-svg-paths]);
+  }
+}
