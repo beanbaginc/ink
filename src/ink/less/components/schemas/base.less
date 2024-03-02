@@ -1,0 +1,89 @@
+/**
+ * Base support for defining schemas for components.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+
+#ink-ns-schema() {
+  .base() {
+    /**
+     * Add rules to a component based on the current context's schema.
+     *
+     * This is used within an existing ``.populate()`` mixin to add new
+     * rules for one or more parts. It takes care of generating the selector
+     * for the component as well.
+     *
+     * Within the context, this will be available as ``.add()``.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @rules (rulset):
+     *         The rules to add to the component.
+     *
+     * Example:
+     *     .add({
+     *         @state-hover: {
+     *             background: blue;
+     *             color: red;
+     *         };
+     *     });
+     */
+    .add(@rules) {
+      .@{name} {
+        .populate(@name: @name;
+                  @schema-rules: @rules);
+      }
+    }
+
+    /**
+     * Add schema and specialized rules for the given rules key.
+     *
+     * This is used inside a schema definition to add the caller's rules for
+     * a given rules key. It will add the rules found in ``@schema-rules``
+     * in the current context, followed by the rules in ``@specialize-rules``.
+     *
+     * This cannot be called outside of a schema definition.
+     *
+     * Within the context, this will be available as ``.add-rules()``.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @rules-key (string):
+     *         The key within the rules definitions to add.
+     *
+     * Example:
+     *     .add-rules('state-hover');
+     */
+    .add-rules(@rules-key) {
+      /*
+       * Note that we need to cover both the "@name" and "name" key forms.
+       * This is the reason for the apparent duplication below.
+       */
+      & when (isdefined(@schema-rules[@@rules-key])) {
+        @_schema-rules: @schema-rules[@@rules-key];
+        @_schema-rules();
+      }
+
+      & when (isdefined(@schema-rules[@rules-key])) {
+        @_schema-rules: @schema-rules[@rules-key];
+        @_schema-rules();
+      }
+
+      & when (isdefined(@specialize-rules[@@rules-key])) {
+        @_specialize-rules: @specialize-rules[@@rules-key];
+        @_override-rules();
+      }
+
+      & when (isdefined(@specialize-rules[@rules-key])) {
+        @_specialize-rules: @specialize-rules[@rules-key];
+        @_override-rules();
+      }
+    }
+  }
+}

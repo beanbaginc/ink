@@ -1,0 +1,196 @@
+/**
+ * Base support for defining components.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+
+#ink-ns-ui() {
+  .base() {
+    /**
+     * Add CSS variables for a component.
+     *
+     * This will register the provided CSS variables both on ``:root`` and on
+     * a selector for the component's class name.
+     *
+     * Since they're added to ``:root``, the variables will be accessible
+     * anywhere in the stylesheet. This means it's important to use variables
+     * that are suitably namespaced.
+     *
+     * The variables added to the component's class selector will be available
+     * within the component or its children, and can be used to specialize a
+     * class (though we suggest using ``#ink-ns-ui.customize-component()`` in
+     * most cases.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The class name of the component.
+     *
+     *         This will be used to define the selector name.
+     *
+     *     @vars (ruleset):
+     *         The ruleset containing the CSS variables to register.
+     *
+     * Example:
+     *     #ink-ns-ui.base.add-component-vars(
+     *         @name: my-component;
+     *         @vars: {
+     *             --my-var1: my-value1;
+     *             --my-var2: my-value2;
+     *         });
+     */
+    .add-component-vars(@name;
+                        @vars) {
+      & when not (@vars = null) {
+        :root,
+        .@{name} {
+          @vars();
+        }
+      }
+    }
+
+    /**
+     * Define styling for a component.
+     *
+     * This is used to create any components based on a schema, whether within
+     * Ink or in consuming applications.
+     *
+     * This will set up any CSS variables on ``:root`` and for the component's
+     * selector. It will then populate it with styles based on the provided
+     * rules for the provided schema.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The class name of the component.
+     *
+     *         This will be used to define the selector name.
+     *
+     *     @schema (ruleset):
+     *         The schema the component is based off of.
+     *
+     *         See ``#ink-ns-schema`` for documentation on the schema format.
+     *
+     *         This must contain a ``.populate()`` mixin.
+     *
+     *     @vars (ruleset, optional):
+     *         The ruleset containing the CSS variables to register.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         A mapping of schema part names to CSS rules.
+     *
+     *     @specialize-rules (ruleset, optional):
+     *         A mapping of additional schema part names to CSS rules.
+     *
+     *         These can be used to mix in additional rules that sit on top
+     *         of ``@schema-rules``. It's intended for themeing purposes.
+     *
+     * Example:
+     *     #ink-ns-ui.base.define-component(
+     *         @name: my-component;
+     *         @schema: #my-ns-schema[@my-component];
+     *         @vars: {
+     *             --my-component-bg: blue;
+     *             --my-component-text-color: red;
+     *         };
+     *         @schema-rules: {
+     *             @__default__: {
+     *                 background: var(--my-component-bg);
+     *                 color: var(--my-component-text-color);
+     *             };
+     *             @state-hover: {
+     *                 font-weight: bold;
+     *             };
+     *         });
+     */
+    .define-component(@name;
+                      @schema;
+                      @vars: null;
+                      @schema-rules: null;
+                      @specialize-rules: null) {
+      #ink-ns-ui.base.add-component-vars(@name: @name;
+                                         @vars: @vars);
+
+      .@{name} {
+        @schema();
+
+        .populate(@name: @name;
+                  @schema-rules: @schema-rules;
+                  @specialize-rules: @specialize-rules);
+      }
+    }
+
+    /**
+     * Customize an existing component.
+     *
+     * This is used to customize a component when nested inside of another
+     * rule, based on the component's schema (or a specialized variant of the
+     * schema).
+     *
+     * It can install new variables scoped to the customized component and
+     * its children, and override any styles based on parts in the schema.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The class name of the component.
+     *
+     *         This will be used to define the selector name.
+     *
+     *     @schema (ruleset):
+     *         The schema the component is based off of, or a specialized
+     *         variant.
+     *
+     *         See ``#ink-ns-schema`` for documentation on the schema format.
+     *
+     *         This must contain a ``.populate()`` mixin.
+     *
+     *     @vars (ruleset, optional):
+     *         The ruleset containing the CSS variables to register.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         A mapping of schema part names to CSS rules.
+     *
+     * Example:
+     *     .some-selector {
+     *         #ink-ns-ui.base.customize-component(
+     *             @name: my-component;
+     *             @schema: #my-ns-schema[@my-component];
+     *             @vars: {
+     *                 --my-component-bg: green;
+     *                 --my-component-text-color: yellow;
+     *             };
+     *             @schema-rules: {
+     *                 @state-hover: {
+     *                     font-size: 300%;
+     *                 };
+     *             });
+     *     }
+     */
+    .customize-component(@name;
+                         @schema;
+                         @vars: null;
+                         @schema-rules: null) {
+      .@{name} {
+        & when not (@vars = null) {
+          @vars();
+        }
+
+        & when not (@schema-rules = null) {
+          @schema();
+
+          .populate(@name: @name;
+                    @schema-rules: @schema-rules);
+        }
+      }
+    }
+  }
+}

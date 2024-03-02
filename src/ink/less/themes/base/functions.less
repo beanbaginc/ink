@@ -1,0 +1,101 @@
+/**
+ * Useful functions for defining themes.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+
+#ink-ns-theme() {
+  /**
+   * Add CSS variables for the given LessCSS variables.
+   *
+   * This takes a ruleset of LessCSS variables and converts each into a
+   * CSS variable in the form of :samp:`--{prefix}-{name}: {value}`.
+   *
+   * It will ensure the CSS variable name is in the right format for a given
+   * name and optional prefix.
+   *
+   * Version Added:
+   *     1.0
+   *
+   * Args:
+   *     @vars (ruleset):
+   *         The ruleset containing variable definitions.
+   *
+   *         Keys both with and without ``@`` prefixes are supported.
+   *
+   *     @prefix (string, optional):
+   *         The optional prefix to include before any CSS variable name.
+   *         This should not include a trailing ``-``.
+   *
+   * Example:
+   *     #ink-ns-theme.add-css-vars(
+   *       @vars: {
+   *         @page-bg: black;
+   *         page-fg: yellow;
+   *         button-bg: pink;
+   *       };
+   *       @prefix: 'my');
+   */
+  .add-css-vars(@vars;
+                @prefix: '') {
+    @_prefix: if(@prefix = '', '', replace('@{prefix}-', '-?__-?', '__'));
+
+    each(@vars, {
+      & when not (isruleset(@value)) and not (@value = '') {
+        @_key: replace(@key, '@(.*)', '$1');
+        @_var-key: e('--@{_prefix}@{_key}');
+        @{_var-key}: @value;
+      }
+    });
+  }
+
+  /**
+   * Add CSS variables for a range of unit scales.
+   *
+   * This takes a base scale and a mapping of scale names to multipliers
+   * and outputs CSS variables representing each resulting value.
+   *
+   * Version Added:
+   *     1.0
+   *
+   * Args:
+   *     @prefix (string):
+   *         The prefix for the CSS varable names.
+   *
+   *     @base-scale (number):
+   *         The value that all scales will be based off of.
+   *
+   *     @scales (map):
+   *         The mapping of scale names to multipliers, based off of
+   *         ``@base-scale``.
+   *
+   * Example:
+   *     #ink-ns-theme.add-unit-scale-vars(
+   *       @base-scale: 1;
+   *       @scales: {
+   *         xs: 0.25,
+   *         s: 0.5,
+   *         m: 1,
+   *         l: 1.5,
+   *         xl: 2,
+   *       };
+   *       @prefix: 'my');
+   */
+  .add-unit-scale-vars(@base-scale;
+                       @scales;
+                       @prefix: '') {
+    @_prefix: if(@prefix = '', '', replace('@{prefix}-', '-?__-?', '__'));
+    @_base-scale-key: e('--@{_prefix}scale');
+
+    @{_base-scale-key}: @base-scale;
+
+    each(@scales, {
+      @_value: @value * @base-scale;
+      @_value-key: e('--@{_prefix}@{key}');
+
+      @{_value-key}: @_value;
+    });
+  }
+}

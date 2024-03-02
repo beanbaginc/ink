@@ -1,0 +1,149 @@
+/**
+ * Support for initializing themes.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "../../components/schemas/base.less";
+
+
+#ink-ns-theme() {
+  /**
+   * Initialize an Ink theme.
+   *
+   * This will set up state that CSS variables can use in order to offer
+   * values depending on light mode, dark mode, or high-contrast mode. These
+   * can be opt-in using a ``data-theme="light|dark|high-contrast"`` on a
+   * parent element (usually the root ``<html>`` element), or based on the
+   * system preference (if using ``data-theme="system"``).
+   *
+   * It also takes care of registering any global CSS variables provided by
+   * the theme.
+   *
+   * Version Added:
+   *     1.0
+   *
+   * Args:
+   *     @override (boolean, optional):
+   *         Whether the caller is overriding values from another
+   *         initialization.
+   *
+   *     @root-var-rules (ruleset, optional)
+   *         Any rules to apply to the root element.
+   *
+   *     @theme-var-rules (ruleset, optional)
+   *         Any rules to apply to the root element and to the element
+   *         setting a theme.
+   *
+   * Example:
+   *     #ink-ns-theme.init(
+   *       @root-var-rules: {
+   *         @media screen and (min-width: 321px) {
+   *           --screen-size: large;
+   *         }
+   *
+   *         @media screen and (max-width: 320px) {
+   *           --screen-size: small;
+   *         }
+   *       };
+   *       @theme-var-rules: {
+   *         --page-bg: var(--if-dark, brown)
+   *                    var(--if-light, yellow)
+   *                    var(--if-high-contrast, white);
+   *
+   *         --page-fg: var(--if-dark, orange)
+   *                    var(--if-light, blue);
+   *                    var(--if-high-contrast, black);
+   *       });
+   */
+  .init(@override: false;
+        @root-var-rules: null;
+        @theme-var-rules: null) {
+    /* Light mode is the default. */
+    & when (@override = false) {
+      :root:not([data-theme]),
+      &[data-theme="light"] {
+        --if-high-contrast: ~"";
+        --if-dark: ~"";
+        --if-dark-only: ~"";
+        --if-light: initial;
+
+        color-scheme: light;
+      }
+    }
+
+    & when (@override = true) {
+      :root[data-theme="light"],
+      &[data-theme="light"] {
+        --if-high-contrast: ~"";
+        --if-dark: ~"";
+        --if-dark-only: ~"";
+        --if-light: initial;
+
+        color-scheme: light;
+      }
+    }
+
+    :root[data-theme="dark"],
+    &[data-theme="dark"] {
+      --if-high-contrast: ~"";
+      --if-dark: initial;
+      --if-dark-only: initial;
+      --if-light: ~"";
+
+      color-scheme: dark light;
+    }
+
+    :root[data-theme="high-contrast"],
+    &[data-theme="high-contrast"] {
+      --if-high-contrast: initial;
+      --if-dark: initial;
+      --if-dark-only: ~"";
+      --if-light: ~"";
+
+      color-scheme: dark light;
+    }
+
+    &[data-theme="system"] {
+      @media (prefers-color-scheme: light) {
+        --if-dark: ~"";
+        --if-dark-only: ~"";
+        --if-high-contrast: ~"";
+        --if-light: initial;
+
+        color-scheme: light;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        --if-dark: initial;
+        --if-dark-only: initial;
+        --if-light: ~"";
+
+        color-scheme: dark light;
+      }
+
+      @media (prefers-contrast: more) {
+        --if-dark: initial;
+        --if-dark-only: ~"";
+        --if-high-contrast: initial;
+        --if-light: ~"";
+
+        color-scheme: dark light;
+      }
+    }
+
+    & when (isdefined(@root-var-rules)) {
+      :root {
+        @root-var-rules();
+      }
+    }
+
+    & when (isdefined(@theme-var-rules)) {
+      :root,
+      [data-theme] {
+        @theme-var-rules();
+      }
+    }
+  }
+}
