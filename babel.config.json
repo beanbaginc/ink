@@ -13,7 +13,34 @@
             "version": "legacy"
         }],
         "babel-plugin-dedent",
-        "babel-plugin-django-gettext"
+        "babel-plugin-django-gettext",
+        [
+            "htm",
+            {
+                "import": {
+                    "export": "craftComponent",
+                    "module": "@beanbag/ink"
+                },
+                "pragma": "craftComponent",
+                "tag": "craft",
+                "useBuiltins": true,
+                "useNativeSpread": true
+            },
+            "htm-craft"
+        ],
+        [
+            "htm", {
+                "import": {
+                    "export": "paintComponent",
+                    "module": "@beanbag/ink"
+                },
+                "pragma": "paintComponent",
+                "tag": "paint",
+                "useBuiltins": true,
+                "useNativeSpread": true
+            },
+            "htm-paint"
+        ]
     ],
     "sourceMaps": true,
     "targets": [

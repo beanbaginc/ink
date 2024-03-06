@@ -23,6 +23,8 @@ export default [
             'babel-plugin-dedent',
             'babel-plugin-django-gettext',
             'backbone',
+            'htm',
+            'htm/mini',
             'underscore',
         ],
         input: './src/ink/js/index.ts',
