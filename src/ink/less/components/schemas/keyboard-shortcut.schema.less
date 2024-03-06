@@ -1,0 +1,69 @@
+/**
+ * Schema for a keyboard-shortcut component.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @keyboard-shortcut: {
+    /**
+     * Populate a keyboard-shortcut schema.
+     *
+     * This will provide the structure for a component, populating the
+     * parts of the component with the provided style rules.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rulees (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rulees (ruleset, optional):
+     *         Any additional specialized rules to apply to parto of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the component.
+       *
+       * Structure:
+       *     <div class="@{name}"
+       *          aria-label="..."
+       *          title="..."
+       *          [aria-hidden="true"]>
+       *      <div class="@{name}__key" ...>...</div> [1+]
+       *     </div>
+       */
+      & {
+        .add-rules('__default__');
+
+        /**
+         * Main part of the component.
+         *
+         * Structure:
+         *     <div class="@{name}__key"
+         *          aria-hidden="true">
+         *      keyLabel...
+         *     </div>
+         */
+        &__key {
+          .add-rules('key');
+        }
+      }
+    }
+  }
+}

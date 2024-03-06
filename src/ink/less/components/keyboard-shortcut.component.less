@@ -1,0 +1,67 @@
+/**
+ * Component management for ink-c-keyboard-shortcut.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/keyboard-shortcut.schema.less";
+
+
+#ink-ns-ui() {
+  .keyboard-shortcut() {
+    /**
+     * Create a ink-c-keyboard-shortcut component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rulees (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-keyboard-shortcut;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@keyboard-shortcut];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            display: inline-flex;
+            gap: var(--ink-u-spacing-s);
+          };
+
+          /*
+           * Styles for each listed key.
+           */
+          @key: {
+            background:
+              var(--if-dark, rgba(255, 255, 255, 0.05))
+              var(--if-light, rgba(0, 0, 0, 0.05));
+            border:
+              var(--ink-u-border-thin)
+              var(--if-dark, rgba(255, 255, 255, 0.1))
+              var(--if-light, rgba(0, 0, 0, 0.1))
+              solid;
+            border-radius: var(--ink-u-border-radius-s);
+            padding: var(--ink-u-spacing-xs) var(--ink-u-spacing-s);
+            text-align: center;
+          };
+        };
+      );
+    }
+  }
+}
