@@ -207,7 +207,8 @@ suite('core/craft', () => {
                              class="my-class"
                              data-test="123"
                              option1="value1"
-                             option2="value2">
+                             option2="value2"
+                             style=${{background: 'blue'}}>
                  hi
                  <span>there</span>
                 </MyComponent>
@@ -224,6 +225,7 @@ suite('core/craft', () => {
             expect(el.className).toBe('my-class');
             expect(el.dataset.test).toBe('123');
             expect(el.getAttribute('aria-label')).toBe('My Label');
+            expect(el.style.background).toBe('blue');
 
             const children = component.children;
             expect(children).toHaveSize(2);

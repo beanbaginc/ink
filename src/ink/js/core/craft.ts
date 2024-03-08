@@ -276,8 +276,9 @@ function _craftComponentCtr<
             if (propKey === 'class' || propKey === 'className') {
                 normClassName = String(propValue);
             } else if (propKey.startsWith('aria-') ||
-                       propKey.startsWith('data-')) {
-                normAttrs[propKey] = String(propValue);
+                       propKey.startsWith('data-') ||
+                       propKey === 'style') {
+                normAttrs[propKey] = propValue;
             } else {
                 normProps[propKey] = propValue;
             }
@@ -361,15 +362,7 @@ function _craftComponentCtr<
     if (normAttrs) {
         const el = component.el;
 
-        for (const [attrName, attrValue] of Object.entries(normAttrs)) {
-            if (attrValue !== undefined && attrValue !== null) {
-                el.setAttribute(
-                    attrName,
-                    (typeof attrValue === 'string'
-                     ? attrValue
-                     : String(attrValue)));
-            }
-        }
+        setProps(el, normAttrs);
     }
 
     if (normClassName) {
