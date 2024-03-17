@@ -77,12 +77,12 @@
 
       & when (isdefined(@specialize-rules[@@rules-key])) {
         @_specialize-rules: @specialize-rules[@@rules-key];
-        @_override-rules();
+        @_specialize-rules();
       }
 
       & when (isdefined(@specialize-rules[@rules-key])) {
         @_specialize-rules: @specialize-rules[@rules-key];
-        @_override-rules();
+        @_specialize-rules();
       }
     }
   }
