@@ -60,6 +60,14 @@ export interface RegisteredKeyboardShortcut {
     modifiers?: KeyboardModifiers;
 
     /**
+     * An object/element this shortcut is bound to, for registration purposes.
+     *
+     * If this object disappears, then the keyboard shortcut will be
+     * unregistered.
+     */
+    boundObj?: WeakRef<WeakKey>;
+
+    /**
      * A display category for listing the key.
      */
     category?: string;
@@ -91,6 +99,14 @@ export interface RegisterKeyboardShortcutOptions extends KeyboardModifiers {
      * The function to invoke when the keyboard shortcut is pressed.
      */
     onInvoke: () => void;
+
+    /**
+     * An object/element this shortcut is bound to, for registration purposes.
+     *
+     * If this object disappears, then the keyboard shortcut will be
+     * unregistered.
+     */
+    boundObj?: WeakKey;
 
     /**
      * A display category for listing the key.
@@ -132,7 +148,9 @@ export interface UnregisterKeyboardShortcutOptions extends KeyboardModifiers {
  *     1.0
  */
 @spina
-export class KeyboardShortcutRegistry extends BaseModel {
+export class KeyboardShortcutRegistry extends BaseModel implements Iterable<
+    RegisteredKeyboardShortcut
+> {
     /**********************
      * Instance variables *
      **********************/
@@ -140,9 +158,38 @@ export class KeyboardShortcutRegistry extends BaseModel {
     /**
      * A mapping of keys representing shortcuts to registration information.
      */
-    private _shortcuts: {
-        [mapKey: string]: RegisteredKeyboardShortcut;
-    } = {};
+    private _shortcuts: Map<string, RegisteredKeyboardShortcut> = new Map();
+
+    /**
+     * A registry for tracking when bound objects are finalized.
+     *
+     * This is used to attempt to proactively unregister shortcuts that are
+     * no longer needed.
+     */
+    #finalizationRegistry: FinalizationRegistry<string>;
+
+    /**
+     * Initialize the registry.
+     *
+     * This will set up state to begin tracking and expiring keyboard
+     * shortcuts.
+     */
+    initialize() {
+        super.initialize();
+
+        /*
+         * Optimistically listen for when keyboard shortcuts bound to an
+         * element are garbage-collected. We can then unregister them.
+         */
+        this.#finalizationRegistry = new FinalizationRegistry<string>(
+            (mapKey: string) => {
+                const shortcuts = this._shortcuts;
+
+                if (shortcuts.has(mapKey)) {
+                    shortcuts.delete(mapKey);
+                }
+            });
+    }
 
     /**
      * Register a keyboard shortcut.
@@ -175,8 +222,14 @@ export class KeyboardShortcutRegistry extends BaseModel {
             shiftKey: !!options.shiftKey,
         };
         const mapKey = this.#buildMapKey(key, modifiers);
+        const existingInfo = shortcuts.get(mapKey);
 
-        if (mapKey in shortcuts) {
+        /*
+         * If the old shortcut is bound to an element that no longer
+         * exists, we can replace it. Ideally FinalizationRegistry would
+         * have told us, but it may not have had a chance yet.
+         */
+        if (existingInfo && !this._isExpired(existingInfo)) {
             const label = this.#buildKeyLabel(key, modifiers);
             console.warn(
                 `Keyboard shortcut "${label}" is already registered.`);
@@ -184,13 +237,19 @@ export class KeyboardShortcutRegistry extends BaseModel {
             return null;
         }
 
+        const boundObj = options.boundObj;
         const registeredInfo: RegisteredKeyboardShortcut = {
+            boundObj: boundObj ? new WeakRef(boundObj) : null,
             key: key,
             modifiers: modifiers,
             onInvoke: options.onInvoke,
         };
 
-        shortcuts[mapKey] = registeredInfo;
+        shortcuts.set(mapKey, registeredInfo);
+
+        if (boundObj) {
+            this.#finalizationRegistry.register(boundObj, mapKey);
+        }
 
         return registeredInfo;
     }
@@ -208,8 +267,8 @@ export class KeyboardShortcutRegistry extends BaseModel {
         const modifiers: KeyboardModifiers = options;
         const mapKey = this.#buildMapKey(key, modifiers);
 
-        if (mapKey in shortcuts) {
-            delete shortcuts[mapKey];
+        if (shortcuts.has(mapKey)) {
+            shortcuts.delete(mapKey);
         } else {
             const label = this.#buildKeyLabel(key, modifiers);
             console.warn(`Keyboard shortcut "${label}" is not registered.`);
@@ -237,19 +296,82 @@ export class KeyboardShortcutRegistry extends BaseModel {
         modifiers: KeyboardModifiers = {},
     ): RegisteredKeyboardShortcut | null {
         const mapKey = this.#buildMapKey(key, modifiers);
+        let registeredShortcut = this._shortcuts.get(mapKey) || null;
 
-        return this._shortcuts[mapKey] || null;
+        if (registeredShortcut && this._isExpired(registeredShortcut)) {
+            this._shortcuts.delete(mapKey);
+            registeredShortcut = null;
+        }
+
+        return registeredShortcut;
     }
 
     /**
-     * Return all registered keyboard shortcuts.
+     * Return whether a registered keyboard shortcut is expired.
+     *
+     * Args:
+     *     registeredShortcut (object):
+     *         The registered keyboard shortcut to check.
      *
      * Returns:
-     *     Array of object:
-     *     The array of all registered keyboard shortcut information.
+     *     boolean:
+     *     ``true`` if the shortcut has expired. ``false`` if it is still
+     *     valid.
      */
-    getAllShortcuts(): RegisteredKeyboardShortcut[] {
-        return Object.values(this._shortcuts);
+    private _isExpired(
+        registeredShortcut: RegisteredKeyboardShortcut,
+    ): boolean {
+        const boundObj = registeredShortcut.boundObj;
+
+        return boundObj !== null && boundObj.deref() === null;
+    }
+
+    /**
+     * Iterate over all registered keyboard shortcuts.
+     *
+     * Returns:
+     *     Iterator:
+     *     An iterator of registered keyboard shortcuts.
+     */
+    [Symbol.iterator](): Iterator<RegisteredKeyboardShortcut> {
+        const valuesIter = this._shortcuts.values();
+
+        return {
+            next: (): IteratorResult<RegisteredKeyboardShortcut> => {
+                /*
+                 * We need to ensure we only return shortcuts that are still
+                 * valid. Ideally FinalizationRegistry would have told us, but
+                 * it may not have had a chance yet.
+                 *
+                 * So the approach is to loop until we're either done or get a
+                 * non-expired value, which we'll then return to the user.
+                 */
+                let value;
+
+                while (value === undefined) {
+                    const result = valuesIter.next();
+
+                    if (result.done) {
+                        return {
+                            done: true,
+                            value: undefined,
+                        };
+                    } else {
+                        value = result.value;
+
+                        if (this._isExpired(value)) {
+                            /* We'll skip this and try again. */
+                            value = undefined;
+                        }
+                    }
+                }
+
+                return {
+                    done: false,
+                    value: value,
+                };
+            },
+        };
     }
 
     /**

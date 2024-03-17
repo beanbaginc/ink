@@ -48,6 +48,7 @@ const SYMBOL_MAP =
         'CapsLock': '⇪',
         'Control': '⌃',
         'Delete': '⌫',
+        'Enter': '↩︎',
         'Escape': 'Esc',
         'Meta': '⌘',
         'Return': '↩︎',
@@ -338,6 +339,7 @@ export class KeyboardShortcutView<
             /* Set up the event dispatch handler. */
             const registeredInfo = registry.registerShortcut({
                 altKey: registerOptions.altKey,
+                boundObj: this.el,
                 ctrlKey: registerOptions.ctrlKey,
                 key: registerOptions.key,
                 metaKey: registerOptions.metaKey,

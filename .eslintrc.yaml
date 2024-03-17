@@ -24,3 +24,7 @@ parserOptions:
 
 globals:
   Ink: writable
+
+
+rules:
+  'typescript-eslint/no-explicit-any': 'off';

@@ -113,22 +113,22 @@ suite('components/views/KeyboardShortcutView', () => {
                                       registry=${registry}
                                       onInvoke=${() => null}/>
             `;
-            expect(registry.getAllShortcuts()).toHaveSize(1);
+            expect([...registry]).toHaveSize(1);
 
             view.remove();
 
-            expect(registry.getAllShortcuts()).toHaveSize(0);
+            expect([...registry]).toHaveSize(0);
         });
 
         it('Without registered shortcut', () => {
             const view = craft<KeyboardShortcutView>`
                 <Ink.KeyboardShortcut keys="Control-Meta-X"/>
             `;
-            expect(registry.getAllShortcuts()).toHaveSize(0);
+            expect([...registry]).toHaveSize(0);
 
             view.remove();
 
-            expect(registry.getAllShortcuts()).toHaveSize(0);
+            expect([...registry]).toHaveSize(0);
         });
     });
 
@@ -151,7 +151,7 @@ suite('components/views/KeyboardShortcutView', () => {
                 ' aria-hidden="true">X</span></span>'
             );
 
-            expect(registry.getAllShortcuts()).toHaveSize(1);
+            expect([...registry]).toHaveSize(1);
             expect(registry.getShortcut('X', {
                 ctrlKey: true,
                 metaKey: true,
@@ -174,7 +174,7 @@ suite('components/views/KeyboardShortcutView', () => {
                 ' aria-hidden="true">X</span></span>'
             );
 
-            expect(registry.getAllShortcuts()).toHaveSize(0);
+            expect([...registry]).toHaveSize(0);
         });
 
         it('With attachTo', () => {
