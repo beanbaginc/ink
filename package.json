@@ -20,7 +20,10 @@
     "license": "MIT",
     "scripts": {
         "clean": "rm -rf lib",
-        "build-less": "lessc --include-path=src:node_modules --source-map=lib/ink/ink.css.map src/ink/ink.less lib/ink.css",
+        "_build-ink-css": "lessc --include-path=src:node_modules --source-map=_build/ink/ink.css.map src/ink/ink.less _build/ink.css",
+        "_clean-ink-css": "cleancss -O2 --format beautify --input-source-map=_build/ink/ink.css.map --source-map _build/ink.css -o lib/ink.css",
+        "_clean-ink-min-css": "cleancss -O2 --input-source-map=_build/ink/ink.css.map --source-map _build/ink.css -o lib/ink.min.css",
+        "build-less": "npm run _build-ink-css && npm run _clean-ink-css && npm run _clean-ink-min-css",
         "build-auto-style": "lessc --include-path=src:node_modules --source-map=lib/ink-auto.css.map src/ink/less/auto/index.less lib/ink-auto.css",
         "build-js": "tsc -p ./tsconfig.build.json && rollup -c --bundleConfigAsCjs",
         "build-storybook": "storybook build",
@@ -38,7 +41,9 @@
         "./babel-preset": "./lib/babel-preset/index.js"
     },
     "files": [
-        "lib/ink.css"
+        "lib/ink.css.map",
+        "lib/ink.min.css",
+        "lib/ink.min.css.map"
     ],
     "engines": {
         "node": ">=18.0.0"
@@ -66,6 +71,7 @@
         "@types/jasmine": "^5.1.4",
         "@vitejs/plugin-react": "^4.2.1",
         "axe-playwright": "^2.0.1",
+        "clean-css-cli": "^5.6.3",
         "cross-env": "^7.0.3",
         "css-loader": "^6.10.0",
         "eslint": "^8.56.0",
