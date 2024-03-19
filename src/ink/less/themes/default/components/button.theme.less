@@ -1,0 +1,290 @@
+@import (reference) "../../../components/button.component.less";
+
+
+#ink-ns-default-theme() {
+  .button() {
+    @vars: {
+      @_busy-light-bg: rgba(0, 0, 0, 0.08);
+      @_busy-dark-bg: rgba(255, 255, 255, 0.08);
+
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-button;
+        @vars: {
+          /* Common variables */
+          border-radius: var(--ink-u-border-radius-s);
+          busy-bg: @_busy-light-bg;
+          font-size: var(--ink-u-font-std);
+          padding-horiz: var(--ink-u-spacing-sm);
+          padding-vert: var(--ink-u-spacing-s);
+          shadow: var(--ink-g-shadow-std);
+          text-color: var(--ink-p-surface-fg);
+
+          /* Inline keyboard shortcut */
+          keyboard-shortcut-font-size: var(--ink-u-font-s);
+
+          /* Default state */
+          bg:
+            var(--if-dark,
+              var(--ink-p-grey-300)
+              linear-gradient(
+                to bottom,
+                var(--ink-p-grey-400) 15%,
+                var(--ink-p-grey-300)
+              )
+              repeat-x
+              0 -10px
+            )
+            var(--if-light,
+              var(--ink-p-grey-200)
+              linear-gradient(
+                to bottom,
+                white,
+                white 25%,
+                var(--ink-p-grey-200)
+              )
+              repeat-x
+            );
+
+          active-bg:
+            var(--if-dark, var(--ink-c-button-bg))
+            var(--if-light, var(--ink-c-button-bg) 0 -25px);
+
+          hover-bg:
+            var(--if-dark,
+              var(--ink-p-grey-300)
+              linear-gradient(
+                to bottom,
+                var(--ink-p-grey-400) 45%,
+                var(--ink-p-grey-300)
+              )
+              repeat-x
+              0 -10px
+            )
+            var(--if-light, var(--ink-c-button-bg) 0 -8px);
+
+          border-color: rgba(0, 0, 0, 0.4);
+          hover-border-color: rgba(0, 0, 0, 0.8);
+
+          /* Danger state */
+          danger-bg:
+            var(--ink-p-light__red-500)
+            linear-gradient(
+              to bottom,
+              var(--ink-p-light__red-400),
+              var(--ink-p-light__red-500)
+            )
+            repeat-x;
+
+          danger-hover-bg:
+            var(--if-dark,
+              var(--ink-p-light__red-500)
+              linear-gradient(
+                to bottom,
+                var(--ink-p-light__red-300),
+                var(--ink-p-light__red-400) 35%,
+                var(--ink-p-light__red-500)
+              )
+              repeat-x
+            )
+            var(--if-light, var(--ink-c-button-danger-bg) 0 -15px);
+
+          danger-active-bg: var(--ink-c-button-danger-bg) 0 -25px;
+
+          danger-text-color: white;
+          danger-border-color: var(--ink-c-button-border-color);
+          danger-busy-bg: @_busy-dark-bg;
+
+          /* Disabled state */
+          disabled-bg: none;
+          disabled-border-color:
+            var(--if-dark, var(--ink-p-text-on-dark-color))
+            var(--if-light, var(--ink-p-text-on-light-color));
+
+          disabled-text-color:
+            var(--if-dark, var(--ink-p-text-on-dark-color))
+            var(--if-light, var(--ink-p-text-on-light-color));
+
+          disabled-busy-bg:
+            var(--if-dark, @_busy-dark-bg)
+            var(--if-light, @_busy-light-bg);
+
+          /* Primary state */
+          primary-bg:
+            var(--ink-p-accent-primary-bg)
+            linear-gradient(
+              to bottom,
+              var(--ink-p-accent-secondary-bg),
+              var(--ink-p-accent-primary-bg)
+            )
+            repeat-x;
+
+          primary-hover-bg:
+            var(--if-dark,
+              var(--ink-p-accent-primary-bg)
+              linear-gradient(
+                to bottom,
+                var(--ink-p-accent-tertiary-bg),
+                var(--ink-p-accent-secondary-bg) 35%,
+                var(--ink-p-accent-primary-bg)
+              )
+              repeat-x
+              0 -5px
+            )
+            var(--if-light, var(--ink-c-button-primary-bg) 0 -10px);
+
+          primary-active-bg: var(--ink-c-button-primary-bg) 0 -15px;
+          primary-text-color: var(--ink-p-accent-primary-fg);
+          primary-border-color: var(--ink-c-button-border-color);
+          primary-busy-bg: @_busy-dark-bg;
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main element.
+       */
+      @__default__: {
+        /* State variables */
+        --_ink-c-button-state-bg: var(--ink-c-button-bg);
+        --_ink-c-button-state-active-bg: var(--ink-c-button-active-bg);
+        --_ink-c-button-state-hover-bg: var(--ink-c-button-hover-bg);
+        --_ink-c-button-state-border-color: var(--ink-c-button-border-color);
+        --_ink-c-button-state-busy-bg: var(--ink-c-button-busy-bg);
+        --_ink-c-button-state-text-color: var(--ink-c-button-text-color);
+
+        /* Appearance */
+        background: var(--_ink-c-button-state-bg);
+        border-width: var(--ink-u-border-thin);
+        border-color: var(--_ink-c-button-state-border-color);
+        border-style: solid;
+        border-radius: var(--ink-c-button-border-radius);
+        color: var(--_ink-c-button-state-text-color);
+        font-family: var(--ink-ff-sans-serif);
+        transition: var(--ink-c-button-transition);
+
+        /* Layout */
+        gap: var(--ink-c-button-padding-horiz);
+        padding: var(--ink-c-button-padding-vert)
+                 var(--ink-c-button-padding-horiz);
+
+        /* Necessary to keep elements aligned when pressing. */
+        vertical-align: top;
+
+        /* Ensure consistent appearance in containers. */
+        cursor: pointer;
+        font-size: var(--ink-c-button-font-size);
+      };
+
+      /*
+       * Styles for displayed keyboard shortcuts.
+       */
+      @keyboard-shortcut: {
+        font-size: var(--ink-c-button-keyboard-shortcut-font-size);
+      };
+
+      /*
+       * Styles for the active (clicking) state.
+       */
+      @state-active: {
+        background: var(--_ink-c-button-state-active-bg);
+        color: var(--_ink-c-button-state-text-color);
+        text-decoration: none;
+
+        padding-top: calc(var(--ink-c-button-padding-vert) + 0.5px);
+        padding-bottom: calc(var(--ink-c-button-padding-vert) - 0.5px);
+        border-color: var(--ink-c-button-hover-border-color);
+      };
+
+      /*
+       * Styles for the busy state.
+       */
+      @state-busy: {
+        color: var(--_ink-c-button-state-text-color);
+
+        &:after {
+          content: "";
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+
+          #ink-ns-ui.animation.barber-pole(
+            @bg: var(--_ink-c-button-state-busy-bg));
+        }
+      };
+
+      /*
+       * Styles for the disabled state.
+       */
+      @state-disabled: {
+        --_ink-c-button-state-bg: var(--ink-c-button-disabled-bg);
+        --_ink-c-button-state-text-color:
+          var(--ink-c-button-disabled-text-color);
+        --_ink-c-button-state-border-color:
+          var(--ink-c-button-disabled-border-color);
+        --_ink-c-button-state-busy-bg:
+          var(--ink-c-button-disabled-busy-bg);
+
+        color: var(--_ink-c-button-state-text-color);
+        opacity: 0.6;
+      };
+
+      /*
+       * Styles for the focused state.
+       */
+      @state-focused: {
+        border-color: var(--ink-c-button-hover-border-color);
+        color: var(--_ink-c-button-state-text-color);
+        outline-offset: 2px;
+      };
+
+      /*
+       * Styles for the hover state.
+       */
+      @state-hover: {
+        background: var(--_ink-c-button-state-hover-bg);
+        color: var(--_ink-c-button-state-text-color);
+        text-decoration: none;
+      };
+
+      /*
+       * Styles for the Danger and Reset button types.
+       */
+      @type-danger: {
+        --_ink-c-button-state-bg: var(--ink-c-button-danger-bg);
+        --_ink-c-button-state-hover-bg: var(--ink-c-button-danger-hover-bg);
+        --_ink-c-button-state-active-bg: var(--ink-c-button-danger-active-bg);
+        --_ink-c-button-state-text-color:
+          var(--ink-c-button-danger-text-color);
+        --_ink-c-button-state-border-color:
+          var(--ink-c-button-danger-border-color);
+      };
+
+      /*
+       * Styles for the Primary and Submit button types.
+       */
+      @type-primary: {
+        --_ink-c-button-state-bg: var(--ink-c-button-primary-bg);
+        --_ink-c-button-state-hover-bg: var(--ink-c-button-primary-hover-bg);
+        --_ink-c-button-state-active-bg: var(--ink-c-button-primary-active-bg);
+        --_ink-c-button-state-text-color:
+          var(--ink-c-button-primary-text-color);
+        --_ink-c-button-state-border-color:
+          var(--ink-c-button-primary-border-color);
+      };
+    };
+  }
+};
+
+
+& {
+  @_button: #ink-ns-default-theme.button();
+
+  #ink-ns-ui.button.create(
+    @vars: @_button[@vars];
+    @rules: @_button[@rules];
+  );
+}

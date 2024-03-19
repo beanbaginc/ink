@@ -1,0 +1,216 @@
+/**
+ * Schema for a button component.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @button: {
+    /**
+     * Populate a button schema.
+     *
+     * This will provide the structure for a button component, populating the
+     * parts of the component with the provided style rules.
+     *
+     * Buttons have several types:
+     *
+     * * Standard
+     * * Primary (main button on a form/dialog/page)
+     * * Submit (same as Primary, but triggers a form submit)
+     * * Danger (triggers a destructive action)
+     * * Reset (same as Danger, but the action resets changes to a form)
+     *
+     * Buttons can have icons, labels, and bound (optionally visible) keyboard
+     * shortcuts. They may also be disabled or set to a "busy" state to
+     * indicate an action is taking place.
+     *
+     * In the simplest case, button labels can be text children of the button.
+     * In more complex cases, child elements can be used to set the icon,
+     * label, and keyboard shortcut indicator.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the component.
+       *
+       * DOM Attributes:
+       *     aria-busy (boolean, optional):
+       *         Whether the button is in a busy (and non-interactive) state.
+       *
+       *     aria-pressed (boolean, optional):
+       *         Whether the button is in a pressed state.
+       *
+       *     disabled (boolean, optional):
+       *         Whether the button is disabled.
+       *
+       *     role (string, optional):
+       *         The element role.
+       *
+       *         This should be set to "button" when using a tag other than
+       *         ``<button>``.
+       *
+       *     type (string, optional):
+       *         The button type.
+       *
+       *         This can be one of: "button", "reset", "submit".
+       *
+       *         This is needed when the tag is a ``<button>``, but should
+       *         not be used when it's an ``<a>``.
+       *
+       * Modifiers:
+       *     -is-danger:
+       *         This is a Danger button type. It performs a destructive action.
+       *
+       *     -is-primary:
+       *         This is a Primary button type. It's the main button in a UI.
+       *
+       *     js-active:
+       *         JavaScript-trigger active styling state, equivalent to
+       *         ``:active``.
+       *
+       *     js-focus:
+       *         JavaScript-trigger focus styling state, equivalent to
+       *         ``:focus``.
+       *
+       *     js-hover:
+       *         JavaScript-trigger hover styling state, equivalent to
+       *         ``:hover``.
+       *
+       * Structure:
+       *     <button class="@{name}
+       *                    [-is-danger|-is-primary]
+       *                    [js-active]
+       *                    [js-focus]
+       *                    [js-hover]"
+       *             type="button|reset|submit"
+       *             [aria-busy="true"]
+       *             [aria-pressed="true"]
+       *             [disabled]>
+       *      label-text...
+       *      |
+       *      [<span class="@{name}__icon ..." ...></span>]
+       *      [<label class="@{name}__label ..." ...>...</label>]
+       *      [<span class="@{name}__keyboard-shortcut ..." ...>...</span>]
+       *     </button>
+       *     |
+       *     <a class="@{name}
+       *               [-is-danger|-is-primary]
+       *               [-is-disabled]
+       *               [js-active]
+       *               [js-focus]
+       *               [js-hover]"
+       *             role="button"
+       *             [aria-busy="true"]
+       *             [aria-pressed="true"]
+       *             [disabled]>
+       *      label-text...
+       *     </a>
+       */
+      &,
+      &:is(a:link, a:visited) {
+        .add-rules('__default__');
+      }
+
+      /* Button states */
+      &:is(:active, [aria-pressed=true], .js-active) {
+        &:is(a, button:enabled) {
+          &:not(.-is-disabled):not([aria-busy="true"]) {
+            .add-rules('state-active');
+          }
+        }
+      }
+
+      &[aria-busy="true"] {
+        .add-rules('state-busy');
+      }
+
+      &:is([disabled], .-is-disabled) {
+        .add-rules('state-disabled');
+      }
+
+      &:is(:focus, .js-focus) {
+        .add-rules('state-focused');
+      }
+
+      &:is(:hover, .js-hover) {
+        &:is(a, button:enabled) {
+          &:not(.-is-disabled):not([aria-busy="true"]) {
+            .add-rules('state-hover');
+          }
+        }
+      }
+
+      /* Button types */
+      &:is([type="reset"], .-is-danger) {
+        .add-rules('type-danger');
+      }
+
+      &:is([type="submit"], .-is-primary) {
+        .add-rules('type-primary');
+      }
+
+      /**
+       * A label for the button.
+       *
+       * Structure:
+       *     <label class="@{name}__label">
+       *      label-text...
+       *     </label>
+       */
+      &:not(:has(@{name}__label)),
+      @{name}__label {
+        .add-rules('label');
+      }
+
+      /**
+       * An icon shown on the button.
+       *
+       * This should be mixed in with an icon class name.
+       *
+       * Structure:
+       *     <span class="@{name}__icon @{icon-class-name}"></span>
+       */
+      &__icon {
+        .add-rules('icon');
+      }
+
+      /**
+       * A keyboard shortcut shown on the button.
+       *
+       * This should use a ``keyboard-shortcut`` component.
+       *
+       * Structure:
+       *     <span class="@{name}__keyboard-shorcut
+       *                  @{keyboard-shortcut-class}">
+       *      ...
+       *     </span>
+       */
+      &__keyboard-shortcut {
+        .add-rules('keyboard-shortcut');
+      }
+    }
+  }
+}

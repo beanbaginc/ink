@@ -2,9 +2,12 @@ import { JSDOM } from 'jsdom';
 
 
 const dom = new JSDOM('<html><body></body></html>');
+const window = dom.window;
 
-global.Node = dom.window.Node;
-global.Element = dom.window.Node;
-global.HTMLElement = dom.window.Node;
-global.window = dom.window;
-global.document = dom.window.document;
+global.Node = window.Node;
+global.Element = window.Node;
+global.HTMLElement = window.HTMLElement;
+global.HTMLAnchorElement = window.HTMLAnchorElement;
+global.HTMLButtonElement = window.HTMLButtonElement;
+global.window = window;
+global.document = window.document;

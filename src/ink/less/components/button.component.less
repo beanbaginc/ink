@@ -1,0 +1,86 @@
+/**
+ * Component management for ink-c-button.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/button.schema.less";
+@import (reference) "../assets/animations.less";
+
+
+#ink-ns-ui() {
+  .button() {
+    /**
+     * Create an ink-c-button component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rulees (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-button;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@button];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            /* Layout */
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            /* Ensure consistent appearance in containers. */
+            font-weight: normal;
+            line-height: normal;
+            text-decoration: none;
+            user-select: none;
+
+            /*
+             * Make sure the children always inherit some default attributes.
+             */
+            > * {
+              cursor: inherit;
+              color: inherit;
+              font-family: inherit;
+              font-size: inherit;
+            }
+          };
+
+          /*
+           * Styles for the busy state.
+           */
+          @state-busy: {
+            cursor: wait;
+            overflow: hidden;
+          };
+
+          /*
+           * Styles for the disabled state.
+           */
+          @state-disabled: {
+            cursor: default;
+          };
+        };
+      );
+    }
+  }
+}

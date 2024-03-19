@@ -15,6 +15,15 @@
                                @prefix: 'ink-p-light__');
     #ink-ns-theme.add-css-vars(@_dark-palette;
                                @prefix: 'ink-p-dark__');
+
+    /* Add CSS classes for all the icons. */
+    @_icons: #ink-ns-default-theme[@icon-svg-paths];
+
+    each(@_icons, {
+      .ink-i-@{key} {
+        #ink-ns-ui.icons.svg-icon(~"var(--ink-i-@{key})");
+      }
+    });
   };
   @theme-var-rules: {
     /**********************************************************************
