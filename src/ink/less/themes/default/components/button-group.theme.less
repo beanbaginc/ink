@@ -1,0 +1,112 @@
+@import (reference) "../../../components/button-group.component.less";
+
+
+#ink-ns-default-theme() {
+  .button-group() {
+    @vars: {
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main element.
+       */
+      @__default__: {
+        border: var(--ink-u-border-thin)
+                var(--ink-c-button-border-color)
+                solid;
+        border-radius: var(--ink-c-button-border-radius);
+      };
+
+      /*
+       * Styles for a horizontal orientation.
+       */
+      @state-is-horizontal: {
+        #ink-ns-ui.base.customize-component(
+          @name: ink-c-button;
+          @schema: #ink-ns-schema[@button];
+          @schema-rules: {
+            @__default__: {
+              /*
+               * Hide borders on all the buttons. We'll only apply
+               * borders to the outer button group container.
+               */
+              border-left: 0;
+              border-right: 0;
+              border-top: 0;
+              border-right: 0;
+              border-bottom: 0;
+              border-radius: 0;
+
+              /*
+               * Re-apply the border radius to the first and last buttons,
+               * to match that of the button group.
+               */
+              &:first-child {
+                border-top-left-radius: inherit;
+                border-bottom-left-radius: inherit;
+              }
+
+              &:last-child {
+                border-top-right-radius: inherit;
+                border-bottom-right-radius: inherit;
+              }
+            };
+          }
+        );
+      };
+
+      /*
+       * Styles for a vertical orientation.
+       */
+      @state-is-vertical: {
+        #ink-ns-ui.base.customize-component(
+          @name: ink-c-button;
+          @schema: #ink-ns-schema[@button];
+          @schema-rules: {
+            @__default__: {
+              /*
+               * Hide all but the top borders on all the buttons. We'll
+               * primarily apply borders to the outer button group
+               * container.
+               */
+              border-top-color: var(--ink-p-container-outline-weak);
+              border-left: 0;
+              border-right: 0;
+              border-bottom: 0;
+              border-radius: 0;
+              width: 100%;
+
+              /* Align the button contents to the left. */
+              justify-content: start;
+
+              /*
+               * Re-apply the border radius to the first and last buttons,
+               * to match that of the button group.
+               */
+              &:first-child {
+                border-top: 0;
+                border-top-left-radius: inherit;
+                border-top-right-radius: inherit;
+              }
+
+              &:last-child {
+                border-bottom-right-radius: inherit;
+                border-bottom-left-radius: inherit;
+              }
+            };
+          }
+        );
+      };
+    }
+  }
+}
+
+
+& {
+  @_button-group: #ink-ns-default-theme.button-group();
+
+  #ink-ns-ui.button-group.create(
+    @vars: @_button-group[@vars];
+    @rules: @_button-group[@rules];
+  );
+}

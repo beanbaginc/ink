@@ -1,0 +1,84 @@
+/**
+ * Component management for ink-c-button-group.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/button-group.schema.less";
+
+
+#ink-ns-ui() {
+  .button-group() {
+    /**
+     * Create an ink-c-button-group component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @button-name (string, optional):
+     *         The name of the contained button component class.
+     *
+     *     @button-schema (ruleset, optional):
+     *         The schema used for the contained button component class.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rulees (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-button-group;
+            @button-name: ink-c-button;
+            @button-schema: #ink-ns-schema[@button];
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@button-group];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            /* Layout */
+            display: inline-flex;
+            margin: 0;
+            padding: 0;
+
+            /* Make sure there's no space between buttons. */
+            font-size: 0;
+          };
+
+          /*
+           * Styles for a vertical orientation.
+           */
+          @state-is-vertical: {
+            flex-direction: column;
+
+            #ink-ns-ui.base.customize-component(
+              @name: @button-name;
+              @schema: @button-schema;
+              @schema-rules: {
+                @__default__: {
+                  /*
+                   * Hide all but the top borders on all the buttons. We'll
+                   * primarily apply borders to the outer button group
+                   * container.
+                   */
+                  width: 100%;
+                };
+              });
+          };
+        };
+      );
+    }
+  }
+}

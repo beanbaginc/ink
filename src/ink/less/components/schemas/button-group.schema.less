@@ -1,0 +1,90 @@
+/**
+ * Schema for a button group component.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @button-group: {
+    /**
+     * Populate a button group schema.
+     *
+     * This will provide the structure for a button group component,
+     * populating the * parts of the component with the provided style
+     * rules.
+     *
+     * Button groups contain multiple buttons, displaying them horizontally
+     * or vertically.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the button group component.
+       *
+       * DOM Attributes:
+       *     role (string):
+       *         The element role.
+       *
+       *         This should always be set to ``group``.
+       *
+       *     aria-label (string):
+       *          A label describing in the group.
+       *
+       *          This must be set if ``aria-labelledby`` is not set.
+       *
+       *     aria-labelledby (string):
+       *          The ID of an element describing this group.
+       *
+       *          This must be set if ``aria-label`` is not set.
+       *
+       * Modifiers:
+       *     -is-vertical:
+       *         Whether the buttons should be laid out vertically.
+       *
+       *         If not provided, the buttons will be horizontal.
+       *
+       * Structure:
+       *     <div class="@{name}
+       *                 [-is-vertical]"
+       *          aria-label="..." | aria-labelledby="..."
+       *          role="group">
+       *      <button class="@{button-name} ..." ...>...</button> [1+]
+       *     </div>
+       */
+      & {
+        .add-rules('__default__');
+      }
+
+      &.-is-vertical {
+        .add-rules('state-is-vertical');
+      }
+
+      &:not(.-is-vertical) {
+        .add-rules('state-is-horizontal');
+      }
+    }
+  }
+}
