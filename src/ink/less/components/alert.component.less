@@ -1,0 +1,112 @@
+/**
+ * Component management for ink-c-alert.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/alert.schema.less";
+
+
+#ink-ns-ui() {
+  .alert() {
+    /**
+     * Create an ink-c-alert component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rules (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-alert;
+            @vars: null;
+            @rules: null) {
+      @_icon-height: var(--ink-u-icon-l);
+
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@alert];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main alert element.
+           */
+          @__default__: {
+            display: grid;
+            grid-template: "icon content close" / min-content auto min-content;
+            margin: 0;
+            width: 100%;
+          };
+
+          /*
+           * Styles for the actions area.
+           */
+          @actions: {
+            display: flex;
+          };
+
+          /*
+           * Styles for the content body containing arbitrary HTML.
+           */
+          @body: {
+            > :last-child {
+              margin-bottom: 0;
+              padding-bottom: 0;
+            }
+          };
+
+          /*
+           * Styles for the close button.
+           */
+          @close-button: {
+            grid-area: close;
+            cursor: pointer;
+            height: fit-content;
+            margin: 0;
+
+            /* Get rid of any excess line height in this element. */
+            line-height: 0;
+          };
+
+          /*
+           * Styles for the content container within the alert.
+           */
+          @content: {
+            grid-area: content;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+          };
+
+          /*
+           * Styles for the alert's header.
+           */
+          @heading: {
+            margin: 0;
+            padding: 0;
+          };
+
+          /*
+           * Styles for alert type icon.
+           */
+          @icon: {
+            content: "";
+            display: block;
+            grid-area: icon;
+            text-align: center;
+          };
+        };
+      );
+    }
+  }
+}

@@ -1,3 +1,4 @@
+export * from './alertView';
 export * from './baseComponentView';
 export * from './buttonGroupView';
 export * from './buttonView';

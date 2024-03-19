@@ -1,0 +1,195 @@
+/**
+ * Schema for an alert component.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @alert: {
+    /**
+     * Populate an alert schema.
+     *
+     * This will provide the structure for an alert component, populating the
+     * parts of the component with the provided style rules.
+     *
+     * This is used to show something important to the user. It can display an
+     * informational message/hint, a successful result, an warning, or an
+     * error. The text will be displayed alongside an icon, which is dependent
+     * on the type. The information may optionally be presented with leading or
+     * sectional headers.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the alert component.
+       *
+       * DOM Attributes:
+       *     data-type (string, optional):
+       *         The type of alert.
+       *
+       *         This can be one of:
+       *
+       *         * ``standard`` (default)
+       *         * ``error``
+       *         * ``info``
+       *         * ``success``
+       *         * ``warning``
+       *
+       *     role (string, optional):
+       *         The element role.
+       *
+       *         This should be set to "alert" if the alert is being shown
+       *         dynamically, in response to some operation, and the consumer
+       *         wishes to notify screen readers.
+       *
+       *         If the alert is more passive or shown on page load, this
+       *         should be set to "status" instead.
+       *
+       * Structure:
+       *     <div class="@{name}"
+       *          role="alert|status"
+       *          [data-type="standard|error|info|success|warning"]>
+       *      [<span class="@{name}__close" ...></span>]
+       *      <div class="@{name}__content">...</div>
+       *     </button>
+       */
+      & {
+        .add-rules('__default__');
+
+        /* States */
+        &:before {
+          .add-rules('icon');
+        }
+
+        &[data-type="error"] {
+          .add-rules('type-error');
+        }
+
+        &[data-type="info"] {
+          .add-rules('type-info');
+        }
+
+        &[data-type="success"] {
+          .add-rules('type-success');
+        }
+
+        &[data-type="warning"] {
+          .add-rules('type-warning');
+        }
+      }
+
+      /**
+       * Actions pertaining to the alert.
+       *
+       * This will typically consist of buttons, but is considered free-form.
+       *
+       * Structure:
+       *     <div class="@{name}__actions">
+       *      html...
+       *     </div>
+       */
+      &__actions {
+        .add-rules('actions');
+      }
+
+      /**
+       * The body of the alert.
+       *
+       * This contains the text or any other content to show to the user.
+       * This can accept arbitrary HTML as children.
+       *
+       * Structure:
+       *     <div class="@{name}__body">
+       *      html...
+       *     </div>
+       */
+      &__body {
+        .add-rules('body');
+      }
+
+      /**
+       * The main content area for an alert.
+       *
+       * This contains the heading and content body.
+       *
+       * Structure:
+       *     <div class="@{name}__content">
+       *      <h3 class="@{name}__heading">...</h3>
+       *      [<div class="@{name}__body">...</div>]
+       *      [<div class="@{name}__actions">...</div>]
+       *     </div>
+       */
+      &__content {
+        .add-rules('content');
+      }
+
+      /**
+       * The close button for the alert.
+       *
+       * This is an optional part of alerts.
+       *
+       * DOM Attributes:
+       *     aria-label (string):
+       *          The accessibility label for the button.
+       *
+       *     role (string):
+       *         This must be set to ``button``.
+       *
+       *     tabindex (number):
+       *         The tab index.
+       *
+       *         This must always be set to ``0``.
+       *
+       *     title (string):
+       *          The tooltip label for the button.
+       *
+       * Structure:
+       *     <span class="@{name}__close"
+       *           aria-label="label..."
+       *           role="button"
+       *           tabindex="0">
+       *           title="label..."></span>
+       */
+      &__close {
+        .add-rules('close-button');
+      }
+
+      /**
+       * The heading for the alert.
+       *
+       * This contains the primary summary/heading text to show.
+       *
+       * Structure:
+       *     <h3 class="@{name}__heading">
+       *      text...
+       *     </h3>
+       */
+      &__heading {
+        .add-rules('heading');
+      }
+    }
+  }
+}

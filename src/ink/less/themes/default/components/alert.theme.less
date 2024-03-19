@@ -1,0 +1,172 @@
+@import (reference) "../../../components/alert.component.less";
+
+
+#ink-ns-default-theme() {
+  .alert() {
+    @vars: {
+      @_light-border-color: rgba(255, 255, 255, 0.5);
+      @_dark-border-color: rgba(0, 0, 0, 0.2);
+
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-alert;
+        @vars: {
+          /* Common */
+          close-icon: var(--ink-i-close);
+
+          /* Default state */
+          standard-bg: var(--ink-p-grey-200);
+          standard-border-color:
+            var(--if-dark, @_light-border-color)
+            var(--if-light, @_dark-border-color);
+          standard-icon: var(--ink-i-info);
+          standard-text-color: var(--ink-c-text-color);
+
+          /* Error state */
+          error-bg: var(--ink-p-light__red-100);
+          error-border-color: @_dark-border-color;
+          error-icon: var(--ink-i-error);
+          error-text-color: black;
+
+          /* Info state */
+          info-bg: var(--ink-p-blue-200);
+          info-border-color: var(--ink-c-alert-standard-border-color);
+          info-icon: var(--ink-i-info);
+          info-text-color: var(--ink-c-text-color);
+
+          /* Success state */
+          success-bg: var(--ink-p-green-200);
+          success-border-color: var(--ink-c-alert-standard-border-color);
+          success-icon: var(--ink-i-success);
+          success-text-color: var(--ink-c-text-color);
+
+          /* Warning state */
+          warning-bg: var(--ink-p-light__yellow-300);
+          warning-border-color: @_dark-border-color;
+          warning-icon: var(--ink-i-warning);
+          warning-text-color: black;
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main alert element.
+       */
+      @__default__: {
+        /* State variables */
+        --_ink-c-alert-bg: var(--ink-c-alert-standard-bg);
+        --_ink-c-alert-border-color:
+          var(--ink-c-alert-standard-border-color);
+        --_ink-c-alert-text-color: var(--ink-c-alert-standard-text-color);
+        --_ink-c-alert-icon: var(--ink-c-alert-standard-icon);
+
+        background: var(--_ink-c-alert-bg);
+        border-radius: var(--ink-u-border-radius-container);
+        border: var(--ink-u-border-thin)
+                var(--_ink-c-alert-border-color)
+                solid;
+        box-shadow: var(--ink-c-panel-box-shadow);
+        box-sizing: border-box;
+        color: var(--_ink-c-alert-text-color);
+        font-size: var(--ink-u-font-std);
+        padding: var(--ink-u-spacing-std);
+      };
+
+      /*
+       * Styles for the actions area.
+       */
+      @actions: {
+        margin-top: var(--ink-u-spacing-xl);
+        gap: var(--ink-u-spacing-std);
+      };
+
+      /*
+       * Styles for the close button.
+       */
+      @close-button: {
+        opacity: 0.6;
+        padding: var(--ink-u-spacing-xs);
+
+        &:before {
+          content: "";
+          display: block;
+          #ink-ns-ui.icons.svg-icon(@icon: var(--ink-c-alert-close-icon));
+        }
+
+        &:hover {
+          opacity: 1;
+        }
+      };
+
+      /*
+       * Styles for the alert's header.
+       */
+      @heading: {
+        font-size: inherit;
+        font-weight: bold;
+        line-height: var(--ink-u-icon-l);
+        margin: 0;
+        padding: 0;
+      };
+
+      /*
+       * Styles for alert type icon.
+       */
+      @icon: {
+        margin-right: var(--ink-u-spacing-s);
+        #ink-ns-ui.icons.svg-icon(@icon: var(--_ink-c-alert-icon);
+                                  @size: @_icon-height);
+      };
+
+      /*
+       * Styles for an error alert type.
+       */
+      @type-error: {
+        --_ink-c-alert-bg: var(--ink-c-alert-error-bg);
+        --_ink-c-alert-border-color: var(--ink-c-alert-error-border-color);
+        --_ink-c-alert-icon: var(--ink-c-alert-error-icon);
+        --_ink-c-alert-text-color: var(--ink-c-alert-error-text-color);
+      };
+
+      /*
+       * Styles for an info alert type.
+       */
+      @type-info: {
+        --_ink-c-alert-bg: var(--ink-c-alert-info-bg);
+        --_ink-c-alert-border-color: var(--ink-c-alert-info-border-color);
+        --_ink-c-alert-icon: var(--ink-c-alert-info-icon);
+        --_ink-c-alert-text-color: var(--ink-c-alert-info-text-color);
+      };
+
+      /*
+       * Styles for a success alert type.
+       */
+      @type-success: {
+        --_ink-c-alert-bg: var(--ink-c-alert-success-bg);
+        --_ink-c-alert-border-color: var(--ink-c-alert-success-border-color);
+        --_ink-c-alert-icon: var(--ink-c-alert-success-icon);
+        --_ink-c-alert-text-color: var(--ink-c-alert-success-text-color);
+      };
+
+      /*
+       * Styles for a warning alert type.
+       */
+      @type-warning: {
+        --_ink-c-alert-bg: var(--ink-c-alert-warning-bg);
+        --_ink-c-alert-border-color: var(--ink-c-alert-warning-border-color);
+        --_ink-c-alert-icon: var(--ink-c-alert-warning-icon);
+        --_ink-c-alert-text-color: var(--ink-c-alert-warning-text-color);
+      };
+    };
+  };
+}
+
+
+& {
+  @_alert: #ink-ns-default-theme.alert();
+
+  #ink-ns-ui.alert.create(
+    @vars: @_alert[@vars];
+    @rules: @_alert[@rules];
+  );
+}

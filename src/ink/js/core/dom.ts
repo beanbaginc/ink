@@ -41,6 +41,7 @@ interface RenderIntoOptions {
  */
 const _SetPropsAliases = {
     'class': 'className',
+    'tabindex': 'tabIndex',
 };
 
 
