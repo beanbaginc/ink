@@ -8,16 +8,6 @@
 
     @rules: {
       /*
-       * Styles for the default state of the main element.
-       */
-      @__default__: {
-        border: var(--ink-u-border-thin)
-                var(--ink-c-button-border-color)
-                solid;
-        border-radius: var(--ink-c-button-border-radius);
-      };
-
-      /*
        * Styles for a horizontal orientation.
        */
       @state-is-horizontal: {
@@ -26,29 +16,23 @@
           @schema: #ink-ns-schema[@button];
           @schema-rules: {
             @__default__: {
-              /*
-               * Hide borders on all the buttons. We'll only apply
-               * borders to the outer button group container.
-               */
-              border-left: 0;
-              border-right: 0;
-              border-top: 0;
-              border-right: 0;
-              border-bottom: 0;
-              border-radius: 0;
+              @_border-radius: calc(var(--ink-c-button-border-radius) -
+                                    var(--ink-u-border-thin));
 
               /*
-               * Re-apply the border radius to the first and last buttons,
-               * to match that of the button group.
+               * Keep border radiuses only for the first and last buttons,
+               * and apply only one border between buttons.
                */
-              &:first-child {
-                border-top-left-radius: inherit;
-                border-bottom-left-radius: inherit;
+              &:not(:first-child) {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-left: 0;
               }
 
-              &:last-child {
-                border-top-right-radius: inherit;
-                border-bottom-right-radius: inherit;
+              &:not(:last-child) {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-right-width: var(--ink-u-border-x-thin);
               }
             };
           }
@@ -64,34 +48,25 @@
           @schema: #ink-ns-schema[@button];
           @schema-rules: {
             @__default__: {
-              /*
-               * Hide all but the top borders on all the buttons. We'll
-               * primarily apply borders to the outer button group
-               * container.
-               */
-              border-top-color: var(--ink-p-container-outline-weak);
-              border-left: 0;
-              border-right: 0;
-              border-bottom: 0;
-              border-radius: 0;
               width: 100%;
 
               /* Align the button contents to the left. */
               justify-content: start;
 
               /*
-               * Re-apply the border radius to the first and last buttons,
-               * to match that of the button group.
+               * Keep border radiuses only for the first and last buttons,
+               * and apply only one border between buttons.
                */
-              &:first-child {
+              &:not(:first-child) {
                 border-top: 0;
-                border-top-left-radius: inherit;
-                border-top-right-radius: inherit;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
               }
 
-              &:last-child {
-                border-bottom-right-radius: inherit;
-                border-bottom-left-radius: inherit;
+              &:not(:last-child) {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+                border-bottom-width: var(--ink-u-border-x-thin);
               }
             };
           }
