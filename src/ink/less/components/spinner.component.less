@@ -1,0 +1,48 @@
+/**
+ * Component management for ink-c-spinner.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+#ink-ns-ui() {
+  .spinner() {
+    /**
+     * Create an ink-c-spinner component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rulees (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-spinner;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@spinner];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            display: inline-block;
+            align-self: center;
+            justify-self: center;
+            vertical-align: middle;
+          };
+        };
+      );
+    }
+  }
+}

@@ -1,0 +1,71 @@
+/**
+ * Schema for a spinner component.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @spinner: {
+    /**
+     * Populate a spinner schema.
+     *
+     * This will provide the structure for a spinner component, populating the
+     * parts of the component with the provided style rules.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rulees (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rulees (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the spinner component.
+       *
+       * Spinners represent an in-progress activity, such as new content being
+       * loaded or a request being sent to a server.
+       *
+       * Accessibility Notes:
+       *     When using the spinner to represent content loading in a parent
+       *     element, it's best to set ``aria-busy="true"`` on that element
+       *     in order to inform screen readers that the content is still
+       *     loading. It's very important to remove this attribute once the
+       *     load has completed.
+       *
+       *     This should be used along with ``aria-live=`` to indicate that the
+       *     element will be updated.
+       *
+       *     Alternatively, you might want to use ``aria-hidden="false"`` on
+       *     this, if it should not be read or seen by the screen reader, or
+       *     ``aria-label="..."`` if it should (and does not otherwise have
+       *     accompanying text).
+       *
+       * Structure:
+       *     <span class="@{name}"
+       *           [aria-hidden="true"]
+       *           [aria-label="..." | aria-labelledby="..."]></span>
+       */
+      & {
+        .add-rules('__default__');
+      }
+    }
+  }
+}

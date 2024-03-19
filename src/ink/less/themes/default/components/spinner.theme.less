@@ -1,0 +1,44 @@
+@import (reference) "../../../components/spinner.component.less";
+
+
+#ink-ns-default-theme() {
+  .spinner() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-spinner;
+        @vars: {
+          /*
+           * This value will help this fit in well with text, keeping the
+           * existing height.
+           */
+          size: 1em;
+
+          image: data-uri('@{images-path}/spinner/default.svg');
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main spinner element.
+       */
+      @__default__: {
+        background-color: currentColor;
+        background-repeat: no-repeat;
+        mask-image: var(--ink-c-spinner-image);
+        width: var(--ink-c-spinner-size);
+        height: var(--ink-c-spinner-size);
+      };
+    };
+  }
+}
+
+
+& {
+  @_spinner: #ink-ns-default-theme.spinner();
+
+  #ink-ns-ui.spinner.create(
+    @vars: @_spinner[@vars];
+    @rules: @_spinner[@rules];
+  );
+}
