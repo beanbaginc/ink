@@ -548,7 +548,7 @@ export class ButtonView<
         const iconName = this.#iconName;
         const label = this.#label;
         const showKeyboardShortcut = this.#showKeyboardShortcut &&
-                                     this.#keyboardShortcutView;;
+                                     this.#keyboardShortcutView;
 
         el.innerHTML = '';
 
