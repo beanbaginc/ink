@@ -118,6 +118,69 @@ suite('core/craft', () => {
                 props: {},
             });
         });
+
+        it('With component and array of subcomponents as child', () => {
+            const component = craftComponent<HTMLElement, MyComponent>(
+                'MyComponent',
+                {
+                    'aria-label': 'My Label',
+                    'class': 'my-class',
+                    'data-test': 123,
+                    'option1': 'value1',
+                    'option2': 'value2',
+                },
+                'hi',
+                [
+                    craftComponent('MyComponent.MySubcomponent', {
+                        prop1: 'value1',
+                    }),
+                    craftComponent('MyComponent.MySubcomponent', {
+                        prop2: 'value2',
+                    }),
+                ]);
+
+            expect(component).toBeInstanceOf(MyComponent);
+            expect(component.options).toEqual({
+                'componentCrafted': true,
+                'option1': 'value1',
+                'option2': 'value2',
+            });
+            expect(component.children).toHaveSize(2);
+            expect((component.children[0] as HTMLElement).outerHTML).toBe(
+                '<div data-subcomponent="MySubcomponent"></div>'
+            );
+            expect((component.children[1] as HTMLElement).outerHTML).toBe(
+                '<div data-subcomponent="MySubcomponent"></div>'
+            );
+
+            const el = component.el;
+            expect(el.className).toBe('my-class');
+            expect(el.dataset.test).toBe('123');
+            expect(el.getAttribute('aria-label')).toBe('My Label');
+
+            const subcomponents = component.subcomponentInfos;
+            expect(subcomponents).toHaveSize(2);
+            expect(subcomponents[0] as unknown).toEqual({
+                children: [],
+                fullName: 'MyComponent.MySubcomponent',
+                funcName: '_handleSubcomponent',
+                isSubcomponent: true,
+                name: 'MySubcomponent',
+                props: {
+                    prop1: 'value1',
+                },
+            });
+            expect(subcomponents[1] as unknown).toEqual({
+                children: [],
+                fullName: 'MyComponent.MySubcomponent',
+                funcName: '_handleSubcomponent',
+                isSubcomponent: true,
+                name: 'MySubcomponent',
+                props: {
+                    prop2: 'value2',
+                },
+            });
+        });
     });
 
     it('craftComponents', () => {

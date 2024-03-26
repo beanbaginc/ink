@@ -17,7 +17,9 @@ export type ComponentChild = (
     Node[] |
     string |
     Component |
-    SubcomponentInfo
+    Component[] |
+    SubcomponentInfo |
+    SubcomponentInfo[]
 )
 
 

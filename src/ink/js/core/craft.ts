@@ -303,36 +303,47 @@ function _craftComponentCtr<
         /* First check if there are any subcomponents included. */
         let foundSubcomponent = false;
 
-        for (const child of children) {
-            if (child === null || child === undefined) {
+        for (const rawChild of children) {
+            if (rawChild === null || rawChild === undefined) {
                 continue;
             }
 
-            if (isSubcomponentInfo(child)) {
-                foundSubcomponent = true;
+            /*
+             * We may get a child, or an array of children. We'll need to
+             * handle both cases.
+             */
+            const normChildren = (Array.isArray(rawChild)
+                                  ? rawChild
+                                  : [rawChild]);
 
-                const subcomponentFullName = child.fullName;
-                const subcomponentFuncName = child.funcName;
+            for (const child of normChildren) {
+                if (isSubcomponentInfo(child)) {
+                    foundSubcomponent = true;
 
-                console.assert(subcomponentFullName.startsWith(name),
-                               'Subcomponent %s is not a direct child of %s',
-                               subcomponentFullName, name);
+                    const subcomponentFullName = child.fullName;
+                    const subcomponentFuncName = child.funcName;
 
-                const func: ((SubcomponentInfo) => void) =
-                    component[subcomponentFuncName];
+                    console.assert(
+                        subcomponentFullName.startsWith(name),
+                        'Subcomponent %s is not a direct child of %s',
+                        subcomponentFullName, name);
 
-                console.assert(
-                    func,
-                    'Component %s is missing subcomponent handler %s',
-                    name, subcomponentFuncName);
+                    const func: ((SubcomponentInfo) => void) =
+                        component[subcomponentFuncName];
 
-                func.call(component, child);
-            } else {
-                console.assert(
-                    !foundSubcomponent,
-                    'Found a non-subcomponent child of %s alongside ' +
-                    'subcomponents: %o',
-                    name, child);
+                    console.assert(
+                        func,
+                        'Component %s is missing subcomponent handler %s',
+                        name, subcomponentFuncName);
+
+                    func.call(component, child);
+                } else {
+                    console.assert(
+                        !foundSubcomponent,
+                        'Found a non-subcomponent child of %s alongside ' +
+                        'subcomponents: %o',
+                        name, child);
+                }
             }
         }
 
