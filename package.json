@@ -45,6 +45,7 @@
         "lib/ink.min.css",
         "lib/ink.min.css.map"
     ],
+    "types": "lib/index.d.ts",
     "engines": {
         "node": ">=18.0.0"
     },
