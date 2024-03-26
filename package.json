@@ -97,7 +97,7 @@
         "url": "https://github.com/beanbaginc/ink"
     },
     "dependencies": {
-        "@beanbag/spina": "^3.1.0",
+        "@beanbag/spina": "^3.1.1",
         "babel-plugin-htm": "^3.0.0"
     }
 }
