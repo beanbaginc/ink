@@ -1,0 +1,57 @@
+/**
+ * Component management for ink-c-menu-button.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/menu-button.schema.less";
+
+
+#ink-ns-ui() {
+  .menu-button() {
+    /**
+     * Create an ink-c-menu-button component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rulees (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-menu-button;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@menu-button];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            display: inline-block;
+            position: relative;
+          };
+
+          /*
+           * Styles for the drop-down handle button.
+           */
+          @dropdown-button: {
+            flex-direction: row-reverse;
+          };
+        };
+      );
+    }
+  }
+}

@@ -1056,8 +1056,17 @@ export class MenuView<
         evt.stopPropagation();
         evt.preventDefault();
 
-        if (!this.#managingFocus &&
-            !this.el.contains(evt.relatedTarget as HTMLElement)) {
+        if (this.#managingFocus) {
+            return;
+        }
+
+        const relatedTarget = evt.relatedTarget as HTMLElement;
+        const controllerEl = this.controllerEl;
+
+        if (!this.el.contains(relatedTarget) &&
+            (!controllerEl ||
+             (controllerEl !== relatedTarget &&
+              !controllerEl.contains(relatedTarget)))) {
             /* Focus moved outside of this element. */
             if (this.embedded) {
                 /* Clear focus when moving out of the element.*/

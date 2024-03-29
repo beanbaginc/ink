@@ -1,0 +1,22 @@
+@import (reference) "../../../components/menu-button.component.less";
+
+
+#ink-ns-default-theme() {
+  .menu-button() {
+    @vars: {
+    };
+
+    @rules: {
+    };
+  }
+}
+
+
+& {
+  @_menu-button: #ink-ns-default-theme.menu-button();
+
+  #ink-ns-ui.menu-button.create(
+    @vars: @_menu-button[@vars];
+    @rules: @_menu-button[@rules];
+  );
+}

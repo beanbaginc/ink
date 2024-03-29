@@ -1,0 +1,186 @@
+/**
+ * Schema for a menu button.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @menu-button: {
+    /**
+     * Populate a menu button schema.
+     *
+     * This will provide the structure for a menu button component,
+     * populating the parts of the component with the provided style rules.
+     *
+     * Menu buttons may simply open a drop-down menu, or they may consist
+     * of a separate action button and a drop-down menu button. In the
+     * latter case, it's expected to contain a button group component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the menu button component.
+       *
+       * DOM Attributes:
+       *     role (string):
+       *         This must be set to ``group``.
+       *
+       * Modifiers:
+       *     -opens-down:
+       *         The menu will appear below the button.
+       *
+       *     -opens-up:
+       *         The menu will appear above the button.
+       *
+       * Structure:
+       *     <div class="@{name}"
+       *          role="group"
+       *          [aria-controls="..."]
+       *          [aria-expanded="<<boolean>>"]
+       *          [aria-haspopup="true""]>
+       *      (
+       *       <button class="@{name}__dropdown @{button:name}" ...>
+       *        ...
+       *       </button>
+       *       |
+       *       <div class="@{name}__buttons @{button-group:name}" ...>
+       *        ...
+       *       </div>
+       *      )
+       *      <menu class="@{name}__menu @{menu:name} ..." ...>
+       *       ...
+       *      </menu>
+       *     </div>
+       */
+      & {
+        .add-rules('__default__');
+
+        &.-has-primary-button {
+          .add-rules('state-has-primary-button');
+        }
+
+        &.-opens-up {
+          .add-rules('state-opens-up');
+        }
+
+        &:not(.-opens-up) {
+          .add-rules('state-opens-down');
+        }
+      }
+
+      /**
+       * The independent action button.
+       *
+       * This is entirely optional in a menu button, but can be used to
+       * provide a default or primary action, with other choices provided by
+       * the menu.
+       *
+       * See the Button component for the full list of attributes and
+       * customization options.
+       *
+       * Structure:
+       *     <button class="@{name}__action-button @{button:name} ..." ...>
+       *      ...
+       *     </button>
+       */
+      &__action-button {
+        .add-rules('action-button');
+      }
+
+      /**
+       * A group of buttons within the menu buttton.
+       *
+       * This is used when there's a separate action button from the menu
+       * dropdown handle.
+       *
+       * Structure:
+       *     <div class="@{name}__buttons @{button-group:name}" role="group">
+       *      <button class="@{name}__action-button @{button:name} ..."
+       *              type="(button | submit | reset)">
+       *       ...
+       *      </button>
+       *      <button class="@{name}__dropdown-button @{button:name} ... ...">
+       *       ...
+       *      </button>
+       *     </div>
+       */
+      &__buttons {
+        .add-rules('button-group');
+      }
+
+      /**
+       * The drop-down action button.
+       *
+       * This is the dropdown handle that should be used to trigger the
+       * display of a menu when clicked or on hover.
+       *
+       * See the Button component for the full list of attributes and
+       * customization options.
+       *
+       * Implementations may wish to include an icon for the button. If so,
+       * they should also include an ARIA label.
+       *
+       * DOM Attributes:
+       *     aria-controls (string):
+       *         This must be set to the ID of the contained menu that this
+       *         button manages.
+       *
+       *     aria-expanded (boolean, optional):
+       *         This must be set to ``true`` when the menu is open.
+       *
+       *     aria-haspopup (boolean, optional):
+       *         This must be set to ``true``.
+       *
+       * Structure:
+       *     <button class="@{name}__dropdown-button @{button:name} ..."
+       *             aria-controls="..."
+       *             aria-haspopup="true"
+       *             [aria-expanded="<<boolean>>"]
+       *             ...>
+       *      ...
+       *     </button>
+       */
+      &__dropdown-button {
+        .add-rules('dropdown-button');
+      }
+
+      /**
+       * The menu controlled by the button.
+       *
+       * See the Menu component for the full list of attributes and
+       * customization options.
+       *
+       * Structure:
+       *     <menu class="@{name}__menu @{menu:name} ..." ...>
+       *      ...
+       *     </menu>
+       */
+      &__menu {
+        .add-rules('menu');
+      }
+    }
+  }
+}
