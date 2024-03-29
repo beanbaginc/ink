@@ -8,7 +8,7 @@ import { renderInto } from '../dom';
 import { paint } from '../paint';
 
 
-export class MyComponent implements Component {
+class BaseMyComponent implements Component {
     static allowComponentChildren = true;
     static subcomponents = {
         'MySubcomponent': '_handleSubcomponent',
@@ -49,4 +49,12 @@ export class MyComponent implements Component {
 
         this.children.push(el);
     }
+}
+
+
+export class MyComponent extends BaseMyComponent {
+}
+
+
+export class MyComponent2 extends BaseMyComponent {
 }

@@ -2,10 +2,6 @@ import 'jasmine';
 import { suite } from '@beanbag/jasmine-suites';
 
 import {
-    Component,
-    ComponentChild,
-    ComponentProps,
-    SubcomponentInfo,
     componentRegistry,
 } from '../components';
 import {
@@ -14,7 +10,10 @@ import {
     paintComponents,
 } from '../paint';
 
-import { MyComponent } from './myComponents';
+import {
+    MyComponent,
+    MyComponent2,
+} from './myComponents';
 
 
 suite('core/paint', () => {
@@ -50,7 +49,7 @@ suite('core/paint', () => {
                 ' display: flex;">hi<span>there</span></a>');
         });
 
-        it('With component', () => {
+        it('With component name', () => {
             const el = paintComponent(
                 'MyComponent',
                 {
@@ -69,7 +68,7 @@ suite('core/paint', () => {
                 ' class="my-class">hi<span>there</span></div>');
         });
 
-        it('With component and subcomponent', () => {
+        it('With component name and subcomponent', () => {
             const el = paintComponent(
                 'MyComponent',
                 {
@@ -81,6 +80,46 @@ suite('core/paint', () => {
                 },
                 'hi',
                 paintComponent('MyComponent.MySubcomponent'));
+
+            expect(el).toBeInstanceOf(window.HTMLDivElement);
+            expect(el.outerHTML).toBe(
+                '<div aria-label="My Label" data-test="123"' +
+                ' class="my-class"><div data-subcomponent="MySubcomponent">' +
+                '</div></div>'
+            );
+        });
+
+        it('With component class', () => {
+            const el = paintComponent(
+                MyComponent2,
+                {
+                    'aria-label': 'My Label',
+                    'class': 'my-class',
+                    'data-test': 123,
+                    'option1': 'value1',
+                    'option2': 'value2',
+                },
+                'hi',
+                paintComponent('span', {}, 'there'));
+
+            expect(el).toBeInstanceOf(window.HTMLDivElement);
+            expect(el.outerHTML).toBe(
+                '<div aria-label="My Label" data-test="123"' +
+                ' class="my-class">hi<span>there</span></div>');
+        });
+
+        it('With component class and subcomponent', () => {
+            const el = paintComponent(
+                MyComponent2,
+                {
+                    'aria-label': 'My Label',
+                    'class': 'my-class',
+                    'data-test': 123,
+                    'option1': 'value1',
+                    'option2': 'value2',
+                },
+                'hi',
+                paintComponent('.MySubcomponent'));
 
             expect(el).toBeInstanceOf(window.HTMLDivElement);
             expect(el.outerHTML).toBe(
@@ -120,9 +159,19 @@ suite('core/paint', () => {
                     'option2': 'value2',
                 },
             },
+            {
+                component: MyComponent2,
+                props: {
+                    'aria-label': 'My Other Label',
+                    'class': 'my-other-class',
+                    'data-test': 456,
+                    'option1': 'value3',
+                    'option2': 'value4',
+                },
+            },
         ]);
 
-        expect(results).toHaveSize(2);
+        expect(results).toHaveSize(3);
 
         let result: HTMLElement;
 
@@ -140,6 +189,13 @@ suite('core/paint', () => {
         expect(result.outerHTML).toBe(
             '<div aria-label="My Label" data-test="123" class="my-class">' +
             '</div>');
+
+        /* Check the third result. */
+        result = results[2] as HTMLElement;
+        expect(result).toBeInstanceOf(HTMLElement);
+        expect(result.outerHTML).toBe(
+            '<div aria-label="My Other Label" data-test="456"' +
+            ' class="my-other-class"></div>');
     });
 
     describe('paint templates', () => {

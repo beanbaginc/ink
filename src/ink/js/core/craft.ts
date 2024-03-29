@@ -41,8 +41,17 @@ export type CraftedComponent<
 export interface CraftComponentItem {
     /**
      * The name of the component or HTML element to craft.
+     *
+     * Either this or ``component`` must be provided.
      */
-    name: string;
+    name?: string;
+
+    /**
+     * The class of the component to craft.
+     *
+     * Either this or ``name`` must be provided.
+     */
+    component?: ComponentCtr;
 
     /**
      * Properties to pass to the component constructor, or Element attributes.
@@ -88,17 +97,17 @@ interface CraftFunction {
 
 /* Type stubs for craftComponent(). */
 export function craftComponent(
-    name: keyof HTMLElementTagNameMap,
+    nameOrClass: keyof HTMLElementTagNameMap,
     props: ComponentProps,
     ...children: ComponentChild[]
-): HTMLElementTagNameMap[typeof name];
+): HTMLElementTagNameMap[typeof nameOrClass];
 
 
 export function craftComponent<
     TElement extends HTMLElement,
     TComponent extends Component<TElement>,
 >(
-    name: string,
+    nameOrClass: string | ComponentCtr<TComponent>,
     props?: ComponentProps,
     ...children: ComponentChild[]
 ): TComponent;
@@ -119,7 +128,7 @@ export function craftComponent<
  *     1.0
  *
  * Args:
- *     name (string):
+ *     nameOrClass (string):
  *         The name of the component or HTML element to craft.
  *
  *     props (object):
@@ -153,30 +162,55 @@ export function craftComponent<
     TTag extends keyof HTMLElementTagNameMap,
     TChild extends ComponentChild,
 >(
-    name: string | TTag,
+    nameOrClass: string | TTag | ComponentCtr<TComponent>,
     props: ComponentProps,
     ...children: TChild[]
 ): CraftedComponent<TElement | HTMLElementTagNameMap[TTag], TComponent> |
    SubcomponentInfo {
-    const ComponentCls = componentRegistry.getComponent<TComponent>(name);
+    if (typeof nameOrClass === 'string') {
+        /* This should be a component name, subcomponent name, or tag name. */
+        const ComponentCls =
+            componentRegistry.getComponent<TComponent>(nameOrClass);
 
-    if (ComponentCls !== null) {
-        return _craftComponentCtr(ComponentCls, name, props, children);
-    } else {
-        const registeredSubcomponent = componentRegistry.getSubcomponent(name);
-
-        if (registeredSubcomponent) {
-            return {
-                children: children,
-                fullName: name,
-                funcName: registeredSubcomponent.funcName,
-                isSubcomponent: true,
-                name: registeredSubcomponent.name,
-                props: props || {},
-            };
+        if (ComponentCls !== null) {
+            return _craftComponentCtr(ComponentCls, nameOrClass, props,
+                                      children);
         } else {
-            return _craftElement(name as TTag, props, children);
+            if (nameOrClass.startsWith('.')) {
+                /*
+                 * This is a shortened subcomponent name. It may be invalid,
+                 * but we'll record it.
+                 */
+                return {
+                    children: children,
+                    fullName: nameOrClass,
+                    funcName: null,
+                    isSubcomponent: true,
+                    name: nameOrClass.substring(1),
+                    props: props || {},
+                };
+            }
+
+            const registeredSubcomponent =
+                componentRegistry.getSubcomponent(nameOrClass);
+
+            if (registeredSubcomponent) {
+                return {
+                    children: children,
+                    fullName: nameOrClass,
+                    funcName: registeredSubcomponent.funcName,
+                    isSubcomponent: true,
+                    name: registeredSubcomponent.name,
+                    props: props || {},
+                };
+            } else {
+                return _craftElement(nameOrClass as TTag, props, children);
+            }
         }
+    } else {
+        /* This should be a component class to instantiate. */
+        return _craftComponentCtr(nameOrClass, nameOrClass.name, props,
+                                  children);
     }
 }
 
@@ -215,7 +249,7 @@ export const craft: CraftFunction = htm.bind(craftComponent) as CraftFunction;
 export function craftComponents(
     items: CraftComponentItem[],
 ): CraftedComponent<HTMLElement, Component>[] {
-    return items.map(item => craftComponent(item.name,
+    return items.map(item => craftComponent(item.name ?? item.component,
                                             item.props || {},
                                             ...(item.children || [])));
 }
@@ -320,8 +354,23 @@ function _craftComponentCtr<
                 if (isSubcomponentInfo(child)) {
                     foundSubcomponent = true;
 
-                    const subcomponentFullName = child.fullName;
-                    const subcomponentFuncName = child.funcName;
+                    let subcomponentFullName = child.fullName;
+                    let subcomponentFuncName = child.funcName;
+
+                    if (subcomponentFullName.startsWith('.')) {
+                        /*
+                         * This was a shortened, pending subcomponent. We need
+                         * to finish resolving it now.
+                         */
+                        subcomponentFullName =
+                            `${name}${subcomponentFullName}`;
+                        child.fullName = subcomponentFullName;
+                        subcomponentFuncName =
+                            ComponentCls.subcomponents[child.name];
+                        child.funcName = subcomponentFuncName;
+                    } else {
+                        subcomponentFuncName = child.funcName;
+                    }
 
                     console.assert(
                         subcomponentFullName.startsWith(name),

@@ -8,7 +8,9 @@
 import htm from 'htm/mini';
 
 import {
+    Component,
     ComponentChild,
+    ComponentCtr,
     ComponentProps,
     SubcomponentInfo,
     isSubcomponentInfo,
@@ -63,8 +65,9 @@ export function paintComponent<
 
 export function paintComponent<
     TElement extends HTMLElement,
+    TComponent extends Component<TElement>,
 >(
-    name: string,
+    name: string | ComponentCtr<TComponent>,
     props?: ComponentProps,
     ...children: ComponentChild[]
 ): TElement;
@@ -115,14 +118,15 @@ export function paintComponent<
  */
 export function paintComponent<
     TElement extends HTMLElement,
+    TComponent extends Component<TElement, TChild>,
     TTag extends keyof HTMLElementTagNameMap,
     TChild extends ComponentChild,
 >(
-    name: string | TTag,
+    nameOrClass: string | TTag | ComponentCtr<TComponent>,
     props: ComponentProps,
     ...children: TChild[]
 ): TElement | HTMLElementTagNameMap[TTag] | SubcomponentInfo {
-    const component = craftComponent(name, props, ...children);
+    const component = craftComponent(nameOrClass, props, ...children);
 
     return (isSubcomponentInfo(component)
             ? component

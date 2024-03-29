@@ -8,7 +8,10 @@ import {
     craftComponents,
 } from '../craft';
 
-import { MyComponent } from './myComponents';
+import {
+    MyComponent,
+    MyComponent2,
+} from './myComponents';
 
 
 suite('core/craft', () => {
@@ -44,7 +47,7 @@ suite('core/craft', () => {
                 ' display: flex;">hi<span>there</span></a>');
         });
 
-        it('With component', () => {
+        it('With component name', () => {
             const component = craftComponent<HTMLElement, MyComponent>(
                 'MyComponent',
                 {
@@ -78,7 +81,7 @@ suite('core/craft', () => {
             expect(child.innerHTML).toBe('there');
         });
 
-        it('With component and subcomponent', () => {
+        it('With component name and subcomponent', () => {
             const component = craftComponent<HTMLElement, MyComponent>(
                 'MyComponent',
                 {
@@ -119,7 +122,7 @@ suite('core/craft', () => {
             });
         });
 
-        it('With component and array of subcomponents as child', () => {
+        it('With component name and array of subcomponents as child', () => {
             const component = craftComponent<HTMLElement, MyComponent>(
                 'MyComponent',
                 {
@@ -181,6 +184,144 @@ suite('core/craft', () => {
                 },
             });
         });
+
+        it('With component class', () => {
+            const component = craftComponent<HTMLElement, MyComponent2>(
+                MyComponent2,
+                {
+                    'aria-label': 'My Label',
+                    'class': 'my-class',
+                    'data-test': 123,
+                    'option1': 'value1',
+                    'option2': 'value2',
+                },
+                'hi',
+                craftComponent('span', {}, 'there'));
+
+            expect(component).toBeInstanceOf(MyComponent2);
+            expect(component.options).toEqual({
+                'componentCrafted': true,
+                'option1': 'value1',
+                'option2': 'value2',
+            });
+
+            const el = component.el;
+            expect(el.className).toBe('my-class');
+            expect(el.dataset.test).toBe('123');
+            expect(el.getAttribute('aria-label')).toBe('My Label');
+
+            const children = component.children;
+            expect(children).toHaveSize(2);
+            expect(children[0]).toBe('hi');
+
+            const child = children[1] as HTMLSpanElement;
+            expect(child).toBeInstanceOf(window.HTMLSpanElement);
+            expect(child.innerHTML).toBe('there');
+        });
+
+        it('With component class and subcomponent', () => {
+            const component = craftComponent<HTMLElement, MyComponent2>(
+                MyComponent2,
+                {
+                    'aria-label': 'My Label',
+                    'class': 'my-class',
+                    'data-test': 123,
+                    'option1': 'value1',
+                    'option2': 'value2',
+                },
+                'hi',
+                craftComponent('.MySubcomponent'));
+
+            expect(component).toBeInstanceOf(MyComponent2);
+            expect(component.options).toEqual({
+                'componentCrafted': true,
+                'option1': 'value1',
+                'option2': 'value2',
+            });
+            expect(component.children).toHaveSize(1);
+            expect((component.children[0] as HTMLElement).outerHTML).toBe(
+                '<div data-subcomponent="MySubcomponent"></div>'
+            );
+
+            const el = component.el;
+            expect(el.className).toBe('my-class');
+            expect(el.dataset.test).toBe('123');
+            expect(el.getAttribute('aria-label')).toBe('My Label');
+
+            const subcomponents = component.subcomponentInfos;
+            expect(subcomponents).toHaveSize(1);
+            expect(subcomponents[0] as unknown).toEqual({
+                children: [],
+                fullName: 'MyComponent2.MySubcomponent',
+                funcName: '_handleSubcomponent',
+                isSubcomponent: true,
+                name: 'MySubcomponent',
+                props: {},
+            });
+        });
+
+        it('With component class and array of subcomponents as child', () => {
+            const component = craftComponent<HTMLElement, MyComponent2>(
+                MyComponent2,
+                {
+                    'aria-label': 'My Label',
+                    'class': 'my-class',
+                    'data-test': 123,
+                    'option1': 'value1',
+                    'option2': 'value2',
+                },
+                'hi',
+                [
+                    craftComponent('.MySubcomponent', {
+                        prop1: 'value1',
+                    }),
+                    craftComponent('.MySubcomponent', {
+                        prop2: 'value2',
+                    }),
+                ]);
+
+            expect(component).toBeInstanceOf(MyComponent2);
+            expect(component.options).toEqual({
+                'componentCrafted': true,
+                'option1': 'value1',
+                'option2': 'value2',
+            });
+            expect(component.children).toHaveSize(2);
+            expect((component.children[0] as HTMLElement).outerHTML).toBe(
+                '<div data-subcomponent="MySubcomponent"></div>'
+            );
+            expect((component.children[1] as HTMLElement).outerHTML).toBe(
+                '<div data-subcomponent="MySubcomponent"></div>'
+            );
+
+            const el = component.el;
+            expect(el.className).toBe('my-class');
+            expect(el.dataset.test).toBe('123');
+            expect(el.getAttribute('aria-label')).toBe('My Label');
+
+            const subcomponents = component.subcomponentInfos;
+            expect(subcomponents).toHaveSize(2);
+            expect(subcomponents[0] as unknown).toEqual({
+                children: [],
+                fullName: 'MyComponent2.MySubcomponent',
+                funcName: '_handleSubcomponent',
+                isSubcomponent: true,
+                name: 'MySubcomponent',
+                props: {
+                    prop1: 'value1',
+                },
+            });
+            expect(subcomponents[1] as unknown).toEqual({
+                children: [],
+                fullName: 'MyComponent2.MySubcomponent',
+                funcName: '_handleSubcomponent',
+                isSubcomponent: true,
+                name: 'MySubcomponent',
+                props: {
+                    prop2: 'value2',
+                },
+            });
+        });
     });
 
     it('craftComponents', () => {
@@ -212,9 +353,19 @@ suite('core/craft', () => {
                     'option2': 'value2',
                 },
             },
+            {
+                component: MyComponent,
+                props: {
+                    'aria-label': 'My Other Label',
+                    'class': 'my-other-class',
+                    'data-test': 456,
+                    'option1': 'value3',
+                    'option2': 'value4',
+                },
+            },
         ]);
 
-        expect(results).toHaveSize(2);
+        expect(results).toHaveSize(3);
 
         let result: HTMLElement | MyComponent;
 
@@ -236,10 +387,24 @@ suite('core/craft', () => {
             'option2': 'value2',
         });
 
-        const el = result.el;
+        let el = result.el;
         expect(el.className).toBe('my-class');
         expect(el.dataset.test).toBe('123');
         expect(el.getAttribute('aria-label')).toBe('My Label');
+
+        /* Check the third result. */
+        result = results[2] as MyComponent;
+        expect(result).toBeInstanceOf(MyComponent);
+        expect(result.options).toEqual({
+            'componentCrafted': true,
+            'option1': 'value3',
+            'option2': 'value4',
+        });
+
+        el = result.el;
+        expect(el.className).toBe('my-other-class');
+        expect(el.dataset.test).toBe('456');
+        expect(el.getAttribute('aria-label')).toBe('My Other Label');
     });
 
     describe('craft templates', () => {
@@ -264,7 +429,7 @@ suite('core/craft', () => {
                 ' display: flex;">hi<span>there</span></a>');
         });
 
-        it('With component', () => {
+        it('With component name', () => {
             const component = craft<MyComponent>`
                 <MyComponent aria-label="My Label"
                              class="my-class"
@@ -299,7 +464,7 @@ suite('core/craft', () => {
             expect(child.innerHTML).toBe('there');
         });
 
-        it('With component and subcomponent', () => {
+        it('With component name and subcomponent', () => {
             const component = craft<MyComponent>`
                 <MyComponent aria-label="My Label"
                              class="my-class"
@@ -332,6 +497,81 @@ suite('core/craft', () => {
             expect(subcomponents[0] as unknown).toEqual({
                 children: [],
                 fullName: 'MyComponent.MySubcomponent',
+                funcName: '_handleSubcomponent',
+                isSubcomponent: true,
+                name: 'MySubcomponent',
+                props: {},
+            });
+        });
+
+        it('With component class', () => {
+            const component = craft<MyComponent2>`
+                <${MyComponent2} aria-label="My Label"
+                                 class="my-class"
+                                 data-test="123"
+                                 option1="value1"
+                                 option2="value2"
+                                 style=${{background: 'blue'}}>
+                 hi
+                 <span>there</span>
+                </>
+            `;
+
+            expect(component).toBeInstanceOf(MyComponent2);
+            expect(component.options).toEqual({
+                'componentCrafted': true,
+                'option1': 'value1',
+                'option2': 'value2',
+            });
+
+            const el = component.el;
+            expect(el.className).toBe('my-class');
+            expect(el.dataset.test).toBe('123');
+            expect(el.getAttribute('aria-label')).toBe('My Label');
+            expect(el.style.background).toBe('blue');
+
+            const children = component.children;
+            expect(children).toHaveSize(2);
+            expect(children[0]).toBe('hi');
+
+            const child = children[1] as HTMLSpanElement;
+            expect(child).toBeInstanceOf(window.HTMLSpanElement);
+            expect(child.innerHTML).toBe('there');
+        });
+
+        it('With component class and subcomponent', () => {
+            const component = craft<MyComponent>`
+                <${MyComponent2} aria-label="My Label"
+                                 class="my-class"
+                                 data-test="123"
+                                 option1="value1"
+                                 option2="value2">
+                 hi
+                 <.MySubcomponent/>
+                </>
+            `;
+
+            expect(component).toBeInstanceOf(MyComponent2);
+            expect(component.options).toEqual({
+                'componentCrafted': true,
+                'option1': 'value1',
+                'option2': 'value2',
+            });
+            expect(component.children).toHaveSize(1);
+            expect((component.children[0] as HTMLElement).outerHTML).toBe(
+                '<div data-subcomponent="MySubcomponent"></div>'
+            );
+
+            const el = component.el;
+            expect(el.className).toBe('my-class');
+            expect(el.dataset.test).toBe('123');
+            expect(el.getAttribute('aria-label')).toBe('My Label');
+
+            const subcomponents = component.subcomponentInfos;
+            expect(subcomponents).toHaveSize(1);
+            expect(subcomponents[0] as unknown).toEqual({
+                children: [],
+                fullName: 'MyComponent2.MySubcomponent',
                 funcName: '_handleSubcomponent',
                 isSubcomponent: true,
                 name: 'MySubcomponent',
