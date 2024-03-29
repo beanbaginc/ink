@@ -1,0 +1,207 @@
+/**
+ * Component management for ink-c-menu.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/menu.schema.less";
+
+
+#ink-ns-ui() {
+  .menu() {
+    /**
+     * Create an ink-c-menu component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rulees (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-menu;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@menu];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            /* Appearance */
+            display: none;
+            line-height: 1;
+            list-style: none;
+            opacity: 0;
+            overflow: hidden;
+            user-select: none;
+            visibility: hidden;
+
+            /* Layout */
+            margin: 0;
+            position: absolute;
+            left: 0;
+            white-space: nowrap;
+
+            @supports (grid-template-columns: subgrid) {
+              display: grid;
+              grid-template-columns: auto;
+
+              .add({
+                @item: {
+                  display: grid;
+                  grid-column: 1 / -1;
+                  grid-template-columns: subgrid;
+                };
+
+                @item-inner: {
+                  display: grid;
+                  grid-column: inherit;
+                  grid-template-columns: subgrid;
+                };
+
+                @separator: {
+                  grid-column: 1 / -1;
+                };
+              });
+            }
+          };
+
+          /*
+           * Styles for menus that have icons but no keyboard shortcuts.
+           */
+          @state-has-icons-only: {
+            @supports (grid-template-columns: subgrid) {
+              grid-template-columns: max-content 1fr;
+            }
+          };
+
+          /*
+           * Styles for menus that have keyboard shortcuts but no icons.
+           */
+          @state-has-shortcuts-only: {
+            @supports (grid-template-columns: subgrid) {
+              grid-template-columns: 1fr min-content;
+            }
+          };
+
+          /*
+           * Styles for menus that have icons and keyboard shortcuts.
+           */
+          @state-has-icons-shortcuts: {
+            @supports (grid-template-columns: subgrid) {
+              grid-template-columns: min-content 1fr min-content;
+            }
+          };
+
+          /*
+           * Styles for menus that have icons.
+           */
+          @state-has-icons: {
+            .add({
+              @item-label: {
+                &:first-child {
+                  grid-column-start: 2;
+                }
+              };
+            });
+          };
+
+          /*
+           * Styles for menus that have keyboard shortcuts.
+           */
+          @state-has-shortcuts: {
+            .add({
+              @item-label: {
+                &:last-child {
+                  grid-column-end: -2;
+                }
+              };
+            });
+          };
+
+          /*
+           * Styles for menus that are closed.
+           */
+          @state-is-closed: {
+            display: none;
+          };
+
+          /*
+           * Styles for menus that are embedded in another element.
+           */
+          @state-is-embedded: {
+            position: relative;
+          };
+
+          /*
+           * Styles for menus that are open.
+           */
+          @state-is-open: {
+            opacity: 1;
+            visibility: visible;
+          };
+
+          /*
+           * Styles for menu items.
+           */
+          @item: {
+            cursor: pointer;
+            display: flex;
+            margin: 0;
+          };
+
+          /*
+           * Styles for labels in menu items.
+           */
+          @item-label: {
+            cursor: inherit;
+            flex-grow: 1;
+          };
+
+          /*
+           * Styles for the inner container within a menu item.
+           */
+          @item-inner: {
+            /* Appearance */
+            color: inherit;
+            cursor: pointer;
+            font-weight: normal;
+            text-decoration: none;
+
+            /* Layout */
+            display: flex;
+            flex: 1 1 auto;
+            align-items: center;
+          };
+
+          /*
+           * Styles for keyboard shortcuts in menu items.
+           */
+          @item-shortcut: {
+            justify-self: end;
+          };
+
+          /*
+           * Styles for items that the mouse is hovering over.
+           */
+          @item-state-hover: {
+            text-decoration: none;
+          };
+        };
+      );
+    }
+  }
+}

@@ -1,7 +1,9 @@
 import { JSDOM } from 'jsdom';
 
 
-const dom = new JSDOM('<html><body></body></html>');
+const dom = new JSDOM('<html><body></body></html>', {
+    pretendToBeVisual: true,
+});
 const window = dom.window;
 
 global.Node = window.Node;

@@ -1,0 +1,127 @@
+/**
+ * Theme for ink-c-menu.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "../../../components/menu.component.less";
+
+
+#ink-ns-default-theme() {
+  .menu() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-menu;
+        @vars: {
+          /* Menu variables */
+          bg: var(--ink-p-container-bg);
+          border: var(--ink-g-border-container);
+          border-radius: var(--ink-u-border-radius-container);
+          shadow: var(--ink-g-shadow-std);
+          z-index: var(--ink-z-menu);
+
+          /* Menu item variables */
+          item-padding: var(--ink-u-spacing-m);
+          item-selected-bg: var(--ink-p-accent-primary-bg);
+          item-selected-fg: var(--ink-p-accent-primary-fg);
+
+          /* Menu separator variables */
+          separator-border:
+            var(--ink-u-border-thin)
+            var(--if-dark, rgba(255, 255, 255, 0.1))
+            var(--if-light, rgba(0, 0, 0, 0.1))
+            solid;
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main element.
+       */
+      @__default__: {
+        /* Appearance */
+        background: var(--ink-c-menu-bg);
+        border: var(--ink-c-menu-border);
+        border-bottom-left-radius: var(--ink-c-menu-border-radius);
+        border-bottom-right-radius: var(--ink-c-menu-border-radius);
+        box-shadow: var(--ink-c-menu-shadow);
+        color: var(--ink-p-text-color);
+
+        /* Layout */
+        min-width: 15em;
+        padding: var(--ink-c-menu-padding);
+        z-index: var(--ink-c-menu-z-index);
+
+        /* Handle animation for opening/closing. */
+        transition: opacity var(--ink-c-menu-transition-time) linear;
+
+        /*
+         * Don't show an outline when the menu has focus. We normally
+         * manage the focus of the items within, aside from one case
+         * where you move the mouse away from the menu, hiding that
+         * selection. In this particular case, focus won't be visible,
+         * but this mirrors what operating systems do.
+         */
+        outline: none;
+      };
+
+      /*
+       * Styles for menus that are embedded in another element.
+       */
+      @state-is-embedded: {
+        border-radius: var(--ink-c-menu-border-radius);
+      };
+
+      /*
+       * Styles for selected menu items.
+       */
+      @item-state-is-selected: {
+        background: var(--ink-c-menu-item-selected-bg);
+        color: var(--ink-c-menu-item-selected-fg);
+      };
+
+      /*
+       * Styles for icons in menu items.
+       */
+      @item-icon: {
+        min-height: var(--ink-u-icon-m);
+        min-width: var(--ink-u-icon-m);
+      };
+
+      /*
+       * Styles for the inner container within a menu item.
+       */
+      @item-inner: {
+        gap: var(--ink-u-spacing-m);
+        padding: var(--ink-c-menu-item-padding);
+      };
+
+      /*
+       * Styles for items that are focused.
+       */
+      @item-state-focus: {
+        background: var(--ink-c-menu-item-selected-bg);
+        outline: 0;
+      };
+
+      /*
+       * Styles for menu item separators.
+       */
+      @separator: {
+        border-bottom: var(--ink-c-menu-separator-border);
+      };
+    };
+  }
+}
+
+
+& {
+  @_menu: #ink-ns-default-theme.menu();
+
+  #ink-ns-ui.menu.create(
+    @vars: @_menu[@vars];
+    @rules: @_menu[@rules];
+  );
+}

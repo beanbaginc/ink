@@ -1,0 +1,306 @@
+/**
+ * Schema for a menu component.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @menu: {
+    /**
+     * Populate a menu schema.
+     *
+     * This will provide the structure for a menu component, populating the
+     * parts of the component with the provided style rules.
+     *
+     * Menu components can be embedded in another element, or can pop up when
+     * triggered by another element.
+     *
+     * They may contain menu items (standard, checkbox, or radio menu items)
+     * and separators. Menu items may optionally have icons and displayed
+     * keyboard shortcuts.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the component.
+       *
+       * Accessibility Notes:
+       *     Most menus will have a controller element set. This element
+       *     should have the following attributes pointing to the menu:
+       *
+       *     ``aria-controls`` must be set to the ID of the menu.
+       *
+       *     ``aria-expanded`` must be set to ``false`` when the menu is
+       *     closed or ``true`` when open.
+       *
+       *     ``aria-haspopup`` must be set to ``true``.
+       *
+       * DOM Attributes:
+       *     aria-label (string):
+       *         A label describing this menu.
+       *
+       *         This must be set if ``aria-labelledby`` is not set.
+       *
+       *     aria-labelledby (string):
+       *         The ID of an element describing this menu.
+       *
+       *         This must be set if ``aria-label`` is not set.
+       *
+       *     role (string):
+       *         This must be set to "menu".
+       *
+       *     tabIndex (number):
+       *         This must always be set to 0 when the menu can be interacted
+       *         with (embedded or open), or -1 if it cannot (closed).
+       *
+       *     aria-activedescendant (string, optional):
+       *         Set to the ID of the selected menu item, if one is selected.
+       *
+       * Modifiers:
+       *     -has-icons:
+       *         The menu has menu items containing icons.
+       *
+       *     -has-shortcuts:
+       *         The menu has menu items containing keyboard shortcuts.
+       *
+       *     -is-embedded:
+       *         The menu is embedded in another element.
+       *
+       *     -is-open:
+       *         The menu is open.
+       *
+       *         This must also be set if the menu is embedded.
+       *
+       *     js-no-animation:
+       *         Opening/closing animation is actively being disabled.
+       *
+       * Structure:
+       *     <menu class="@{name}
+       *                  [-has-icons]
+       *                  [-has-shortcuts]]
+       *                  [-is-embedded]
+       *                  [-is-open]"
+       *           aria-label="..." | aria-labelledby="..."
+       *           role="menu"
+       *           tabIndex="(0 | 1)"
+       *           [aria-activedescendant="..."]>
+       *      {
+       *       <li class="@{name}__item" ...></li>
+       *       <li class="@{name}__separator" ...></li>
+       *      } [1+]
+       *     </menu>
+       */
+      & {
+        .add-rules('__default__');
+
+        &:not(.-has-icons) {
+          .add-rules('state-no-icons');
+        }
+
+        &.-has-icons {
+          .add-rules('state-has-icons');
+        }
+
+        &:not(.-has-shortcuts) {
+          .add-rules('state-no-shortcuts');
+        }
+
+        &.-has-shortcuts {
+          .add-rules('state-has-shortcuts');
+        }
+
+        &.-has-icons.-has-shortcuts {
+          .add-rules('state-has-icons-shortcuts');
+        }
+
+        &.-has-icons:not(.-has-shortcuts) {
+          .add-rules('state-has-icons-only');
+        }
+
+        &.-has-shortcuts:not(.-has-icons) {
+          .add-rules('state-has-shortcuts-only');
+        }
+
+        &.-is-embedded {
+          .add-rules('state-is-embedded');
+        }
+
+        &.-is-open {
+          .add-rules('state-is-open');
+        }
+
+        &:not(.-is-embedded):not(.-is-open) {
+          .add-rules('state-is-closed');
+        }
+      }
+
+      /**
+       * A menu item.
+       *
+       * This may be a standard menu item, a checkbox menu item, or a radio
+       * menu item.
+       *
+       * Menu items may optionally contain icons and/or keyboard shortcuts.
+       *
+       * A menu item that triggers an action requiring further interaction
+       * (such as a confirmation dialog) should have a label ending in
+       * "...".
+       *
+       * DOM Attributes:
+       *     id (string):
+       *         The ID of the menu item.
+       *
+       *         This must be set so that the main menu element can refer
+       *         to it using ``aria-activedescendant``.
+       *
+       *     role (string):
+       *         For standard menu items, set ``menuitem``.
+       *
+       *         For checkbox menu items, set ``menuitemcheckbox``.
+       *
+       *         For radio menu items, set ``menuitemradio``.
+       *
+       *     aria-checked (boolean, optional):
+       *         Whether the menu item is checked.
+       *
+       *         This is only used for checkbox and radio menu items.
+       *
+       *     aria-selected (boolean, optional):
+       *         Whether the menu item is currently selected.
+       *
+       *         This must be ``true`` when the menu item is selected by
+       *         either mouse or keyboard navigation.
+       *
+       * Structure:
+       *     <li class="@{name}__item"
+       *         id="..."
+       *         role="<menuitem | menuitemcheckbox | menuitemradio>"
+       *         [aria-checked="...">]
+       *         [aria-selected="...">]
+       *         [aria-selected="...">]
+       *      <span class="@{name}__inner" ...</span>
+       *      |
+       *      <a class="@{name}__inner" ...</a>
+       *     </li>
+       */
+      &__item {
+        .add-rules('item');
+
+        &[aria-selected="true"] {
+          .add-rules('item-state-is-selected');
+        }
+
+        &:focus {
+          .add-rules('item-state-focus');
+        }
+      }
+
+      /**
+       * An icon shown alongside a menu item.
+       *
+       * Population of the icon is dependent on the implementation.
+       *
+       * DOM Attributes:
+       *     aria-hidden (boolean):
+       *         ``true``, always.
+       *
+       * Structure:
+       *     <span class="@{name}__item-icon ..."
+       *           aria-hidden="true">
+       *      html...
+       *     </span>
+       */
+      &__item-icon {
+        .add-rules('item-icon')
+      }
+
+      /**
+       * The label shown for a menu item.
+       *
+       * Structure:
+       *     <label class="@{name}__item-icon">
+       *      text...
+       *     </label>
+       */
+      &__item-label {
+        .add-rules('item-label')
+      }
+
+      /**
+       * The inner container for a menu item.
+       *
+       * This contains the label, icon, and keyboard shortcut.
+       *
+       * It may either be a ``<span ...>`` (standard for menu items) or an
+       * ``<a href="...">`` (used for menu items that link to other pages).
+       *
+       * Structure:
+       *     <(span | a) class="@{name}__item-inner"
+       *                 [href="..."]>
+       *      [<span class="@{name}__item-icon">...</span>]
+       *      <label class="@{name}__item-label">...</label>
+       *      [<span class="@{name}__item-shortcut">...</span>]
+       *     </(span | a)
+       */
+      &__item-inner {
+        &,
+        &:link,
+        &:visited {
+          .add-rules('item-inner');
+        }
+      }
+
+      /**
+       * A displayed keyboard shortcut.
+       *
+       * This is intended to be mixed into a ``keyboard-shortcut`` component.
+       *
+       * Structure:
+       *     <span class="@{name}__item-shortcut ..." ...>
+       *      ...
+       *     </span>
+       */
+      &__item-shortcut {
+        .add-rules('item-shortcut')
+      }
+
+      /**
+       * A separator menu item.
+       *
+       * DOM Attributes:
+       *     role (string)
+       *         This must be ``separator``.
+       *
+       * Structure:
+       *     <span class="@{name}__separator"
+       *           role="separator"></span>
+       */
+      &__separator {
+        .add-rules('separator');
+      }
+    }
+  }
+}
