@@ -85,6 +85,23 @@ export default [
         treeshake: false,
     },
     {
+        input: './src/babel-preset/index.js',
+        output: [
+            {
+                esModule: false,
+                file: 'lib/babel-preset/index.js',
+                format: 'cjs',
+                sourcemap: true,
+            },
+        ],
+        plugins: [
+            babel({
+                babelHelpers: 'external',
+                extensions: extensions,
+            }),
+        ],
+    },
+    {
         input: './_build/_ts/index.d.ts',
         output: [
             {
