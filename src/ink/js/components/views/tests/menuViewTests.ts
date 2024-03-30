@@ -358,6 +358,47 @@ suite('components/views/MenuView', () => {
             );
         });
 
+        it('With childEl', () => {
+            const customItemEl = paint<HTMLElement>`
+                <div class="my-custom-component">Hi!</div>
+            `;
+
+            menuView = craft`
+                <Ink.Menu id="my-menu">
+                 <Ink.Menu.Item id="my-item" childEl=${customItemEl}/>
+                </Ink.Menu>
+            `;
+
+            const menuItems = menuView.menuItems;
+
+            expect(menuItems).toHaveSize(1);
+            expect(menuItems.at(0).attributes).toEqual({
+                checked: null,
+                childEl: customItemEl,
+                iconName: null,
+                id: 'my-item',
+                keyboardShortcut: null,
+                keyboardShortcutRegistry: null,
+                label: null,
+                onClick: null,
+                radioGroup: null,
+                type: MenuItemType.ITEM,
+                url: null,
+            });
+
+            expect(menuView.el.outerHTML).toBe(
+                '<menu id="my-menu" class="ink-c-menu" role="menu"' +
+                ' tabindex="-1">' +
+                '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
+                ' tabindex="-1" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" draggable="false"' +
+                ' role="presentation" tabindex="-1">' +
+                '<label class="ink-c-menu__item-label">' +
+                '<div class="my-custom-component">Hi!</div></label>' +
+                '</span></li></menu>'
+            );
+        });
+
         it('With controllerEl', () => {
             const controllerEl = document.createElement('div');
 

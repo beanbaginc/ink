@@ -9,7 +9,6 @@ import _ from 'underscore';
 
 import {
     BaseModel,
-    BaseView,
     EventsHash,
     spina,
 } from '@beanbag/spina';
@@ -24,7 +23,6 @@ import {
 import { TypeaheadBuffer } from '../../foundation';
 import { MenuItemsCollection } from '../collections/menuItemsCollection';
 import {
-    MenuItem,
     MenuItemType,
 } from '../models/menuItemModel';
 import {
@@ -697,22 +695,20 @@ export class MenuView<
                 itemEl = paint`
                     <li class="ink-c-menu__item" role="${role}"
                         ...${itemProps}>
-                     ${menuItem.get('childEl') || paint`
-                      <${innerTag} class="ink-c-menu__item-inner"
-                                   ...${innerProps}>
-                       ${iconEl}
-                       <label class="ink-c-menu__item-label">
-                        ${label}
-                       </label>
-                       ${shortcut && paint`
-                        <Ink.KeyboardShortcut
-                          className="ink-c-menu__item-shortcut"
-                          keys="${shortcut}"
-                          registry=${registry}
-                          onInvoke="click"/>
-                       `}
-                      </${innerTag}>
-                     `}
+                     <${innerTag} class="ink-c-menu__item-inner"
+                                  ...${innerProps}>
+                      ${iconEl}
+                      <label class="ink-c-menu__item-label">
+                       ${menuItem.get('childEl') || label}
+                      </label>
+                      ${shortcut && paint`
+                       <Ink.KeyboardShortcut
+                         className="ink-c-menu__item-shortcut"
+                         keys="${shortcut}"
+                         registry=${registry}
+                         onInvoke="click"/>
+                      `}
+                     </${innerTag}>
                     </li>
                 `;
                 menuItemEls.push(itemEl);
@@ -884,6 +880,7 @@ export class MenuView<
 
             case 'RadioItem':
                 menuItemProps = {
+                    childEl: props.childEl,
                     iconName: props.iconName,
                     id: props.id,
                     keyboardShortcut: props.keyboardShortcut,

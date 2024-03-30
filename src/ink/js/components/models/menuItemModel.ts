@@ -45,13 +45,13 @@ export interface MenuItemAttrs {
     /**
      * An element to use for the child.
      *
-     * If specified, this takes priority over ``text``. This element will
-     * be reparented into the menu.
+     * If specified, this takes priority over ``label``. This element will
+     * be reparented into the label portion of the menu item.
      *
-     * This should only be used for advanced purposes, and is gnerally not
+     * This should only be used for advanced purposes, and is generally not
      * recommended.
      */
-    childEl?: HTMLLIElement | null;
+    childEl?: HTMLElement | null;
 
     /**
      * The checked state for a menu item.
