@@ -19,6 +19,7 @@
 
     --ink-u-border-radius-std: var(--ink-u-border-radius-s);
     --ink-u-border-radius-container: var(--ink-u-border-radius-std);
+    --ink-u-border-radius-input: var(--ink-u-border-radius-std);
   }
 
   /**
@@ -45,7 +46,10 @@
       @prefix: ink-u-font;
       @vars: {
         s: var(--ink-u-rem-11px);
+        sm: var(--ink-u-rem-12px);
         m: var(--ink-u-rem-13px);
+        ml: var(--ink-u-rem-14px);
+        l: var(--ink-u-rem-16px);
         std: var(--ink-u-font-m);
       });
   }
@@ -73,7 +77,9 @@
       @prefix: ink-u-rem;
       @vars: {
         11px: 0.688rem;
+        12px: 0.75rem;
         13px: 0.813rem;
+        14px: 0.875rem;
         16px: 1rem;
       });
   }
@@ -84,7 +90,7 @@
   .spacing() {
     #ink-ns-theme.add-unit-scale-vars(
       @prefix: ink-u-spacing;
-      @base-scale: 1em;
+      @base-scale: 0.8em;
       @scales: {
         xs: 0.25;
         s: 0.5;
@@ -93,6 +99,7 @@
         ml: 1.25;
         l: 1.5;
         xl: 2;
+        xxl: 3;
       });
 
     --ink-u-spacing-std: var(--ink-u-spacing-m);

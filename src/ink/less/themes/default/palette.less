@@ -273,8 +273,8 @@
             var(--if-light, var(--ink-p-black));
 
           surface-fg-weak:
-            var(--if-dark, #E9E9E9)
-            var(--if-light, var(--ink-p-grey-600));
+            var(--if-dark, rgba(255, 255, 255, 0.8))
+            var(--if-light, rgba(0, 0, 0, 0.8));
 
           /**
            * Standard container background definitions.
@@ -420,7 +420,7 @@
            * Text color definitions.
            */
           text-color: var(--ink-p-surface-fg);
-          text-weak-color: var(--ink-p-surface-fg-weak);
+          text-color-weak: var(--ink-p-surface-fg-weak);
 
           /*
            * Link color definitions.
@@ -446,22 +446,20 @@
             var(--if-dark, #1E1F22)
             var(--if-light, var(--ink-p-blue-300));
 
-          header-border-color:
-            var(--if-dark, transparent)
-            var(--if-light, var(--ink-p-border-color-light));
+          header-border-color: var(--ink-p-container-outline);
 
           header-text-color:
             var(--if-dark, var(--ink-p-text-on-dark-color))
             var(--if-light, var(--ink-p-accent-tertiary-fg));
+
+          header-text-color-weak: var(--ink-p-text-color-weak);
 
           /* Footer color definitions. */
           footer-bg:
             var(--if-dark, var(--ink-p-header-bg))
             var(--if-light, var(--ink-p-grey-200));
 
-          footer-border-color:
-            var(--if-dark, var(--ink-p-header-border-color))
-            var(--if-light, var(--ink-p-border-color-light));
+          footer-border-color: var(--ink-p-container-outline);
 
           footer-text-color:
             var(--if-dark, var(--ink-p-header-text-color))
