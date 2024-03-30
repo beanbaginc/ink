@@ -71,6 +71,21 @@ export interface OpenMenuOptions extends BaseOpenCloseMenuOptions {
      * This can be -1 to focus the last item.
      */
     currentItemIndex?: number;
+
+    /**
+     * Whether to open the menu and keep it opened until clicking away.
+     *
+     * A sticky menu will remain open until clicking a parent element or
+     * when another menu is opened. It will not close when moving the mouse
+     * outside of the menu or its controller.
+     *
+     * If ``false``, then the menu will be closed when the mouse leaves the
+     * menu.
+     *
+     * If ``true``, and the menu is already opened, it will be put into
+     * sticky mode.
+     */
+    sticky?: boolean;
 }
 
 
@@ -227,6 +242,15 @@ export class MenuView<
      */
     embedded: boolean;
 
+    /**
+     * Whether an opened menu is sticky.
+     *
+     * A sticky menu will remain open until clicking a parent element or
+     * when another menu is opened. It will not close when moving the mouse
+     * outside of the menu or its controller.
+     */
+    isStickyOpen: boolean | null = null;
+
     /** The collection of menu items used in this menu. */
     menuItems: MenuItemsCollection;
 
@@ -319,15 +343,24 @@ export class MenuView<
      *         Options to use when opening the menu.
      */
     open(options: OpenMenuOptions = {}) {
+        /* Guard against null values from toggle(). */
+        options ??= {};
+
+        /*
+         * Regardless of the open state, we want to respect a stickyOpen=true
+         * setting. The user may have performed an action that should keep
+         * the menu open.
+         */
+        if (!this.isStickyOpen) {
+            this.isStickyOpen = !!options.sticky || this.embedded;
+        }
+
         if (this.isOpen) {
             /* If there's a delayed close in progress, cancel it. */
             this.#clearDelayClose();
 
             return;
         }
-
-        /* Guard against null values from toggle(). */
-        options ??= {};
 
         const el = this.el;
         const triggerEvents = (options.triggerEvents !== false);
@@ -461,6 +494,7 @@ export class MenuView<
 
         document.removeEventListener('click', this.#onDocClick);
         MenuView.openedMenu = null;
+        this.isStickyOpen = null;
 
         if (triggerEvents) {
             this.trigger('closed');
@@ -750,7 +784,7 @@ export class MenuView<
             itemEl.addEventListener(
                 'click',
                 evt => {
-                    evt.preventDefault()
+                    evt.preventDefault();
                     evt.stopPropagation();
 
                     clickHandlerFunc(evt);
@@ -1246,6 +1280,10 @@ export class MenuView<
             evt.preventDefault();
 
             this.#clearCurrentItem(true);
+
+            if (!this.isStickyOpen) {
+                this.close();
+            }
         }
     }
 }

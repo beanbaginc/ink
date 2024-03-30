@@ -358,7 +358,11 @@ export class MenuButtonView<
             'class': 'ink-c-menu-button__dropdown-button',
             'iconName': options.menuIconName || 'ink-i-dropdown',
             'id': labelID,
-            'onClick': () => {},
+            'onClick': () => {
+                this.menuView.open({
+                    sticky: true,
+                });
+            },
         };
 
         const dropdownButton = craft<ButtonView>`
@@ -483,6 +487,7 @@ export class MenuButtonView<
             const menu = this.menuView;
             menu.open({
                 animate: false,
+                sticky: true,
             });
 
             if (this._openDirection === MenuButtonOpenDirection.UP) {

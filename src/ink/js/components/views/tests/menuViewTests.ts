@@ -1354,36 +1354,76 @@ suite('components/views/MenuView', () => {
                 expectMenuItemSelected(menuView, menuItemEl);
             });
 
-            it('Outside menu', () => {
-                menuView = craft`
-                    <Ink.Menu embedded>
-                     <Ink.Menu.Item>
-                      Item 1
-                     </Ink.Menu.Item>
-                     <Ink.Menu.Item>
-                      Item 2
-                     </Ink.Menu.Item>
-                    </Ink.Menu>
-                `;
-                document.body.appendChild(menuView.el);
+            describe('Outside menu', () => {
+                it('With sticky open', () => {
+                    menuView = craft`
+                        <Ink.Menu>
+                         <Ink.Menu.Item>
+                          Item 1
+                         </Ink.Menu.Item>
+                         <Ink.Menu.Item>
+                          Item 2
+                         </Ink.Menu.Item>
+                        </Ink.Menu>
+                    `;
+                    document.body.appendChild(menuView.el);
 
-                menuView.setCurrentItem(0);
+                    menuView.open({
+                        sticky: true,
+                    });
+                    menuView.setCurrentItem(0);
 
-                const menuItemEl = menuView.el.children[0] as HTMLElement;
+                    expect(menuView.isOpen).toBeTrue();
+                    expect(menuView.isStickyOpen).toBeTrue();
 
-                /*
-                 * The event we use in the view is 'mouseleave', but Backbone
-                 * uses jQuery, which emulates 'mouseleave' using 'mouseout'
-                 * for wider browser support.
-                 */
-                menuItemEl.dispatchEvent(
-                    new window.MouseEvent('mouseout', {
-                        bubbles: true,
-                        cancelable: true,
-                        relatedTarget: document.body,
-                    }));
+                    const menuItemEl = menuView.el.children[0] as HTMLElement;
 
-                expectNoMenuItemSelected(menuView);
+                    menuItemEl.dispatchEvent(
+                        new window.MouseEvent('mouseout', {
+                            bubbles: true,
+                            cancelable: true,
+                            relatedTarget: document.body,
+                        }));
+
+                    expectNoMenuItemSelected(menuView);
+
+                    expect(menuView.isOpen).toBeTrue();
+                    expect(menuView.isStickyOpen).toBeTrue();
+                });
+
+                it('With standard open', () => {
+                    menuView = craft`
+                        <Ink.Menu>
+                         <Ink.Menu.Item>
+                          Item 1
+                         </Ink.Menu.Item>
+                         <Ink.Menu.Item>
+                          Item 2
+                         </Ink.Menu.Item>
+                        </Ink.Menu>
+                    `;
+                    document.body.appendChild(menuView.el);
+
+                    menuView.open();
+                    menuView.setCurrentItem(0);
+
+                    expect(menuView.isOpen).toBeTrue();
+                    expect(menuView.isStickyOpen).toBeFalse();
+
+                    const menuItemEl = menuView.el.children[0] as HTMLElement;
+
+                    menuItemEl.dispatchEvent(
+                        new window.MouseEvent('mouseout', {
+                            bubbles: true,
+                            cancelable: true,
+                            relatedTarget: document.body,
+                        }));
+
+                    expectNoMenuItemSelected(menuView);
+
+                    expect(menuView.isOpen).toBeFalse();
+                    expect(menuView.isStickyOpen).toBeNull();
+                });
             });
         });
     });
@@ -1661,6 +1701,9 @@ suite('components/views/MenuView', () => {
 
                 expect(onClosing).not.toHaveBeenCalled();
                 expect(onClosed).not.toHaveBeenCalled();
+
+                expect(menuView.isOpen).toBeFalse();
+                expect(menuView.isStickyOpen).toBeNull();
             });
 
             it('When embedded', () => {
@@ -1690,6 +1733,9 @@ suite('components/views/MenuView', () => {
                 expect(onClosing).not.toHaveBeenCalled();
                 expect(onClosed).not.toHaveBeenCalled();
                 expectNoMenuItemSelected(menuView);
+
+                expect(menuView.isOpen).toBeTrue();
+                expect(menuView.isStickyOpen).toBeTrue();
             });
 
             it('With animate=false', onDone => {
@@ -1846,11 +1892,15 @@ suite('components/views/MenuView', () => {
 
                 expect(onOpening).not.toHaveBeenCalled();
                 expect(onOpened).not.toHaveBeenCalled();
+
+                expect(menuView.isOpen).toBeTrue();
+                expect(menuView.isStickyOpen).toBeFalse();
             });
 
             it('With defaults', onDone => {
                 const onOpening = jasmine.createSpy('onOpening', () => {
                     expect(menuView.isOpen).toBeFalse();
+                    expect(menuView.isStickyOpen).toBeFalse();
                     expect(menuView.el).not.toHaveClass('-is-open');
                     expect(menuView.el).not.toHaveClass('js-no-animation');
                     expect(menuView.el.tabIndex).toBe(-1);
@@ -1862,6 +1912,7 @@ suite('components/views/MenuView', () => {
                     expect(onOpening).toHaveBeenCalled();
 
                     expect(menuView.isOpen).toBeTrue();
+                    expect(menuView.isStickyOpen).toBeFalse();
                     expect(menuView.el).toHaveClass('-is-open');
                     expect(menuView.el).not.toHaveClass('js-no-animation');
                     expect(menuView.el.tabIndex).toBe(0);
@@ -1875,6 +1926,8 @@ suite('components/views/MenuView', () => {
                 menuView = craft`<Ink.Menu/>`;
                 menuView.on('opening', onOpening);
                 menuView.on('opened', onOpened);
+
+                expect(menuView.isStickyOpen).toBeNull();
 
                 menuView.open();
             });
@@ -1913,6 +1966,86 @@ suite('components/views/MenuView', () => {
 
                 menuView.open({
                     animate: false,
+                });
+            });
+
+            describe('With stickyOpen=true', () => {
+                it('When closed', onDone => {
+                    const onOpening = jasmine.createSpy('onOpening', () => {
+                        expect(menuView.isOpen).toBeFalse();
+                        expect(menuView.isStickyOpen).toBeTrue();
+                        expect(menuView.el).not.toHaveClass('-is-open');
+                        expect(menuView.el).not.toHaveClass('js-no-animation');
+                        expect(menuView.el.tabIndex).toBe(-1);
+
+                        expect(MenuView.openedMenu).toBeNull();
+                    }).and.callThrough();
+
+                    const onOpened = jasmine.createSpy('onOpened', () => {
+                        expect(onOpening).toHaveBeenCalled();
+
+                        expect(menuView.isOpen).toBeTrue();
+                        expect(menuView.isStickyOpen).toBeTrue();
+                        expect(menuView.el).toHaveClass('-is-open');
+                        expect(menuView.el).not.toHaveClass('js-no-animation');
+                        expect(menuView.el.tabIndex).toBe(0);
+
+                        expect(MenuView.openedMenu).toBe(menuView);
+                        expectNoMenuItemSelected(menuView);
+
+                        onDone();
+                    }).and.callThrough();
+
+                    menuView = craft`<Ink.Menu/>`;
+                    menuView.on('opening', onOpening);
+                    menuView.on('opened', onOpened);
+
+                    expect(menuView.isStickyOpen).toBeNull();
+
+                    menuView.open({
+                        sticky: true,
+                    });
+                });
+
+                it('When opened', onDone => {
+                    const onOpening = jasmine.createSpy('onOpening', () => {
+                        expect(menuView.isOpen).toBeFalse();
+                        expect(menuView.isStickyOpen).toBeFalse();
+                        expect(menuView.el).not.toHaveClass('-is-open');
+                        expect(menuView.el).not.toHaveClass('js-no-animation');
+                        expect(menuView.el.tabIndex).toBe(-1);
+
+                        expect(MenuView.openedMenu).toBeNull();
+                    }).and.callThrough();
+
+                    const onOpened = jasmine.createSpy('onOpened', () => {
+                        expect(onOpening).toHaveBeenCalled();
+
+                        expect(menuView.isOpen).toBeTrue();
+                        expect(menuView.isStickyOpen).toBeFalse();
+                        expect(menuView.el).toHaveClass('-is-open');
+                        expect(menuView.el).not.toHaveClass('js-no-animation');
+                        expect(menuView.el.tabIndex).toBe(0);
+
+                        expect(MenuView.openedMenu).toBe(menuView);
+                        expectNoMenuItemSelected(menuView);
+
+                        menuView.open({
+                            sticky: true,
+                        });
+
+                        expect(menuView.isStickyOpen).toBeTrue();
+
+                        onDone();
+                    }).and.callThrough();
+
+                    menuView = craft`<Ink.Menu/>`;
+                    menuView.on('opening', onOpening);
+                    menuView.on('opened', onOpened);
+
+                    expect(menuView.isStickyOpen).toBeNull();
+
+                    menuView.open();
                 });
             });
 
