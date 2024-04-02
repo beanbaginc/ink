@@ -51,39 +51,43 @@
        *         This should always be set to ``group``.
        *
        *     aria-label (string):
-       *          A label describing in the group.
+       *         A label describing in the group.
        *
-       *          This must be set if ``aria-labelledby`` is not set.
+       *         This must be set if ``aria-labelledby`` is not set.
        *
        *     aria-labelledby (string):
-       *          The ID of an element describing this group.
+       *         The ID of an element describing this group.
        *
-       *          This must be set if ``aria-label`` is not set.
+       *         This must be set if ``aria-label`` is not set.
        *
-       * Modifiers:
-       *     -is-vertical:
-       *         Whether the buttons should be laid out vertically.
+       *     aria-orientation (string, optional):
+       *         The orientation of the group.
        *
-       *         If not provided, the buttons will be horizontal.
+       *         This indicates if the buttons are laid out horizontally
+       *         (default) or vertically.
+       *
+       *         While this is optional, it's recommended to always set the
+       *         orientation in order to inform assistive technologies.
        *
        * Structure:
-       *     <div class="@{name}
-       *                 [-is-vertical]"
+       *     <div class="@{name}"
        *          aria-label="..." | aria-labelledby="..."
-       *          role="group">
+       *          role="group"
+       *          [aria-orientation="(horizontal | vertical)"]>
        *      <button class="@{button-name} ..." ...>...</button> [1+]
        *     </div>
        */
       & {
         .add-rules('__default__');
-      }
 
-      &.-is-vertical {
-        .add-rules('state-is-vertical');
-      }
+        &[aria-orientation=horizontal],
+        &:not([aria-orientation]) {
+          .add-rules('state-is-horizontal');
+        }
 
-      &:not(.-is-vertical) {
-        .add-rules('state-is-horizontal');
+        &[aria-orientation=vertical] {
+          .add-rules('state-is-vertical');
+        }
       }
     }
   }

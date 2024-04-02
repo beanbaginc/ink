@@ -41,7 +41,7 @@ suite('components/views/MenuButtonView', () => {
             expect(menuButton.el.outerHTML).toBe(
                 '<div class="ink-c-menu-button" role="group">' +
                 '<div class="ink-c-button-group ink-c-menu-button__buttons"' +
-                ' role="group">' +
+                ' role="group" aria-orientation="horizontal">' +
                 '<button class="ink-c-button' +
                 ' ink-c-menu-button__action-button" type="button">' +
                 'My Button</button>' +
@@ -116,7 +116,8 @@ suite('components/views/MenuButtonView', () => {
                 expect(menuButton.el.outerHTML).toBe(
                     '<div class="ink-c-menu-button" role="group">' +
                     '<div class="ink-c-button-group' +
-                    ' ink-c-menu-button__buttons" role="group">' +
+                    ' ink-c-menu-button__buttons" role="group"' +
+                    ' aria-orientation="horizontal">' +
                     '<button class="ink-c-button' +
                     ' ink-c-menu-button__action-button -is-primary"' +
                     ' type="button">' +
@@ -196,7 +197,8 @@ suite('components/views/MenuButtonView', () => {
                 expect(menuButton.el.outerHTML).toBe(
                     '<div class="ink-c-menu-button" role="group">' +
                     '<div class="ink-c-button-group' +
-                    ' ink-c-menu-button__buttons" role="group">' +
+                    ' ink-c-menu-button__buttons" role="group"' +
+                    ' aria-orientation="horizontal">' +
                     '<button class="ink-c-button' +
                     ' ink-c-menu-button__action-button"' +
                     ' type="button">' +
@@ -276,7 +278,8 @@ suite('components/views/MenuButtonView', () => {
                 expect(menuButton.el.outerHTML).toBe(
                     '<div class="ink-c-menu-button" role="group">' +
                     '<div class="ink-c-button-group' +
-                    ' ink-c-menu-button__buttons" role="group">' +
+                    ' ink-c-menu-button__buttons" role="group"' +
+                    ' aria-orientation="horizontal">' +
                     '<button class="ink-c-button' +
                     ' ink-c-menu-button__action-button"' +
                     ' type="button">' +
@@ -356,7 +359,8 @@ suite('components/views/MenuButtonView', () => {
                 expect(menuButton.el.outerHTML).toBe(
                     '<div class="ink-c-menu-button" role="group">' +
                     '<div class="ink-c-button-group' +
-                    ' ink-c-menu-button__buttons" role="group">' +
+                    ' ink-c-menu-button__buttons" role="group"' +
+                    ' aria-orientation="horizontal">' +
                     '<button class="ink-c-button' +
                     ' ink-c-menu-button__action-button"' +
                     ' type="button">' +

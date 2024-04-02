@@ -28,10 +28,14 @@ suite('components/views/ButtonGroupView', () => {
             `;
 
             expect(el.outerHTML).toBe(
-                '<div class="ink-c-button-group" role="group">' +
-                '<button class="ink-c-button" type="button">Button 1</button>' +
-                '<button class="ink-c-button" type="button">Button 2</button>' +
-                '<button class="ink-c-button" type="button">Button 3</button>' +
+                '<div class="ink-c-button-group" role="group"' +
+                ' aria-orientation="horizontal">' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 1</button>' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 2</button>' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 3</button>' +
                 '</div>'
             );
         });
@@ -46,10 +50,14 @@ suite('components/views/ButtonGroupView', () => {
             `;
 
             expect(el.outerHTML).toBe(
-                '<div class="ink-c-button-group" role="group">' +
-                '<button class="ink-c-button" type="button">Button 1</button>' +
-                '<button class="ink-c-button" type="button">Button 2</button>' +
-                '<button class="ink-c-button" type="button">Button 3</button>' +
+                '<div class="ink-c-button-group" role="group"' +
+                ' aria-orientation="horizontal">' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 1</button>' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 2</button>' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 3</button>' +
                 '</div>'
             );
         });
@@ -64,10 +72,14 @@ suite('components/views/ButtonGroupView', () => {
             `;
 
             expect(el.outerHTML).toBe(
-                '<div class="ink-c-button-group -is-vertical" role="group">' +
-                '<button class="ink-c-button" type="button">Button 1</button>' +
-                '<button class="ink-c-button" type="button">Button 2</button>' +
-                '<button class="ink-c-button" type="button">Button 3</button>' +
+                '<div class="ink-c-button-group" role="group"' +
+                ' aria-orientation="vertical">' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 1</button>' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 2</button>' +
+                '<button class="ink-c-button"' +
+                ' type="button">Button 3</button>' +
                 '</div>'
             );
         });
@@ -91,7 +103,8 @@ suite('components/views/ButtonGroupView', () => {
                 expect(buttonGroup.orientation).toBe(Orientation.HORIZONTAL);
 
                 expect(buttonGroup.el.outerHTML).toBe(
-                    '<div class="ink-c-button-group" role="group">' +
+                    '<div class="ink-c-button-group" role="group"' +
+                    ' aria-orientation="horizontal">' +
                     '<button class="ink-c-button" type="button">' +
                     'Button 1</button>' +
                     '<button class="ink-c-button" type="button">' +
@@ -118,8 +131,8 @@ suite('components/views/ButtonGroupView', () => {
                 expect(buttonGroup.orientation).toBe(Orientation.VERTICAL);
 
                 expect(buttonGroup.el.outerHTML).toBe(
-                    '<div class="ink-c-button-group -is-vertical"' +
-                    ' role="group">' +
+                    '<div class="ink-c-button-group" role="group"' +
+                    ' aria-orientation="vertical">' +
                     '<button class="ink-c-button" type="button">' +
                     'Button 1</button>' +
                     '<button class="ink-c-button" type="button">' +

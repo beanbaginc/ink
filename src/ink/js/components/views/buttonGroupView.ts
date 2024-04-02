@@ -73,8 +73,10 @@ export class ButtonGroupView<
      *         The new orientation.
      */
     set orientation(newOrientation: Orientation) {
-        this.el.classList.toggle('-is-vertical',
-                                 newOrientation === Orientation.VERTICAL);
+        this.el.setAttribute('aria-orientation',
+                             (newOrientation === Orientation.VERTICAL
+                              ? 'vertical'
+                              : 'horizontal'));
     }
 
     /**
@@ -85,7 +87,7 @@ export class ButtonGroupView<
      *     The current group layout orientation.
      */
     get orientation(): Orientation {
-        return this.el.classList.contains('-is-vertical')
+        return this.el.getAttribute('aria-orientation') === 'vertical'
                ? Orientation.VERTICAL
                : Orientation.HORIZONTAL;
     }
