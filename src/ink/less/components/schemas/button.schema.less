@@ -66,6 +66,11 @@
        *     disabled (boolean, optional):
        *         Whether the button is disabled.
        *
+       *     draggable (boolean, optional):
+       *         Set to ``false`` to prevent the button from being dragged.
+       *
+       *         This should be set for ``<a>``-based buttons.
+       *
        *     role (string, optional):
        *         The element role.
        *
@@ -122,54 +127,55 @@
        *               [js-active]
        *               [js-focus]
        *               [js-hover]"
-       *             role="button"
-       *             [aria-busy="true"]
-       *             [aria-pressed="true"]
-       *             [disabled]>
+       *        draggable="false"
+       *        role="button"
+       *        [aria-busy="true"]
+       *        [aria-pressed="true"]
+       *        [disabled]>
        *      label-text...
        *     </a>
        */
       &,
       &:is(a:link, a:visited) {
         .add-rules('__default__');
-      }
 
-      /* Button states */
-      &:is(:active, [aria-pressed=true], .js-active) {
-        &:is(a, button:enabled) {
-          &:not(.-is-disabled):not([aria-busy="true"]) {
-            .add-rules('state-active');
+        /* Button states */
+        &:is(:active, [aria-pressed=true], .js-active) {
+          &:is(a, button:enabled) {
+            &:not(.-is-disabled):not([aria-busy="true"]) {
+              .add-rules('state-active');
+            }
           }
         }
-      }
 
-      &[aria-busy="true"] {
-        .add-rules('state-busy');
-      }
+        &[aria-busy="true"] {
+          .add-rules('state-busy');
+        }
 
-      &:is([disabled], .-is-disabled) {
-        .add-rules('state-disabled');
-      }
+        &:is([disabled], .-is-disabled) {
+          .add-rules('state-disabled');
+        }
 
-      &:is(:focus, .js-focus) {
-        .add-rules('state-focused');
-      }
+        &:is(:focus, .js-focus) {
+          .add-rules('state-focused');
+        }
 
-      &:is(:hover, .js-hover) {
-        &:is(a, button:enabled) {
-          &:not(.-is-disabled):not([aria-busy="true"]) {
-            .add-rules('state-hover');
+        &:is(:hover, .js-hover) {
+          &:is(a, button:enabled) {
+            &:not(.-is-disabled):not([aria-busy="true"]) {
+              .add-rules('state-hover');
+            }
           }
         }
-      }
 
-      /* Button types */
-      &:is([type="reset"], .-is-danger) {
-        .add-rules('type-danger');
-      }
+        /* Button types */
+        &:is([type="reset"], .-is-danger) {
+          .add-rules('type-danger');
+        }
 
-      &:is([type="submit"], .-is-primary) {
-        .add-rules('type-primary');
+        &:is([type="submit"], .-is-primary) {
+          .add-rules('type-primary');
+        }
       }
 
       /**
