@@ -1,0 +1,67 @@
+/**
+ * Styling and utilities for helping deprecate styles.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+#ink-ns-ui() {
+  /**
+   * Mark a selector as deprecated.
+   *
+   * This will update the selector to include a clear visual showing that
+   * it's deprecated, active only when a parent contains an
+   * ``.ink-show-deprecations`` CSS class.
+   *
+   * This is intended to be mixed in to another style. It can also be applied
+   * to individual elements via the ``.ink-deprecated`` CSS class.
+   *
+   * Version Added:
+   *     1.0
+   */
+  .deprecated() {
+    .ink-show-deprecations & {
+      animation: ink-show-deprecated 6s infinite alternate !important;
+      outline: 3px transparent double;
+      outline-offset: 3px;
+    }
+  }
+}
+
+
+@keyframes ink-show-deprecated {
+  0% {
+    outline-color: red;
+  }
+
+  25% {
+    outline-color: blue;
+  }
+
+  50% {
+    outline-color: green;
+  }
+
+  75% {
+    outline-color: orange;
+  }
+
+  100% {
+    outline-color: red;
+  }
+}
+
+
+/**
+ * Mark an element as deprecated.
+ *
+ * This will update the element to include a clear visual showing that
+ * it's deprecated, active only when a parent contains an
+ * ``.ink-show-deprecations`` CSS class.
+ *
+ * This is intended to be mixed in to another style. It can also be applied
+ * to individual elements via the ``.ink-deprecated`` CSS class.
+ */
+.ink-deprecated {
+  #ink-ns-ui.deprecated();
+}
