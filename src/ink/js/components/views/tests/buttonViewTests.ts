@@ -26,7 +26,8 @@ suite('components/views/ButtonView', () => {
                 `;
 
                 expect(el.outerHTML).toBe(
-                    '<button class="ink-c-button" type="button">My Label</button>'
+                    '<button class="ink-c-button" type="button">' +
+                    'My Label</button>'
                 );
             });
 
@@ -130,7 +131,8 @@ suite('components/views/ButtonView', () => {
                     `;
 
                     expect(el.outerHTML).toBe(
-                        '<button class="ink-c-button -is-primary" type="button">' +
+                        '<button class="ink-c-button -is-primary"' +
+                        ' type="button">' +
                         'My Label</button>'
                     );
                 });
@@ -156,7 +158,8 @@ suite('components/views/ButtonView', () => {
                     `;
 
                     expect(el.outerHTML).toBe(
-                        '<button class="ink-c-button -is-danger" type="button">' +
+                        '<button class="ink-c-button -is-danger"' +
+                        ' type="button">' +
                         'My Label</button>'
                     );
                 });
@@ -173,6 +176,40 @@ suite('components/views/ButtonView', () => {
                         'My Label</button>'
                     );
                 });
+            });
+
+            it('With attrs', () => {
+                const attrs: Partial<HTMLButtonElement> = {
+                    formMethod: 'post',
+                    formNoValidate: true,
+                }
+
+                const el = paint<HTMLButtonElement>`
+                    <Ink.Button attrs=${attrs}>
+                     My Label
+                    </Ink.Button>
+                `;
+
+                expect(el.outerHTML).toBe(
+                    '<button class="ink-c-button" formnovalidate=""' +
+                    ' type="button">' +
+                    'My Label</button>'
+                );
+                expect(el.formMethod).toBe('post');
+                expect(el.formNoValidate).toBe(true);
+            });
+
+            it('With autofocus', () => {
+                const el = paint<HTMLButtonElement>`
+                    <Ink.Button autofocus>
+                     My Label
+                    </Ink.Button>
+                `;
+
+                expect(el.outerHTML).toBe(
+                    '<button class="ink-c-button" autofocus=""' +
+                    ' type="button">My Label</button>'
+                );
             });
 
             it('With busy', () => {
@@ -609,6 +646,47 @@ suite('components/views/ButtonView', () => {
             });
         });
 
+        describe('autofocus', () => {
+            it('Set to true', () => {
+                const button = craft<ButtonView>`
+                    <Ink.Button>
+                     My Label
+                    </Ink.Button>
+                `;
+
+                expect(button.autofocus).toBeFalse();
+
+                button.autofocus = true;
+
+                expect(button.autofocus).toBeTrue();
+
+                expect(button.el.outerHTML).toBe(
+                    '<button class="ink-c-button" type="button"' +
+                    ' autofocus="">' +
+                    'My Label</button>'
+                );
+            });
+
+            it('Set to false', () => {
+                const button = craft<ButtonView>`
+                    <Ink.Button autofocus>
+                     My Label
+                    </Ink.Button>
+                `;
+
+                expect(button.autofocus).toBeTrue();
+
+                button.autofocus = false;
+
+                expect(button.autofocus).toBeFalse();
+
+                expect(button.el.outerHTML).toBe(
+                    '<button class="ink-c-button" type="button">' +
+                    'My Label</button>'
+                );
+            });
+        });
+
         describe('disabled', () => {
             describe('Set to true', () => {
                 it('With tagName="a"', () => {
@@ -644,7 +722,8 @@ suite('components/views/ButtonView', () => {
                     expect(button.disabled).toBeTrue();
 
                     expect(button.el.outerHTML).toBe(
-                        '<button class="ink-c-button" type="button" disabled="">' +
+                        '<button class="ink-c-button" type="button"' +
+                        ' disabled="">' +
                         'My Label</button>'
                     );
                 });
@@ -975,7 +1054,8 @@ suite('components/views/ButtonView', () => {
                     expect(button.type).toBe(ButtonType.DANGER);
 
                     expect(button.el.outerHTML).toBe(
-                        '<button class="ink-c-button -is-danger" type="button">' +
+                        '<button class="ink-c-button -is-danger"' +
+                        ' type="button">' +
                         'My Button</button>'
                     );
                 });
@@ -1015,7 +1095,8 @@ suite('components/views/ButtonView', () => {
                     expect(button.type).toBe(ButtonType.PRIMARY);
 
                     expect(button.el.outerHTML).toBe(
-                        '<button class="ink-c-button -is-primary" type="button">' +
+                        '<button class="ink-c-button -is-primary"' +
+                        ' type="button">' +
                         'My Button</button>'
                     );
                 });

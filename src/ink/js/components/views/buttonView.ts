@@ -16,6 +16,7 @@ import {
     inkComponent,
     paint,
     renderInto,
+    setProps,
 } from '../../core';
 import {
     KeyboardShortcutRegistry,
@@ -60,6 +61,16 @@ export enum ButtonType {
  *     1.0
  */
 export interface ButtonViewOptions extends BaseComponentViewOptions {
+    /**
+     * Arbitary elements to set on the button element.
+     */
+    attrs?: Partial<HTMLButtonElement>;
+
+    /**
+     * Whether the button should have focus set automatically.
+     */
+    autofocus?: boolean;
+
     /**
      * Whether the button should show a busy state.
      */
@@ -228,6 +239,29 @@ export class ButtonView<
         } else {
             this.label = '';
         }
+    }
+
+    /**
+     * Return whether the button is set to have focus automatically.
+     *
+     * Returns:
+     *     boolean:
+     *     ``true`` if the button is set to auto-focus. ``false`` if it is not.
+     */
+    get autofocus(): boolean {
+        return this.el.autofocus;
+    }
+
+    /**
+     * Set whether the button is set to have focus automatically.
+     *
+     * Args:
+     *     newAutoFocus (boolean):
+     *         ``true`` if the button should be set to auto-focus. ``false``
+     *         if it should not.
+     */
+    set autofocus(newAutoFocus: boolean) {
+        this.el.autofocus = newAutoFocus;
     }
 
     /**
@@ -513,6 +547,10 @@ export class ButtonView<
             `;
         }
 
+        if (options.attrs) {
+            setProps(el, options.attrs);
+        }
+
         /*
          * Set properties from any initial options. This will update the
          * button to reflect the state.
@@ -522,6 +560,7 @@ export class ButtonView<
         this.#lockRender = true;
         Object.assign(this, _.pick(
             options,
+            'autofocus',
             'busy',
             'disabled',
             'href',

@@ -39,6 +39,11 @@ export default {
         return buttonEl;
     },
     argTypes: {
+        autofocus: {
+            description:
+                'Whether the button should auto-focus on load.',
+            control: 'boolean',
+        },
         busy: {
             description:
                 'Whether the button represents an operation taking place.',
