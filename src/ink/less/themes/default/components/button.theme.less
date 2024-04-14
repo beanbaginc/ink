@@ -17,23 +17,41 @@
           padding-horiz: var(--ink-u-spacing-sm);
           padding-vert: var(--ink-u-spacing-s);
           shadow: var(--ink-g-shadow-std);
-          text-color: var(--ink-p-surface-fg);
 
           /* Inline keyboard shortcut */
           keyboard-shortcut-font-size: var(--ink-u-font-s);
 
-          /* Default state */
-          bg:
+          accented-bg:
+            var(--ink-p-accent-primary-bg)
+            linear-gradient(
+              to bottom,
+              var(--ink-p-accent-secondary-bg),
+              var(--ink-p-accent-primary-bg)
+            )
+            repeat-x;
+
+          accented-active-bg:
+            var(--ink-c-button-accented-primary-bg) 0 -10px;
+
+          accented-hover-bg:
             var(--if-dark,
-              var(--ink-p-grey-300)
+              var(--ink-p-accent-primary-bg)
               linear-gradient(
                 to bottom,
-                var(--ink-p-grey-400) 15%,
-                var(--ink-p-grey-300)
+                var(--ink-p-accent-tertiary-bg),
+                var(--ink-p-accent-secondary-bg) 35%,
+                var(--ink-p-accent-primary-bg)
               )
               repeat-x
-              0 -10px
+              0 -5px
             )
+            var(--if-light, var(--ink-c-button-primary-bg) 0 -10px);
+
+          accented-text-color: var(--ink-p-accent-primary-fg);
+
+          /* Default state */
+          bg:
+            var(--if-dark, var(--ink-c-button-accented-bg))
             var(--if-light,
               var(--ink-p-grey-200)
               linear-gradient(
@@ -46,21 +64,16 @@
             );
 
           active-bg:
-            var(--if-dark, var(--ink-c-button-bg))
+            var(--if-dark, var(--ink-c-button-accented-active-bg))
             var(--if-light, var(--ink-c-button-bg) 0 -25px);
 
           hover-bg:
-            var(--if-dark,
-              var(--ink-p-grey-300)
-              linear-gradient(
-                to bottom,
-                var(--ink-p-grey-400) 45%,
-                var(--ink-p-grey-300)
-              )
-              repeat-x
-              0 -10px
-            )
+            var(--if-dark, var(--ink-c-button-accented-hover-bg))
             var(--if-light, var(--ink-c-button-bg) 0 -8px);
+
+          text-color:
+            var(--if-dark, var(--ink-c-button-accented-text-color))
+            var(--if-light, var(--ink-p-surface-fg));
 
           border-color: rgba(0, 0, 0, 0.4);
           hover-border-color: rgba(0, 0, 0, 0.8);
@@ -109,31 +122,10 @@
             var(--if-light, @_busy-light-bg);
 
           /* Primary state */
-          primary-bg:
-            var(--ink-p-accent-primary-bg)
-            linear-gradient(
-              to bottom,
-              var(--ink-p-accent-secondary-bg),
-              var(--ink-p-accent-primary-bg)
-            )
-            repeat-x;
-
-          primary-hover-bg:
-            var(--if-dark,
-              var(--ink-p-accent-primary-bg)
-              linear-gradient(
-                to bottom,
-                var(--ink-p-accent-tertiary-bg),
-                var(--ink-p-accent-secondary-bg) 35%,
-                var(--ink-p-accent-primary-bg)
-              )
-              repeat-x
-              0 -5px
-            )
-            var(--if-light, var(--ink-c-button-primary-bg) 0 -10px);
-
-          primary-active-bg: var(--ink-c-button-primary-bg) 0 -15px;
-          primary-text-color: var(--ink-p-accent-primary-fg);
+          primary-bg: var(--ink-c-button-accented-bg);
+          primary-hover-bg: var(--ink-c-button-accented-hover-bg);
+          primary-active-bg: var(--ink-c-button-accented-active-bg);
+          primary-text-color: var(--ink-c-button-accented-text-color);
           primary-border-color: var(--ink-c-button-border-color);
           primary-busy-bg: @_busy-dark-bg;
         };
