@@ -44,9 +44,11 @@ const preview: Preview = {
             themes: {
                 light: 'light',
                 dark: 'dark',
+                system: 'system',
+                'high-contrast': 'high-contrast',
             },
             defaultTheme: 'light',
-            attributeName: 'data-theme',
+            attributeName: 'data-ink-color-scheme',
         }),
     ],
     parameters: {

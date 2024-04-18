@@ -14,9 +14,9 @@
    *
    * This will set up state that CSS variables can use in order to offer
    * values depending on light mode, dark mode, or high-contrast mode. These
-   * can be opt-in using a ``data-theme="light|dark|high-contrast"`` on a
-   * parent element (usually the root ``<html>`` element), or based on the
-   * system preference (if using ``data-theme="system"``).
+   * can be opt-in using a ``data-ink-color-scheme="light|dark|high-contrast"``
+   * on a parent element (usually the root ``<html>`` element), or based on
+   * the system preference (if using ``data-ink-color-scheme="system"``).
    *
    * It also takes care of registering any global CSS variables provided by
    * the theme.
@@ -62,8 +62,8 @@
         @theme-var-rules: null) {
     /* Light mode is the default. */
     & when (@override = false) {
-      :root:not([data-theme]),
-      &[data-theme="light"] {
+      :root:not([data-ink-color-scheme]),
+      &[data-ink-color-scheme="light"] {
         --if-high-contrast: ~"";
         --if-dark: ~"";
         --if-dark-only: ~"";
@@ -74,8 +74,8 @@
     }
 
     & when (@override = true) {
-      :root[data-theme="light"],
-      &[data-theme="light"] {
+      :root[data-ink-color-scheme="light"],
+      &[data-ink-color-scheme="light"] {
         --if-high-contrast: ~"";
         --if-dark: ~"";
         --if-dark-only: ~"";
@@ -85,8 +85,8 @@
       }
     }
 
-    :root[data-theme="dark"],
-    &[data-theme="dark"] {
+    :root[data-ink-color-scheme="dark"],
+    &[data-ink-color-scheme="dark"] {
       --if-high-contrast: ~"";
       --if-dark: initial;
       --if-dark-only: initial;
@@ -95,8 +95,8 @@
       color-scheme: dark light;
     }
 
-    :root[data-theme="high-contrast"],
-    &[data-theme="high-contrast"] {
+    :root[data-ink-color-scheme="high-contrast"],
+    &[data-ink-color-scheme="high-contrast"] {
       --if-high-contrast: initial;
       --if-dark: initial;
       --if-dark-only: ~"";
@@ -105,7 +105,7 @@
       color-scheme: dark light;
     }
 
-    &[data-theme="system"] {
+    &[data-ink-color-scheme="system"] {
       @media (prefers-color-scheme: light) {
         --if-dark: ~"";
         --if-dark-only: ~"";
@@ -141,7 +141,7 @@
 
     & when (isdefined(@theme-var-rules)) {
       :root,
-      [data-theme] {
+      [data-ink-color-scheme] {
         @theme-var-rules();
       }
     }
