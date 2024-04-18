@@ -4,9 +4,6 @@
 #ink-ns-default-theme() {
   .alert() {
     @vars: {
-      @_light-border-color: rgba(255, 255, 255, 0.5);
-      @_dark-border-color: rgba(0, 0, 0, 0.2);
-
       #ink-ns-theme.add-css-vars(
         @prefix: ink-c-alert;
         @vars: {
@@ -15,35 +12,33 @@
 
           /* Default state */
           standard-bg: var(--ink-p-grey-200);
-          standard-border-color:
-            var(--if-dark, @_light-border-color)
-            var(--if-light, @_dark-border-color);
+          standard-border-color: var(--ink-p-container-outline);
           standard-icon: var(--ink-i-info);
           standard-text-color: var(--ink-c-text-color);
 
           /* Error state */
-          error-bg: var(--ink-p-light__red-100);
-          error-border-color: @_dark-border-color;
+          error-bg: var(--ink-p-accent-error-bg);
+          error-border-color: var(--ink-p-accent-error-outline);
           error-icon: var(--ink-i-error);
-          error-text-color: black;
+          error-text-color: var(--ink-p-accent-error-fg);
 
           /* Info state */
-          info-bg: var(--ink-p-blue-200);
-          info-border-color: var(--ink-c-alert-standard-border-color);
+          info-bg: var(--ink-p-accent-info-bg);
+          info-border-color: var(--ink-p-accent-info-outline);
           info-icon: var(--ink-i-info);
-          info-text-color: var(--ink-c-text-color);
+          info-text-color: var(--ink-p-accent-info-fg);
 
           /* Success state */
-          success-bg: var(--ink-p-green-200);
-          success-border-color: var(--ink-c-alert-standard-border-color);
+          success-bg: var(--ink-p-accent-success-bg);
+          success-border-color: var(--ink-p-accent-success-outline);
           success-icon: var(--ink-i-success);
-          success-text-color: var(--ink-c-text-color);
+          success-text-color: var(--ink-p-accent-success-fg);
 
           /* Warning state */
-          warning-bg: var(--ink-p-light__yellow-300);
-          warning-border-color: @_dark-border-color;
+          warning-bg: var(--ink-p-accent-warning-bg);
+          warning-border-color: var(--ink-p-accent-warning-outline);
           warning-icon: var(--ink-i-warning);
-          warning-text-color: black;
+          warning-text-color: var(--ink-p-accent-warning-fg);
         };
       );
     };

@@ -345,20 +345,14 @@
             var(--if-light, var(--ink-p-blue-500));
 
           accent-success-bg:
-            var(--if-dark, var(--ink-p-green-200))
+            var(--if-dark, var(--ink-p-light__green-200))
             var(--if-light, var(--ink-p-green-200));
 
-          accent-error-bg:
-            var(--if-dark, var(--ink-p-red-200))
-            var(--if-light, var(--ink-p-red-100));
+          accent-error-bg: var(--ink-p-light__red-100);
 
-          accent-warning-bg:
-            var(--if-dark, var(--ink-p-yellow-200))
-            var(--if-light, var(--ink-p-yellow-300));
+          accent-warning-bg: var(--ink-p-light__yellow-300);
 
-          accent-info-bg:
-            var(--if-dark, var(--ink-p-blue-200))
-            var(--if-light, var(--ink-p-blue-200));
+          accent-info-bg: var(--ink-p-light__blue-200);
 
           accent-highlight-bg:
             var(--if-dark, var(--ink-p-yellow-800))
@@ -367,44 +361,26 @@
           /*
            * Standard accent foreground definitions.
            */
-          accent-primary-fg:
-            var(--if-dark, var(--ink-p-white))
-            var(--if-light, var(--ink-p-white));
-
-          accent-secondary-fg:
-            var(--if-dark, var(--ink-p-white))
-            var(--if-light, var(--ink-p-black));
-
-          accent-tertiary-fg:
-            var(--if-dark, var(--ink-p-white))
-            var(--if-light, var(--ink-p-black));
-
-          accent-success-fg:
-            var(--if-dark, var(--ink-p-white))
-            var(--if-light, var(--ink-p-black));
-
-          accent-error-fg:
-            var(--if-dark, var(--ink-p-white))
-            var(--if-light, var(--ink-p-black));
-
-          accent-warning-fg:
-            var(--if-dark, var(--ink-p-black))
-            var(--if-light, var(--ink-p-black));
-
-          accent-info-fg:
-            var(--if-dark, var(--ink-p-white))
-            var(--if-light, var(--ink-p-black));
-
-          accent-highlight-fg:
-            var(--if-dark, var(--ink-p-black))
-            var(--if-light, var(--ink-p-black));
+          accent-primary-fg: var(--ink-p-text-color);
+          accent-secondary-fg: var(--ink-p-text-color);
+          accent-tertiary-fg: var(--ink-p-text-color);
+          accent-success-fg: var(--ink-p-text-on-light-color);
+          accent-error-fg: var(--ink-p-text-on-light-color);
+          accent-warning-fg: var(--ink-p-text-on-light-color);
+          accent-info-fg: var(--ink-p-text-on-light-color);
+          accent-highlight-fg: var(--ink-p-text-on-light-color);
 
           /*
            * Standard accent outline colors.
            */
-          accent-primary-outline:
-            var(--if-dark, rgba(0, 0, 0, 0.4))
-            var(--if-light, rgba(0, 0, 0, 0.4));
+          accent-primary-outline: var(--ink-p-container-outline);
+          accent-secondary-outline: var(--ink-p-container-outline);
+          accent-tertiary-outline: var(--ink-p-container-outline);
+          accent-success-outline: var(--ink-p-container-outline);
+          accent-error-outline: rgba(0, 0, 0, 0.2);
+          accent-warning-outline: rgba(0, 0, 0, 0.2);
+          accent-info-outline: var(--ink-p-container-outline);
+          accent-highlight-outline: var(--ink-p-container-outline);
 
           /*
            * Page color definitions.
