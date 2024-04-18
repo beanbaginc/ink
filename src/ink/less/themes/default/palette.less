@@ -268,13 +268,8 @@
            * These define foreground colors used for text, icons, etc. placed
            * directly on a Surface.
            */
-          surface-fg:
-            var(--if-dark, #F9F9F9)
-            var(--if-light, var(--ink-p-black));
-
-          surface-fg-weak:
-            var(--if-dark, rgba(255, 255, 255, 0.8))
-            var(--if-light, rgba(0, 0, 0, 0.8));
+          surface-fg: var(--ink-p-text-color);
+          surface-fg-weak: var(--ink-p-text-color-weak);
 
           /**
            * Standard container background definitions.
@@ -419,8 +414,19 @@
           /*
            * Text color definitions.
            */
-          text-color: var(--ink-p-surface-fg);
-          text-color-weak: var(--ink-p-surface-fg-weak);
+          text-on-dark-color: var(--ink-p-grey-900);
+          text-on-light-color: var(--ink-p-black);
+
+          text-on-dark-color-weak: rgba(255, 255, 255, 0.8);
+          text-on-light-color-weak: rgba(0, 0, 0, 0.8);
+
+          text-color:
+            var(--if-dark, var(--ink-p-text-on-dark-color))
+            var(--if-light, var(--ink-p-text-on-light-color));
+
+          text-color-weak:
+            var(--if-dark, var(--ink-p-text-on-dark-color-weak))
+            var(--if-light, var(--ink-p-text-on-light-color-weak));
 
           /*
            * Link color definitions.
