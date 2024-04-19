@@ -152,7 +152,7 @@ suite('components/views/MenuView', () => {
     describe('Rendering', () => {
         it('Standard menu items', () => {
             menuView = craft`
-                <Ink.Menu embedded>
+                <Ink.Menu embedded id="my-menu">
                  <Ink.Menu.Item id="my-item">Item 1</Ink.Menu.Item>
                 </Ink.Menu>
             `;
@@ -175,8 +175,8 @@ suite('components/views/MenuView', () => {
             });
 
             expect(menuView.el.outerHTML).toBe(
-                '<menu class="ink-c-menu -is-embedded -is-open" role="menu"' +
-                ' tabindex="0">' +
+                '<menu id="my-menu" class="ink-c-menu -is-embedded' +
+                ' -is-open" role="menu" tabindex="0">' +
                 '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
                 ' tabindex="-1" data-item-index="0">' +
                 '<span class="ink-c-menu__item-inner" draggable="false"' +
@@ -188,7 +188,7 @@ suite('components/views/MenuView', () => {
 
         it('Checkbox menu items', () => {
             menuView = craft`
-                <Ink.Menu embedded>
+                <Ink.Menu embedded id="my-menu">
                  <Ink.Menu.CheckboxItem id="my-item-1">
                   Item 1
                  </Ink.Menu.CheckboxItem>
@@ -229,8 +229,8 @@ suite('components/views/MenuView', () => {
             });
 
             expect(menuView.el.outerHTML).toBe(
-                '<menu class="ink-c-menu -is-embedded -is-open -has-icons"' +
-                ' role="menu" tabindex="0">' +
+                '<menu id="my-menu" class="ink-c-menu -is-embedded -is-open' +
+                ' -has-icons" role="menu" tabindex="0">' +
                 '<li class="ink-c-menu__item" role="menuitemcheckbox"' +
                 ' id="my-item-1" aria-checked="false" tabindex="-1"' +
                 ' data-item-index="0">' +
@@ -257,7 +257,7 @@ suite('components/views/MenuView', () => {
             const radioGroup = new MenuItemsRadioGroup();
 
             menuView = craft`
-                <Ink.Menu embedded>
+                <Ink.Menu embedded id="my-menu">
                  <Ink.Menu.RadioItem id="my-item-1"
                                      radioGroup=${radioGroup}>
                   Item 1
@@ -301,8 +301,8 @@ suite('components/views/MenuView', () => {
             });
 
             expect(menuView.el.outerHTML).toBe(
-                '<menu class="ink-c-menu -is-embedded -is-open -has-icons"' +
-                ' role="menu" tabindex="0">' +
+                '<menu id="my-menu" class="ink-c-menu -is-embedded' +
+                ' -is-open -has-icons" role="menu" tabindex="0">' +
                 '<li class="ink-c-menu__item" role="menuitemradio"' +
                 ' id="my-item-1" aria-checked="false" tabindex="-1"' +
                 ' data-item-index="0">' +
@@ -327,7 +327,7 @@ suite('components/views/MenuView', () => {
 
         it('Separator items', () => {
             menuView = craft`
-                <Ink.Menu embedded>
+                <Ink.Menu embedded id="my-menu">
                  <Ink.Menu.Separator/>
                 </Ink.Menu>
             `;
@@ -350,7 +350,7 @@ suite('components/views/MenuView', () => {
             });
 
             expect(menuView.el.outerHTML).toBe(
-                '<menu class="ink-c-menu -is-embedded -is-open"' +
+                '<menu id="my-menu" class="ink-c-menu -is-embedded -is-open"' +
                 ' role="menu" tabindex="0">' +
                 '<li class="ink-c-menu__separator" role="separator"' +
                 ' tabindex="-1"></li>' +
@@ -446,7 +446,7 @@ suite('components/views/MenuView', () => {
 
         it('With icons', () => {
             menuView = craft`
-                <Ink.Menu embedded>
+                <Ink.Menu embedded id="my-menu">
                  <Ink.Menu.Item id="my-item"
                                 iconName="ink-i-success">
                   Item 1
@@ -472,8 +472,8 @@ suite('components/views/MenuView', () => {
             });
 
             expect(menuView.el.outerHTML).toBe(
-                '<menu class="ink-c-menu -is-embedded -is-open -has-icons"' +
-                ' role="menu" tabindex="0">' +
+                '<menu id="my-menu" class="ink-c-menu -is-embedded' +
+                ' -is-open -has-icons" role="menu" tabindex="0">' +
                 '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
                 ' tabindex="-1" data-item-index="0">' +
                 '<span class="ink-c-menu__item-inner" draggable="false"' +
@@ -489,7 +489,7 @@ suite('components/views/MenuView', () => {
             const keyboardShortcutRegistry = new KeyboardShortcutRegistry();
 
             menuView = craft`
-                <Ink.Menu embedded>
+                <Ink.Menu embedded id="my-menu">
                  <Ink.Menu.Item id="my-item"
                    keyboardShortcut="Control-Alt-Delete"
                    keyboardShortcutRegistry=${keyboardShortcutRegistry}>
@@ -516,7 +516,7 @@ suite('components/views/MenuView', () => {
             });
 
             expect(menuView.el.outerHTML).toBe(
-                '<menu class="ink-c-menu -is-embedded -is-open' +
+                '<menu id="my-menu" class="ink-c-menu -is-embedded -is-open' +
                 ' -has-shortcuts" role="menu" tabindex="0">' +
                 '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
                 ' tabindex="-1" data-item-index="0">' +
@@ -540,7 +540,7 @@ suite('components/views/MenuView', () => {
     describe('Menu Events', () => {
         it('Menu items change', () => {
             menuView = craft`
-                <Ink.Menu embedded>
+                <Ink.Menu embedded id="my-menu">
                  <Ink.Menu.Item>
                   Item 1
                  </Ink.Menu.Item>
@@ -594,8 +594,8 @@ suite('components/views/MenuView', () => {
             });
 
             expect(menuView.el.outerHTML).toBe(
-                '<menu class="ink-c-menu -is-embedded -is-open -has-icons"' +
-                ' role="menu" tabindex="0">' +
+                '<menu id="my-menu" class="ink-c-menu -is-embedded' +
+                ' -is-open -has-icons" role="menu" tabindex="0">' +
                 '<li class="ink-c-menu__item" role="menuitem" id="my-item-1"' +
                 ' tabindex="-1" data-item-index="0">' +
                 '<span class="ink-c-menu__item-inner" draggable="false"' +
