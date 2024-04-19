@@ -2,7 +2,7 @@
   /*
    * The standard Beanbag Ink palette can be found at:
    *
-   * https://huetone.ardov.me/?palette=N4IgdghgtgpiBcIBCMJgEYQOYAICSYA1iADQgAWArjAM4IDaoksCIA4gE4wCepIAxgHsANoI5149EAGIAZgE4FCvtJjy1alQBMADLt0r%2BOo0ZXzzFlQHYbtlQFZHTlQBY37lQGZvPkAF0AXxImaDhEACUYLT4hUXEGGVlZGB0YexVZADYIAA5cjJ1M-iKVVE95cu0YAEYrWsNq1NSVCE9q9urrFP0VTMaIHQh-IJCWRCQOQQB3MBiRMQkpORgYKy0XDIAmfi10DbJpLX4Ifhy4A9OzzPQW%2BSsdF1kVHPl7CBcdXr37HSeD%2BysnnuNwOLnQnk2v2GwXAoVYAFlKDQAC4QDjRMixBYJOT8BSaA6yapqdDnGRpLQQeRDA4pPFWEEyXToLSeT4HdDHTKbTJmLQ5dCFawQe7VTYOKw-TbiwIw5hhEAATRgwlEUzmcUWiSSpPkGSSVh2%2BtkYPZ2pgsis4sJyXB6UJ6h0ToK-OdB1ZpLdMggWnkRk%2BstGCs4K1mmPm8Uk5K0shZGKZ1Vkbz1BwqK0yfxkmXsMG58ekLnk6HQ1Ryris8m5ni8APk1XtMmlmT6nQOegBemhQdYAGFuGgNdio3JEzHM9JTrIcklnjHfuPCzBNrIaTIdJ5Ob6VDpqvIXBBGdJ1xmcmajw8II5t9UIZVA7CxiAe4IRDgQ7xw5qcVOlIeYC4NHHfgXDxI4VEFdBZAMA5TzucEHDuexXlcHR7BcbIvE8FxPCvA4eQhD4uwfBUkGEahB0jJZZGXCAZ3dCAYEg8ddFzOiZEFXQ2OkHIBUUBcqVSa1GyBHJdhUMUwRZcSdB5QjAj8MhkUEMBaASRozUhM02TND4zR%2BM1Mi9e4zVPM15GdQIgA
+   * https://huetone.ardov.me/?palette=N4IgdghgtgpiBcIBCMJgEYQOYAICSYA1iADQgAWArjAM4IDaoksCIA4gE4wCepIAxgHsANoI5149EAGIAZgE4FCvtJjy1alQBMADLt0r%2BOo0ZXzzFlQHYbtlQFZHTlQBY37lQGZvPkAF0AXxImaDhEACUYLT4hUXEGGVlZGB0YexVZADYIAA5cjJ1M-iKVVE95cu0YAEYrWsNq1NSVCE9q9urrFP0VTMaIHQh-IJCWRCQOQQB3MBiRMQkpORgYKy0XDIAmfi10DbJpLX4Ifhy4A9OzzPQW%2BSsdF1kVHPl7CBcdXr37HSeD%2BysnnuNwOLnQnk2v2GwXAoVYAFlKDQAC4QDjRMixBYJOT8BSaA6yapqdDnGRpLQQeRDA4pPFWEEyXToLSeT4HdDHTKbTJmLQ5dCFawQe7VTYOKw-TbiwIw5hhEAATRgwlEUzmcUWiSSpPkGSSVh2%2BtkYPZ2pgsis4sJyXB6UJ6h0ToK-OdB1ZpLdMggWnkRk%2BstGCs4K1mmPm8Uk5K0shZGKZ1Vkbz1BwqK0yfxkmXsMG58ekLnk6HQ1Ryris8m5ni8APk1XtMmlmT6nQOegBemhQdYAGFuGgNdio3JEzHM9JTrIcklnjHfuPCzBNrIaTIdJ5Ob6VDpqvIXBBGdJ1xmcmajw8II5t9UIZVA7CxiAe4IRDgQ7xw5qcVOlIeYC4NHHfgXDxI4VEFdBZAMA5TzucEHDuexXlcHR7BcbIvE8FxPCvA4eQhD4uwfBUkGEahB0jJZZGXCAZ3dCAYEg8ddFzOiZEFXQ2OkHIBUUBcqVSa011qACywOMUwRZFRGh5QjAj8MhkUEMBaASRozUhM02TND4zR%2BM1Mi9e4zVPM15GdQIgA
    */
   .palettes() {
     /**
@@ -36,7 +36,7 @@
       @blue-400: #B0D0FF;
       @blue-500: #88B9FF;
       @blue-600: #4A90E2;
-      @blue-700: #2378DB;
+      @blue-700: #0174E8;
       @blue-800: #124BBD;
       @blue-900: #102640;
 
@@ -361,9 +361,9 @@
           /*
            * Standard accent foreground definitions.
            */
-          accent-primary-fg: var(--ink-p-text-color);
-          accent-secondary-fg: var(--ink-p-text-color);
-          accent-tertiary-fg: var(--ink-p-text-color);
+          accent-primary-fg: var(--ink-p-text-on-dark-color);
+          accent-secondary-fg: var(--ink-p-text-on-dark-color);
+          accent-tertiary-fg: var(--ink-p-text-on-light-color);
           accent-success-fg: var(--ink-p-text-on-light-color);
           accent-error-fg: var(--ink-p-text-on-light-color);
           accent-warning-fg: var(--ink-p-text-on-light-color);
@@ -390,7 +390,7 @@
           /*
            * Text color definitions.
            */
-          text-on-dark-color: var(--ink-p-grey-900);
+          text-on-dark-color: var(--ink-p-white);
           text-on-light-color: var(--ink-p-black);
 
           text-on-dark-color-weak: rgba(255, 255, 255, 0.8);
@@ -461,6 +461,10 @@
           input-text-color:
             var(--if-dark, var(--ink-p-text-on-dark-color))
             var(--if-light, var(--ink-p-text-on-light-color));
+
+          input-selection-bg:
+            var(--if-dark, rgba(200, 108, 255, 0.2))
+            var(--if-light, rgba(0, 128, 255, 0.2));
 
           /*
            * Sidebar color definitions.
