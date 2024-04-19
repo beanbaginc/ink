@@ -302,7 +302,7 @@ export class MenuView<
         this.embedded = !!options.embedded;
 
         /* Ensure there's always an ID set, for accessibility references. */
-        this.id ??= _.uniqueId('_ink-c-menu');
+        this.id ||= _.uniqueId('_ink-c-menu');
 
         const menuItems = options.menuItems || new MenuItemsCollection();
         this.menuItems = menuItems;
@@ -586,6 +586,7 @@ export class MenuView<
 
         /* Set the initial attributes and state for the menu. */
         el.setAttribute('role', 'menu');
+        el.id ||= _.result(this, 'id');
         el.tabIndex = (this.embedded ? 0 : -1);
 
         if (options.ariaLabelledBy) {
@@ -604,6 +605,8 @@ export class MenuView<
         const controllerEl = this.controllerEl;
 
         if (controllerEl !== null) {
+            console.assert(el.id, 'MenuView element ID unexpectedly unset!');
+
             controllerEl.setAttribute('aria-controls', el.id);
             controllerEl.setAttribute('aria-expanded', 'false');
             controllerEl.setAttribute('aria-haspopup', 'true');
