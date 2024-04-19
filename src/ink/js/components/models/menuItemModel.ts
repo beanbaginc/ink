@@ -90,7 +90,12 @@ export interface MenuItemAttrs {
     /**
      * A function to call when the menu item is clicked.
      */
-    onClick?: { (eventObject?: MouseEvent): void } | null;
+    onClick?: {
+        (
+            menuItem?: MenuItem,
+            eventObject?: MouseEvent,
+        ): void
+    } | null;
 
     /**
      * A radio button group for managing radio items.
@@ -197,12 +202,7 @@ export class MenuItem<
                     this.set('checked', false);
                 }
 
-                const radioGroup = this.get('radioGroup');
-
-                if (radioGroup) {
-                    radioGroup.add(this);
-                }
-
+                this.get('radioGroup')?.add(this);
                 break;
 
             case MenuItemType.ITEM: /* Fall-through */
@@ -235,8 +235,6 @@ export class MenuItem<
      *         The mouse event triggering this action, if any.
      */
     invokeAction(e?: MouseEvent) {
-        const itemType = this.get('type');
-
         switch (this.get('type')) {
             case MenuItemType.CHECKBOX_ITEM:
                 /*
@@ -245,7 +243,7 @@ export class MenuItem<
                  * Toggle the checked state before performing an action.
                  */
                 this.set('checked', !this.get('checked'));
-                break
+                break;
 
             case MenuItemType.ITEM:
                 /* Commom case. */
@@ -276,7 +274,7 @@ export class MenuItem<
         const onClick = this.get('onClick');
 
         if (onClick) {
-            onClick(e);
+            onClick(this, e);
         }
     }
 }

@@ -6,6 +6,7 @@
  */
 
 import {
+    type MenuItem,
     KeyboardShortcutRegistry,
     KeyboardShortcutRegistryView,
     MenuItemType,
@@ -44,6 +45,26 @@ export default {
         const item1Props: Record<string, unknown> = {};
         const item2Props: Record<string, unknown> = {};
         const item3Props: Record<string, unknown> = {};
+        const item4Props: Record<string, unknown> = {};
+
+        function updateMenuItemLabel(
+            menuItem: MenuItem,
+        ) {
+            menuItem.set('label', 'Clicked!');
+        }
+
+        function updateMenuItemIcon(
+            menuItem: MenuItem,
+        ) {
+            menuItem.set('iconName', 'ink-i-success');
+        }
+
+        function updateMenuItemChecked(
+            menuItem: MenuItem,
+        ) {
+            menuItem.set('label',
+                         menuItem.get('checked') ? 'Checked' : 'Unchecked');
+        }
 
         if (hasIcons) {
             item1Props['iconName'] = 'ink-i-success';
@@ -70,17 +91,22 @@ export default {
                                 ...${item2Props}>
                   Item 2...
                  </>
-                 <Ink.Menu.Item onClick=${onMenuItemClicked}
+                 <Ink.Menu.Item onClick=${updateMenuItemLabel}
                                 ...${item3Props}>
-                  Item 3
+                  Click me to re-render the label
+                 </>
+                 <Ink.Menu.Item onClick=${updateMenuItemIcon}
+                                ...${item4Props}>
+                  Click me to re-render the icon
                  </>
                  <Ink.Menu.Separator/>
                  <Ink.Menu.Item onClick=${onMenuItemClicked}>
                   Item 4 and this is a long one people
                  </>
                  <Ink.Menu.Separator/>
-                 <Ink.Menu.CheckboxItem checked>
-                  Checkbox Item 1
+                 <Ink.Menu.CheckboxItem checked
+                                        onClick=${updateMenuItemChecked}>
+                  Checked
                  </>
                  <Ink.Menu.CheckboxItem>
                   Checkbox Item 2
@@ -111,9 +137,14 @@ export default {
                     ...item2Props,
                 },
                 {
-                    label: 'Item 3',
-                    onClick: onMenuItemClicked,
+                    label: 'Click me to re-render the label',
+                    onClick: updateMenuItemLabel,
                     ...item3Props,
+                },
+                {
+                    label: 'Click me to re-render the icon',
+                    onClick: updateMenuItemIcon,
+                    ...item4Props,
                 },
                 {
                     type: MenuItemType.SEPARATOR,

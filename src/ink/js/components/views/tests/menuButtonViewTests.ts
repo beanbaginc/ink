@@ -56,10 +56,10 @@ suite('components/views/MenuButtonView', () => {
                 `<menu id="ink-menu-button__menu__${cid}"` +
                 ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                 ' tabindex="-1" aria-label="Menu for My Button">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="item-1"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="item-1" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
                 '</span></li></menu>' +
                 '</div>'
@@ -90,10 +90,10 @@ suite('components/views/MenuButtonView', () => {
                 `<menu id="ink-menu-button__menu__${cid}"` +
                 ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                 ' tabindex="-1" aria-label="Menu for My Button">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="item-1"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="item-1" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
                 '</span></li></menu>' +
                 '</div>'
@@ -134,9 +134,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Menu for My Button">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +
@@ -170,9 +171,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Menu for My Button">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +
@@ -215,9 +217,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Menu for My Button">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +
@@ -251,9 +254,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Menu for My Button">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +
@@ -296,9 +300,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Oh hi">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +
@@ -332,9 +337,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Oh hi">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +
@@ -377,9 +383,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Menu for My Button">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +
@@ -413,9 +420,10 @@ suite('components/views/MenuButtonView', () => {
                     `<menu id="ink-menu-button__menu__${cid}"` +
                     ' class="ink-c-menu ink-c-menu-button__menu" role="menu"' +
                     ' tabindex="-1" aria-label="Menu for My Button">' +
-                    '<li class="ink-c-menu__item" role="menuitem"' +
-                    ' id="item-1" tabindex="-1" data-item-index="0">' +
-                    '<span class="ink-c-menu__item-inner" draggable="false"' +
+                    '<li role="menuitem" draggable="false" tabindex="-1"' +
+                    ' id="item-1" class="ink-c-menu__item"' +
+                    ' data-item-index="0">' +
+                    '<span class="ink-c-menu__item-inner"' +
                     ' role="presentation" tabindex="-1">' +
                     '<label class="ink-c-menu__item-label">Item 1</label>' +
                     '</span></li></menu>' +

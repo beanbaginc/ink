@@ -177,10 +177,11 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu -is-embedded' +
                 ' -is-open" role="menu" tabindex="0">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item"' +
+                ' data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
                 '</span></li></menu>'
             );
@@ -231,20 +232,20 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu -is-embedded -is-open' +
                 ' -has-icons" role="menu" tabindex="0">' +
-                '<li class="ink-c-menu__item" role="menuitemcheckbox"' +
-                ' id="my-item-1" aria-checked="false" tabindex="-1"' +
-                ' data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitemcheckbox" draggable="false" tabindex="-1"' +
+                ' id="my-item-1" class="ink-c-menu__item"' +
+                ' aria-checked="false" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<span class="ink-c-menu__item-icon" aria-hidden="true">' +
                 '</span>' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
                 '</span></li>' +
-                '<li class="ink-c-menu__item" role="menuitemcheckbox"' +
-                ' id="my-item-2" aria-checked="true" tabindex="-1"' +
-                ' data-item-index="1">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitemcheckbox" draggable="false" tabindex="-1"' +
+                ' id="my-item-2" class="ink-c-menu__item"' +
+                ' aria-checked="true" data-item-index="1">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<span class="ink-c-menu__item-icon ink-i-check"' +
                 ' aria-hidden="true"></span>' +
                 '<label class="ink-c-menu__item-label">Item 2</label>' +
@@ -303,20 +304,20 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu -is-embedded' +
                 ' -is-open -has-icons" role="menu" tabindex="0">' +
-                '<li class="ink-c-menu__item" role="menuitemradio"' +
-                ' id="my-item-1" aria-checked="false" tabindex="-1"' +
-                ' data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitemradio" draggable="false" tabindex="-1"' +
+                ' id="my-item-1" class="ink-c-menu__item"' +
+                ' aria-checked="false" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<span class="ink-c-menu__item-icon" aria-hidden="true">' +
                 '</span>' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
                 '</span></li>' +
-                '<li class="ink-c-menu__item" role="menuitemradio"' +
-                ' id="my-item-2" aria-checked="true" tabindex="-1"' +
-                ' data-item-index="1">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitemradio" draggable="false" tabindex="-1"' +
+                ' id="my-item-2" class="ink-c-menu__item"' +
+                ' aria-checked="true" data-item-index="1">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<span class="ink-c-menu__item-icon ink-i-dot"' +
                 ' aria-hidden="true"></span>' +
                 '<label class="ink-c-menu__item-label">Item 2</label>' +
@@ -352,8 +353,8 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu -is-embedded -is-open"' +
                 ' role="menu" tabindex="0">' +
-                '<li class="ink-c-menu__separator" role="separator"' +
-                ' tabindex="-1"></li>' +
+                '<li role="separator" draggable="false" tabindex="-1"' +
+                ' class="ink-c-menu__separator"></li>' +
                 '</menu>'
             );
         });
@@ -389,10 +390,10 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu" role="menu"' +
                 ' tabindex="-1">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<label class="ink-c-menu__item-label">' +
                 '<div class="my-custom-component">Hi!</div></label>' +
                 '</span></li></menu>'
@@ -435,10 +436,10 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu" role="menu"' +
                 ' tabindex="-1">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
                 '</span></li></menu>'
             );
@@ -474,10 +475,10 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu -is-embedded' +
                 ' -is-open -has-icons" role="menu" tabindex="0">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<span class="ink-c-menu__item-icon ink-i-success"' +
                 ' aria-hidden="true"></span>' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
@@ -518,10 +519,11 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu -is-embedded -is-open' +
                 ' -has-shortcuts" role="menu" tabindex="0">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="my-item"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item"' +
+                ' data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<label class="ink-c-menu__item-label">Item 1</label>' +
                 '<span class="ink-c-keyboard-shortcut' +
                 ' ink-c-menu__item-shortcut" title="Control-Alt-Delete"' +
@@ -596,16 +598,18 @@ suite('components/views/MenuView', () => {
             expect(menuView.el.outerHTML).toBe(
                 '<menu id="my-menu" class="ink-c-menu -is-embedded' +
                 ' -is-open -has-icons" role="menu" tabindex="0">' +
-                '<li class="ink-c-menu__item" role="menuitem" id="my-item-1"' +
-                ' tabindex="-1" data-item-index="0">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item-1" class="ink-c-menu__item"' +
+                ' data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<label class="ink-c-menu__item-label">New Item 1</label>' +
                 '</span></li>' +
-                '<li class="ink-c-menu__item" role="menuitem" id="my-item-2"' +
-                ' tabindex="-1" data-item-index="1">' +
-                '<span class="ink-c-menu__item-inner" draggable="false"' +
-                ' role="presentation" tabindex="-1">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item-2" class="ink-c-menu__item"' +
+                ' data-item-index="1">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
                 '<span class="ink-c-menu__item-icon ink-i-success"' +
                 ' aria-hidden="true"></span>' +
                 '<label class="ink-c-menu__item-label">New Item 2</label>' +
@@ -1650,6 +1654,104 @@ suite('components/views/MenuView', () => {
                 expectMenuItemNotChecked(menuView, menuItemEl2);
                 expect(menuView.isOpen).toBeTrue();
             });
+        });
+
+        it('Label updated', () => {
+            menuView = craft`
+                <Ink.Menu embedded>
+                 <Ink.Menu.Item id="my-item">
+                  Item 1
+                 </Ink.Menu.Item>
+                </Ink.Menu>
+            `;
+
+            const menuItems = menuView.menuItems;
+            const menuItemEls = menuView.el.children;
+            const menuItemEl1 = menuItemEls[0] as HTMLElement;
+
+            menuItems.at(0).set('label', 'New label');
+
+            expect(menuItemEl1.outerHTML).toBe(
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
+                '<label class="ink-c-menu__item-label">New label</label>' +
+                '</span>' +
+                '</li>'
+            );
+        });
+
+        it('Icon updated', () => {
+            menuView = craft`
+                <Ink.Menu embedded>
+                 <Ink.Menu.Item id="my-item">
+                  Item 1
+                 </Ink.Menu.Item>
+                </Ink.Menu>
+            `;
+
+            const menuItems = menuView.menuItems;
+            const menuItemEls = menuView.el.children;
+            const menuItemEl1 = menuItemEls[0] as HTMLElement;
+
+            expect(menuView.el).not.toHaveClass('-has-icons');
+
+            menuItems.at(0).set('iconName', 'ink-i-success');
+
+            expect(menuItemEl1.outerHTML).toBe(
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
+                '<span class="ink-c-menu__item-icon ink-i-success"' +
+                ' aria-hidden="true"></span>' +
+                '<label class="ink-c-menu__item-label">Item 1</label>' +
+                '</span>' +
+                '</li>'
+            );
+            expect(menuView.el).toHaveClass('-has-icons');
+        });
+
+        it('Keyboard shortcuts updated', () => {
+            menuView = craft`
+                <Ink.Menu embedded>
+                 <Ink.Menu.Item id="my-item">
+                  Item 1
+                 </Ink.Menu.Item>
+                </Ink.Menu>
+            `;
+
+            const menuItems = menuView.menuItems;
+            const menuItemEls = menuView.el.children;
+            const menuItemEl1 = menuItemEls[0] as HTMLElement;
+
+            expect(menuView.el).not.toHaveClass('-has-shortcuts');
+
+            menuItems.at(0).set({
+                'keyboardShortcut': 'Alt-F4',
+                'keyboardShortcutRegistry': new KeyboardShortcutRegistry(),
+            });
+
+            expect(menuItemEl1.outerHTML).toBe(
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
+                '<label class="ink-c-menu__item-label">Item 1</label>' +
+                '<span class="ink-c-keyboard-shortcut' +
+                ' ink-c-menu__item-shortcut" title="Alt-F4"' +
+                ' aria-label="Alt-F4">' +
+                '<span class="ink-c-keyboard-shortcut__key"' +
+                ' aria-hidden="true">Alt</span>' +
+                '<span class="ink-c-keyboard-shortcut__key"' +
+                ' aria-hidden="true">F4</span>' +
+                '</span>' +
+                '</span>' +
+                '</li>'
+            );
+
+            expect(menuView.el).toHaveClass('-has-shortcuts');
         });
 
         it('Checkbox item updated', () => {

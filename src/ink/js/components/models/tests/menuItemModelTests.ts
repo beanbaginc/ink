@@ -175,7 +175,7 @@ suite('components/models/MenuItem', () => {
                     menuItem.invokeAction(evt);
 
                     expect(menuItem.get('checked')).toBeFalse();
-                    expect(onClick).toHaveBeenCalledWith(evt);
+                    expect(onClick).toHaveBeenCalledWith(menuItem, evt);
                 });
 
                 it('When checked=false', () => {
@@ -191,7 +191,7 @@ suite('components/models/MenuItem', () => {
                     menuItem.invokeAction(evt);
 
                     expect(menuItem.get('checked')).toBeTrue();
-                    expect(onClick).toHaveBeenCalledWith(evt);
+                    expect(onClick).toHaveBeenCalledWith(menuItem, evt);
                 });
 
                 it('When checked=null', () => {
@@ -206,7 +206,7 @@ suite('components/models/MenuItem', () => {
                     menuItem.invokeAction(evt);
 
                     expect(menuItem.get('checked')).toBeTrue();
-                    expect(onClick).toHaveBeenCalledWith(evt);
+                    expect(onClick).toHaveBeenCalledWith(menuItem, evt);
                 });
             });
 
@@ -235,7 +235,7 @@ suite('components/models/MenuItem', () => {
 
                     menuItem.invokeAction(evt);
 
-                    expect(onClick).toHaveBeenCalledWith(evt);
+                    expect(onClick).toHaveBeenCalledWith(menuItem, evt);
                     expect(menuItem.get('checked')).toBeTrue();
                     expect(otherMenuItem.get('checked')).toBeFalse();
                 });
@@ -255,7 +255,7 @@ suite('components/models/MenuItem', () => {
 
                     menuItem.invokeAction(evt);
 
-                    expect(onClick).toHaveBeenCalledWith(evt);
+                    expect(onClick).toHaveBeenCalledWith(menuItem, evt);
                     expect(menuItem.get('checked')).toBeTrue();
                     expect(otherMenuItem.get('checked')).toBeFalse();
                 });
@@ -274,7 +274,7 @@ suite('components/models/MenuItem', () => {
 
                     menuItem.invokeAction(evt);
 
-                    expect(onClick).toHaveBeenCalledWith(evt);
+                    expect(onClick).toHaveBeenCalledWith(menuItem, evt);
                     expect(menuItem.get('checked')).toBeTrue();
                     expect(otherMenuItem.get('checked')).toBeFalse();
                 });
@@ -291,7 +291,7 @@ suite('components/models/MenuItem', () => {
                 menuItem.invokeAction(evt);
 
                 expect(menuItem.get('checked')).toBeNull();
-                expect(onClick).toHaveBeenCalledWith(evt);
+                expect(onClick).toHaveBeenCalledWith(menuItem, evt);
             });
 
             it('With type=SEPARATOR', () => {
@@ -306,7 +306,7 @@ suite('components/models/MenuItem', () => {
                 menuItem.invokeAction(evt);
 
                 expect(menuItem.get('checked')).toBeNull();
-                expect(onClick).not.toHaveBeenCalledWith(evt);
+                expect(onClick).not.toHaveBeenCalledWith(menuItem, evt);
             });
         });
     });

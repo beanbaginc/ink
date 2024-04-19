@@ -8,6 +8,7 @@
 import _ from 'underscore';
 
 import {
+    type ElementAttributes,
     BaseModel,
     EventsHash,
     spina,
@@ -16,6 +17,7 @@ import {
 import {
     ComponentProps,
     SubcomponentInfo,
+    craft,
     inkComponent,
     paint,
     renderInto,
@@ -23,12 +25,16 @@ import {
 import { TypeaheadBuffer } from '../../foundation';
 import { MenuItemsCollection } from '../collections/menuItemsCollection';
 import {
+    type MenuItem,
     MenuItemType,
 } from '../models/menuItemModel';
 import {
     BaseComponentView,
     BaseComponentViewOptions,
 } from './baseComponentView';
+import {
+    type KeyboardShortcutView,
+} from './keyboardShortcutView';
 
 
 /**
@@ -155,20 +161,6 @@ export interface MenuViewOptions extends BaseComponentViewOptions {
 
 
 /**
- * A mapping of item types to checkmark icon classes.
- *
- * This is only for checkbox and radio items.
- *
- * Version Added:
- *     1.0
- */
-const _CHECKED_ICONS = {
-    [MenuItemType.CHECKBOX_ITEM]: 'ink-i-check',
-    [MenuItemType.RADIO_ITEM]: 'ink-i-dot',
-};
-
-
-/**
  * A drop-down or embedded menu of items.
  *
  * This is a standard menu, showing a list of items (standard action items,
@@ -266,6 +258,11 @@ export class MenuView<
      * The list of all menu item elements.
      */
     #items: HTMLLIElement[] = [];
+
+    /**
+     * The list of all menu item views.
+     */
+    #itemViews: BaseMenuItemView[] = [];
 
     /**
      * Whether focus is being carefully managed.
@@ -569,7 +566,7 @@ export class MenuView<
      */
     protected onRemove() {
         this.close();
-        this.#items = [];
+        this.#clearMenuItems();
     }
 
     /**
@@ -623,189 +620,81 @@ export class MenuView<
         const el = this.el;
         const curItemIndex = this.#curItemIndex;
 
-        this.#items = [];
+        /* Clear any old state. */
+        this.#clearMenuItems();
+        el.removeAttribute('aria-activedescendant');
 
         /* Set up the items for the menu. */
         let hasIcons = false;
         let hasShortcuts = false;
 
-        const allItemEls: HTMLLIElement[] = [];
+        const allItems: BaseMenuItemView[] = [];
         const menuItemEls: HTMLLIElement[] = [];
 
         for (const menuItem of this.menuItems) {
             const menuItemType = menuItem.get('type');
-            let itemEl: HTMLLIElement;
-            let clickHandlerFunc: ((e: MouseEvent) => void);
+            const menuItemViewCls = _menuItemViews[menuItemType];
 
-            if (menuItemType === MenuItemType.ITEM ||
-                menuItemType === MenuItemType.CHECKBOX_ITEM ||
-                menuItemType === MenuItemType.RADIO_ITEM) {
-                /*
-                 * Render a standard menu item, checkbox menu item, or
-                 * radio menu item.
-                 *
-                 * These are mostly rendered the same, but with some changes
-                 * to ARIA information, callbacks, and state changes.
-                 */
-                const iconName = menuItem.get('iconName');
-                const label = menuItem.get('label');
-                const registry = menuItem.get('keyboardShortcutRegistry');
-                const shortcut = menuItem.get('keyboardShortcut');
-                const url = menuItem.get('url');
-                const innerProps: Record<string, string> = {};
-                const itemProps: Record<string, string> = {};
-                let iconEl: HTMLSpanElement;
-                let alwaysShowIcon = false;
-                let role = 'menuitem';
-                let innerTag: string;
-
-                if (shortcut) {
-                    hasShortcuts = true;
-                }
-
-                if (url) {
-                    innerTag = 'a';
-                    innerProps['href'] = url;
-                } else {
-                    innerTag = 'span';
-                }
-
-                if (menuItemType === MenuItemType.CHECKBOX_ITEM) {
-                    alwaysShowIcon = true;
-                    role = 'menuitemcheckbox';
-                } else if (menuItemType === MenuItemType.RADIO_ITEM) {
-                    alwaysShowIcon = true;
-                    role = 'menuitemradio';
-                }
-
-                if (menuItem.id) {
-                    itemProps['id'] = menuItem.id.toString();
-                }
-
-                if (iconName || alwaysShowIcon) {
-                    hasIcons = true;
-
-                    const iconClass =
-                        iconName
-                        ? `ink-c-menu__item-icon ${iconName}`
-                        : 'ink-c-menu__item-icon';
-
-                    iconEl = paint`
-                        <span class="${iconClass}" aria-hidden="true"/>
-                    `;
-                }
-
-                itemEl = paint`
-                    <li class="ink-c-menu__item" role="${role}"
-                        ...${itemProps}>
-                     <${innerTag} class="ink-c-menu__item-inner"
-                                  ...${innerProps}>
-                      ${iconEl}
-                      <label class="ink-c-menu__item-label">
-                       ${menuItem.get('childEl') || label}
-                      </label>
-                      ${shortcut && paint`
-                       <Ink.KeyboardShortcut
-                         className="ink-c-menu__item-shortcut"
-                         keys="${shortcut}"
-                         registry=${registry}
-                         onInvoke="click"/>
-                      `}
-                     </${innerTag}>
-                    </li>
-                `;
-                menuItemEls.push(itemEl);
-
-                if (menuItemType === MenuItemType.CHECKBOX_ITEM ||
-                    menuItemType === MenuItemType.RADIO_ITEM) {
-                    /*
-                     * Listen for changes to the "checked" state and update
-                     * the icon accordingly.
-                     */
-                    const onCheckedChanged = () => {
-                        const checked = menuItem.get('checked');
-                        const checkIconName = _CHECKED_ICONS[menuItemType];
-
-                        itemEl.setAttribute('aria-checked', `${checked}`);
-                        itemEl.querySelector('.ink-c-menu__item-icon')
-                            .classList.toggle(checkIconName, checked);
-                    };
-
-                    this.listenTo(menuItem, 'change:checked',
-                                  onCheckedChanged);
-                    onCheckedChanged();
-
-                    /*
-                     * Set up an event handler for checkbox and radio clicks.
-                     *
-                     * Unlike standard items, these won't cause the menu to
-                     * close. Click handlers can still close the menu if they
-                     * choose to.
-                     */
-                    clickHandlerFunc = (e => {
-                        menuItem.invokeAction(e);
-                    });
-                } else {
-                    /*
-                     * Set up an event handler for standard menu items.
-                     *
-                     * This will invoke the menu item's action and then
-                     * close the menu.
-                     */
-                    clickHandlerFunc = (e => {
-                        menuItem.invokeAction(e);
-                        this.close();
-                    });
-                }
-            } else if (menuItemType === MenuItemType.SEPARATOR) {
-                /*
-                 * Render a separator.
-                 */
-                itemEl = paint`
-                    <li class="ink-c-menu__separator" role="separator"/>
-                `;
-
-                /*
-                 * Set up an event handler for separator items.
-                 *
-                 * This will ignore the event and prevent it from bubbling up.
-                 */
-                clickHandlerFunc = (e => {});
-            } else {
-                /*
-                 * Handle unexpected menu item types.
-                 */
+            if (!menuItemViewCls) {
                 console.error('Unexpected menu item type: %s: %o',
                               menuItemType, menuItem);
                 continue;
             }
 
-            itemEl.addEventListener(
-                'click',
-                evt => {
-                    evt.preventDefault();
-                    evt.stopPropagation();
+            const interactive = menuItemViewCls !== SeparatorMenuItemView;
 
-                    clickHandlerFunc(evt);
-                },
-                {
-                    capture: true,
-                });
+            const menuItemID =
+                menuItem.id ||
+                (interactive
+                 ? `menuitem-${this.cid}-${menuItemEls.length}`
+                 : null);
 
-            /* Finalize and track this menu item. */
-            this.#finalizeMenuItemEl(itemEl);
-            allItemEls.push(itemEl);
+            const menuItemView = craft<BaseMenuItemView>`
+                <${menuItemViewCls} model=${menuItem}
+                                    id="${menuItemID}"/>
+            `;
+            allItems.push(menuItemView);
+
+            /* Record all interactive menu items. */
+            if (interactive) {
+                const menuItemEl = menuItemView.el;
+
+                menuItemEl.dataset.itemIndex = menuItemEls.length.toString();
+                menuItemEls.push(menuItemEl);
+
+                /*
+                 * Check and handle menu items that should close the menu
+                 * when clicked.
+                 */
+                if (menuItemView.closeOnClick) {
+                    this.listenTo(menuItemView, 'clicked', () => this.close());
+                }
+            }
+
+            if (menuItemView.hasIcon) {
+                hasIcons = true;
+            }
+
+            if (menuItemView.hasShortcut) {
+                hasShortcuts = true;
+            }
+
+            /* If the menu item re-renders, re-compute menu state. */
+            this.listenTo(menuItemView, 'rendered',
+                          () => this.#updateMenuState());
         }
 
-        renderInto(el, allItemEls, {
+        renderInto(el, allItems, {
             empty: true,
         });
 
-        el.classList.toggle('-has-icons', hasIcons);
-        el.classList.toggle('-has-shortcuts', hasShortcuts);
-        el.removeAttribute('aria-activedescendant');
+        this.#updateMenuState({
+            hasIcons: hasIcons,
+            hasShortcuts: hasShortcuts,
+        });
 
         this.#items = menuItemEls;
+        this.#itemViews = allItems;
 
         /*
          * If a current menu item was already set, and is in the range,
@@ -818,40 +707,65 @@ export class MenuView<
     }
 
     /**
-     * Finalize a menu item element for usage in the menu.
+     * Update the state of the menu.
      *
-     * This will ensure the element has the necessary attributes for
-     * accessory and interaction.
+     * This will set the icon and shortcut classes based on the states either
+     * provided or calculated from the menu items.
      *
      * Args:
-     *     menuItemEl (HTMLLIElement):
-     *         The menu item element to prepare.
+     *     state (object):
+     *         Pre-computed flags indicating the current state.
      */
-    #finalizeMenuItemEl(menuItemEl: HTMLLIElement) {
-        const index = this.#items.length;
+    #updateMenuState(
+        state?: {
+            hasIcons: boolean,
+            hasShortcuts: boolean,
+        },
+    ) {
+        let hasIcons;
+        let hasShortcuts;
 
-        menuItemEl.tabIndex = -1;
+        if (state) {
+            hasIcons = state.hasIcons;
+            hasShortcuts = state.hasShortcuts;
+        } else {
+            hasIcons = false;
+            hasShortcuts = false;
 
-        const innerEl = menuItemEl.firstElementChild as HTMLElement;
+            for (const menuItemView of this.#itemViews) {
+                if (menuItemView.hasIcon) {
+                    hasIcons = true;
+                }
 
-        if (innerEl) {
-            innerEl.draggable = false;
-            innerEl.role = 'presentation';
-            innerEl.tabIndex = -1;
+                if (menuItemView.hasShortcut) {
+                    hasShortcuts = true;
+                }
 
-            /*
-             * Make sure any items with content (those that are not a
-             * separator) have an ID.
-             */
-            if (!menuItemEl.id) {
-                menuItemEl.id = `menuitem-${this.cid}-${index}`;
+                if (hasIcons && hasShortcuts) {
+                    /* We can bail early. */
+                    break;
+                }
             }
         }
 
-        if (menuItemEl.classList.contains('ink-c-menu__item')) {
-            menuItemEl.dataset.itemIndex = index.toString();
-            this.#items.push(menuItemEl);
+        const el = this.el;
+        el.classList.toggle('-has-icons', hasIcons);
+        el.classList.toggle('-has-shortcuts', hasShortcuts);
+    }
+
+    /**
+     * Clear the state for all the menu items.
+     *
+     * This will remove each menu item and clear the state so that changes
+     * to the items will no longer impact the menu.
+     */
+    #clearMenuItems() {
+        for (const menuItemView of this.#itemViews) {
+            menuItemView.remove();
         }
+
+        this.#items = [];
+        this.#itemViews = [];
     }
 
     /**
@@ -1287,3 +1201,360 @@ export class MenuView<
         }
     }
 }
+
+
+/**
+ * Base class for menu items.
+ *
+ * This sets some basic state on the menu item. It's meant to be subclassed
+ * to control additional state and rendering.
+ *
+ * Version Added:
+ *     1.0
+ */
+@spina
+class BaseMenuItemView extends BaseComponentView<
+    MenuItem,
+    HTMLLIElement
+> {
+    static tagName = 'li';
+    static attributes: ElementAttributes = {
+        'draggable': false,
+        'tabIndex': '-1',
+    };
+
+    /**********************
+     * Instance variables *
+     **********************/
+
+    /** Whether clicking the menu item should close the menu. */
+    closeOnClick: boolean = false;
+
+    /** Whether the menu item will display or reserve space for an icon. */
+    hasIcon: boolean = false;
+
+    /** Whether the menu item will display a keyboard shortcut. */
+    hasShortcut: boolean = false;
+}
+
+
+/**
+ * A standard menu item.
+ *
+ * This provides common rendering and state management for menu items. It
+ * will render the label (or custom element) and an optional icon and
+ * keyboard shortcut. Updates to the information in the model will trigger
+ * a re-render of the menu item.
+ *
+ * Subclasses can introduce additional state and rendering logic.
+ *
+ * Version Added:
+ *     1.0
+ */
+@spina
+class MenuItemView extends BaseMenuItemView {
+    static className = 'ink-c-menu__item';
+    static attributes: ElementAttributes = {
+        'role': 'menuitem',
+    };
+
+    static events: EventsHash = {
+        'click': '_onClick',
+    };
+
+    static modelEvents: EventsHash = {
+        'change:childEl': '_onMenuItemChanged',
+        'change:iconName': '_onMenuItemChanged',
+        'change:keyboardShortcut': '_onMenuItemChanged',
+        'change:keyboardShortcutRegistry': '_onMenuItemChanged',
+        'change:label': '_onMenuItemChanged',
+        'change:url': '_onMenuItemChanged',
+    };
+
+    /**********************
+     * Instance variables *
+     **********************/
+
+    /**
+     * Whether clicking the menu item should close the menu.
+     *
+     * By default, menu items will close when clicked. This can be overridden
+     * by subclasses.
+     */
+    closeOnClick = true;
+
+    /**
+     * The view managing the keyboard shortcut.
+     */
+    #keyboardShortcutView: KeyboardShortcutView = null;
+
+    /**
+     * Update state for the menu item.
+     *
+     * This will compute state to set on the view. Subclasses can override
+     * this to compute or override any state.
+     */
+    protected updateMenuItemState() {
+        const model = this.model;
+
+        this.hasIcon = !!model.get('iconName');
+        this.hasShortcut = !!model.get('keyboardShortcut');
+    }
+
+    /**
+     * Handle removing the menu item.
+     *
+     * This will unregister state associated with the menu item.
+     */
+    protected onRemove() {
+        super.onRemove();
+
+        this.#keyboardShortcutView?.remove();
+    }
+
+    /**
+     * Handle the initial rendering of the component.
+     *
+     * This will calculate the state from the model prior to the first render.
+     */
+    protected onComponentInitialRender() {
+        this.updateMenuItemState();
+    }
+
+    /**
+     * Render the menu item.
+     *
+     * This will rebuild the internals of the menu item based on the current
+     * menu item state.
+     */
+    protected onRender() {
+        const model = this.model;
+        const iconName = model.get('iconName');
+        const label = model.get('label');
+        const registry = model.get('keyboardShortcutRegistry');
+        const shortcut = model.get('keyboardShortcut');
+        const url = model.get('url');
+        const innerProps: ElementAttributes = {};
+        let iconEl: HTMLSpanElement;
+        let innerTag: string;
+
+        /* Clean up any old state. */
+        this.#keyboardShortcutView?.remove();
+
+        if (url) {
+            innerTag = 'a';
+            innerProps['href'] = url;
+        } else {
+            innerTag = 'span';
+        }
+
+        if (this.hasIcon) {
+            const iconClass =
+                iconName
+                ? `ink-c-menu__item-icon ${iconName}`
+                : 'ink-c-menu__item-icon';
+
+            iconEl = paint`
+                <span class="${iconClass}" aria-hidden="true"/>
+            `;
+        }
+
+        let keyboardShortcutView: KeyboardShortcutView = null;
+
+        if (shortcut) {
+            keyboardShortcutView = craft<KeyboardShortcutView>`
+                <Ink.KeyboardShortcut className="ink-c-menu__item-shortcut"
+                                      keys="${shortcut}"
+                                      registry=${registry}
+                                      onInvoke="click"/>
+            `;
+        }
+
+        renderInto(
+            this.el,
+            paint`
+                <${innerTag} class="ink-c-menu__item-inner"
+                             role="presentation"
+                             tabIndex="-1"
+                             ...${innerProps}>
+                 ${iconEl}
+                 <label class="ink-c-menu__item-label">
+                  ${model.get('childEl') || label}
+                 </label>
+                 ${keyboardShortcutView}
+                </${innerTag}>
+            `,
+            {
+                empty: true,
+            });
+
+        this.#keyboardShortcutView = keyboardShortcutView;
+    }
+
+    /**
+     * Handle changes to the menu item.
+     *
+     * This will compute new menu item state and then trigger a re-render.
+     */
+    private _onMenuItemChanged() {
+        this.updateMenuItemState();
+        this.render();
+    }
+
+    /**
+     * Handle a click on the menu item.
+     *
+     * This will invoke the action associated with the menu item, and then
+     * emit a ``clicked`` event.
+     *
+     * Args:
+     *     evt (MouseEvent):
+     *         The mouse event triggering this handler.
+     */
+    private _onClick(evt: MouseEvent) {
+        evt.stopPropagation();
+
+        if (!this.model.get('url')) {
+            evt.preventDefault();
+        }
+
+        this.model.invokeAction(evt);
+        this.trigger('clicked');
+    }
+}
+
+
+/**
+ * Base class for a checkable menu item.
+ *
+ * This provides common state management for checkable menu items (checkbox
+ * and radio button items).
+ *
+ * Version Added:
+ *     1.0
+ */
+@spina
+class BaseCheckableMenuItemView extends MenuItemView {
+    static modelEvents: EventsHash = {
+        'change:checked': '_onCheckedChanged',
+    };
+
+    /**
+     * A mapping of item types to checkmark icon classes.
+     *
+     * This is only for checkbox and radio items.
+     *
+     * Version Added:
+     *     1.0
+     */
+    static _CHECKED_ICONS = {
+        [MenuItemType.CHECKBOX_ITEM]: 'ink-i-check',
+        [MenuItemType.RADIO_ITEM]: 'ink-i-dot',
+    };
+
+    /**********************
+     * Instance variables *
+     **********************/
+
+    /* Never close on click. Keep the menu open so the toggle can occur. */
+    closeOnClick = false;
+
+    /**
+     * Update state for the menu item.
+     *
+     * This will load state from the menu item and then force the parent menu
+     * to always reserve space for a checkable state icon, even if not
+     * checked.
+     */
+    protected updateMenuItemState() {
+        super.updateMenuItemState();
+
+        /* Always claim space for an icon. */
+        this.hasIcon = true;
+    }
+
+    /**
+     * Render the menu item.
+     *
+     * This will perform the standard rendering of the menu item and then
+     * update the icon to reflect the current checkable state.
+     */
+    protected onRender() {
+        super.onRender();
+        this._onCheckedChanged();
+    }
+
+    /**
+     * Handle changes to the checked state of the menu item.
+     *
+     * This will update the icon to reflect the state of the menu item.
+     */
+    private _onCheckedChanged() {
+        const el = this.el;
+        const model = this.model;
+        const checked = model.get('checked');
+        const checkIconName =
+            BaseCheckableMenuItemView._CHECKED_ICONS[model.get('type')];
+
+        el.setAttribute('aria-checked', `${checked}`);
+        el.querySelector('.ink-c-menu__item-icon')
+            .classList.toggle(checkIconName, checked);
+    }
+}
+
+
+/**
+ * A checkbox menu item.
+ *
+ * Version Added:
+ *     1.0
+ */
+@spina
+class CheckboxMenuItemView extends BaseCheckableMenuItemView {
+    static attributes: ElementAttributes = {
+        'role': 'menuitemcheckbox',
+    };
+}
+
+
+/**
+ * A radio menu item.
+ *
+ * Version Added:
+ *     1.0
+ */
+@spina
+class RadioMenuItemView extends BaseCheckableMenuItemView {
+    static attributes: ElementAttributes = {
+        'role': 'menuitemradio',
+    };
+}
+
+
+/**
+ * A separator menu item.
+ *
+ * Version Added:
+ *     1.0
+ */
+@spina
+class SeparatorMenuItemView extends BaseMenuItemView {
+    static className = 'ink-c-menu__separator';
+    static attributes: ElementAttributes = {
+        'role': 'separator',
+    };
+}
+
+
+/**
+ * A mapping of menu item types to view classes.
+ *
+ * Version Added:
+ *     1.0
+ */
+const _menuItemViews = {
+    [MenuItemType.ITEM]: MenuItemView,
+    [MenuItemType.CHECKBOX_ITEM]: CheckboxMenuItemView,
+    [MenuItemType.RADIO_ITEM]: RadioMenuItemView,
+    [MenuItemType.SEPARATOR]: SeparatorMenuItemView,
+};
