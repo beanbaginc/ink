@@ -344,19 +344,11 @@
             var(--if-dark, var(--ink-p-blue-500))
             var(--if-light, var(--ink-p-blue-500));
 
-          accent-success-bg:
-            var(--if-dark, var(--ink-p-light__green-200))
-            var(--if-light, var(--ink-p-green-200));
-
+          accent-success-bg: var(--ink-p-light__green-200);
           accent-error-bg: var(--ink-p-light__red-100);
-
           accent-warning-bg: var(--ink-p-light__yellow-300);
-
           accent-info-bg: var(--ink-p-light__blue-200);
-
-          accent-highlight-bg:
-            var(--if-dark, var(--ink-p-yellow-800))
-            var(--if-light, var(--ink-p-yellow-200));
+          accent-highlight-bg: var(--ink-p-light__yellow-200);
 
           /*
            * Standard accent foreground definitions.
@@ -369,6 +361,17 @@
           accent-warning-fg: var(--ink-p-text-on-light-color);
           accent-info-fg: var(--ink-p-text-on-light-color);
           accent-highlight-fg: var(--ink-p-text-on-light-color);
+
+          /*
+           * Standard accent foreground colors on container backgrounds.
+           */
+          accent-success-fg-on-container: var(--ink-p-green-800);
+          accent-error-fg-on-container:
+            var(--if-dark, var(--ink-p-red-800))
+            var(--if-light, var(--ink-p-red-600));
+          accent-highlight-fg-on-container:
+            var(--if-dark, var(--ink-p-yellow-500))
+            var(--if-light, var(--ink-p-brown-800));
 
           /*
            * Standard accent outline colors.
@@ -481,7 +484,23 @@
 
           accent-default-border-color:
             var(--ink-p-header-border-color);
-        });
+
+          /*
+           * Basic text formatting.
+           */
+          code-literal-bg:
+            var(--if-dark, inherit)
+            var(--if-light, var(--ink-p-grey-100));
+
+          code-literal-fg:
+            var(--if-dark, var(--ink-p-red-800))
+            var(--if-light, var(--ink-p-red-700));
+
+          code-literal-border-color:
+            var(--if-dark, rgba(255, 255, 255, 0.15))
+            var(--if-light, rgba(0, 0, 0, 0.1));
+        };
+      );
     }
   }
 }
