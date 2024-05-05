@@ -16,12 +16,22 @@
                                    var(--ink-u-spacing-m);
   --ink-c-data-table-header-bg: var(--ink-p-header-bg);
   --ink-c-data-table-header-text-color: var(--ink-p-header-text-color);
-  --ink-c-data-table-body-bg: var(--ink-p-container-bg);
-  --ink-c-data-table-body-text-color: var(--ink-p-container-fg);
+  --ink-c-data-table-header-hover-text-color: var(--ink-p-link-color);
+  --ink-c-data-table-body-bg:
+    var(--if-dark, black)
+    var(--if-light, white);
+  --ink-c-data-table-body-text-color: var(--ink-p-text-color);
+  --ink-c-data-table-row-border-color:
+    var(--if-dark, rgba(255, 255, 255, 0.08))
+    var(--if-light, rgba(0, 0, 0, 0.08));
+  --ink-c-data-table-row-border:
+    var(--ink-u-border-thin)
+    var(--ink-c-data-table-row-border-color)
+    solid;
   --ink-c-data-table-row-bg: transparent;
   --ink-c-data-table-row-alt-bg:
     var(--if-dark, rgba(255, 255, 255, 0.025))
-    var(--if-light, rgba(0, 0, 0, 0.025));
+    var(--if-light, rgba(0, 0, 0, 0.01));
 
   --ink-c-data-table-unsort-icon: var(--ink-i-close);
 }
