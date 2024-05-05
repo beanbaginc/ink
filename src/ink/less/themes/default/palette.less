@@ -313,7 +313,7 @@
            */
           container-outline:
             var(--if-dark, rgba(255, 255, 255, 0.2))
-            var(--if-light, rgba(0, 0, 0, 0.2));
+            var(--if-light, rgba(0, 0, 0, 0.3));
 
           container-outline-strong:
             var(--if-dark, rgba(255, 255, 255, 0.4))
@@ -321,7 +321,7 @@
 
           container-outline-weak:
             var(--if-dark, rgba(255, 255, 255, 0.1))
-            var(--if-light, rgba(0, 0, 0, 0.1));
+            var(--if-light, rgba(0, 0, 0, 0.2));
 
           /*
            * Standard accent background definitions.
@@ -396,8 +396,8 @@
           text-on-dark-color: var(--ink-p-white);
           text-on-light-color: var(--ink-p-black);
 
-          text-on-dark-color-weak: rgba(255, 255, 255, 0.8);
-          text-on-light-color-weak: rgba(0, 0, 0, 0.8);
+          text-on-dark-color-weak: rgba(255, 255, 255, 0.75);
+          text-on-light-color-weak: rgba(0, 0, 0, 0.5);
 
           text-color:
             var(--if-dark, var(--ink-p-text-on-dark-color))
@@ -410,13 +410,18 @@
           /*
            * Link color definitions.
            */
+          link-on-light-color: var(--ink-p-light__blue-800);
+          link-on-light-hover-color: darken(@_light-palette[@blue-800], 10%);
+          link-on-dark-color: #AEC9FF;
+          link-on-dark-hover-color: lighten($link-on-dark-color, 10%);
+
           link-color:
-            var(--if-dark, #AEC9FF)
-            var(--if-light, var(--ink-p-blue-800));
+            var(--if-dark, var(--ink-p-link-on-dark-color))
+            var(--if-light, var(--ink-p-link-on-light-color));
 
           link-hover-color:
-            var(--if-dark, darken(#AEC9FF, 10%))
-            var(--if-light, darken(@_light-palette[@blue-800], 10%));
+            var(--if-dark, var(--ink-p-link-on-dark-hover-color))
+            var(--if-light, var(--ink-p-link-on-light-hover-color));
 
           /*
            * Icon color definitions.
@@ -468,12 +473,6 @@
           input-selection-bg:
             var(--if-dark, rgba(200, 108, 255, 0.2))
             var(--if-light, rgba(0, 128, 255, 0.2));
-
-          /*
-           * Sidebar color definitions.
-           */
-          sidebar-item-bg-color:
-            var(--ink-p-pane-bg-color);
 
           /*
            * Accent color definitions.
