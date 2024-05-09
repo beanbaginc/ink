@@ -268,8 +268,8 @@
            * These define foreground colors used for text, icons, etc. placed
            * directly on a Surface.
            */
-          surface-fg: var(--ink-p-text-color);
-          surface-fg-weak: var(--ink-p-text-color-weak);
+          surface-fg: var(--ink-p-fg);
+          surface-fg-weak: var(--ink-p-fg-weak);
 
           /**
            * Standard container background definitions.
@@ -307,19 +307,19 @@
           container-fg-weak: var(--ink-p-surface-fg-weak);
 
           /*
-           * Standard outline colors.
+           * Standard border colors.
            *
-           * These are used to provide an outline for a container.
+           * These are used to provide a border for a container.
            */
-          container-outline:
+          container-border-color:
             var(--if-dark, rgba(255, 255, 255, 0.2))
             var(--if-light, rgba(0, 0, 0, 0.3));
 
-          container-outline-strong:
+          container-border-color-strong:
             var(--if-dark, rgba(255, 255, 255, 0.4))
             var(--if-light, rgba(0, 0, 0, 0.4));
 
-          container-outline-weak:
+          container-border-color-weak:
             var(--if-dark, rgba(255, 255, 255, 0.1))
             var(--if-light, rgba(0, 0, 0, 0.2));
 
@@ -353,14 +353,14 @@
           /*
            * Standard accent foreground definitions.
            */
-          accent-primary-fg: var(--ink-p-text-on-dark-color);
-          accent-secondary-fg: var(--ink-p-text-on-dark-color);
-          accent-tertiary-fg: var(--ink-p-text-on-light-color);
-          accent-success-fg: var(--ink-p-text-on-light-color);
-          accent-error-fg: var(--ink-p-text-on-light-color);
-          accent-warning-fg: var(--ink-p-text-on-light-color);
-          accent-info-fg: var(--ink-p-text-on-light-color);
-          accent-highlight-fg: var(--ink-p-text-on-light-color);
+          accent-primary-fg: var(--ink-p-fg-on-dark);
+          accent-secondary-fg: var(--ink-p-fg-on-dark);
+          accent-tertiary-fg: var(--ink-p-fg-on-light);
+          accent-success-fg: var(--ink-p-fg-on-light);
+          accent-error-fg: var(--ink-p-fg-on-light);
+          accent-warning-fg: var(--ink-p-fg-on-light);
+          accent-info-fg: var(--ink-p-fg-on-light);
+          accent-highlight-fg: var(--ink-p-fg-on-light);
 
           /*
            * Standard accent foreground colors on container backgrounds.
@@ -374,16 +374,16 @@
             var(--if-light, var(--ink-p-brown-800));
 
           /*
-           * Standard accent outline colors.
+           * Standard accent border colors.
            */
-          accent-primary-outline: var(--ink-p-container-outline);
-          accent-secondary-outline: var(--ink-p-container-outline);
-          accent-tertiary-outline: var(--ink-p-container-outline);
-          accent-success-outline: var(--ink-p-container-outline);
-          accent-error-outline: rgba(0, 0, 0, 0.2);
-          accent-warning-outline: rgba(0, 0, 0, 0.2);
-          accent-info-outline: var(--ink-p-container-outline);
-          accent-highlight-outline: var(--ink-p-container-outline);
+          accent-primary-border-color: var(--ink-p-container-border-color);
+          accent-secondary-border-color: var(--ink-p-container-border-color);
+          accent-tertiary-border-color: var(--ink-p-container-border-color);
+          accent-success-border-color: var(--ink-p-container-border-color);
+          accent-error-border-color: rgba(0, 0, 0, 0.2);
+          accent-warning-border-color: rgba(0, 0, 0, 0.2);
+          accent-info-border-color: var(--ink-p-container-border-color);
+          accent-highlight-border-color: var(--ink-p-container-border-color);
 
           /*
            * Page color definitions.
@@ -393,41 +393,40 @@
           /*
            * Text color definitions.
            */
-          text-on-dark-color: var(--ink-p-white);
-          text-on-light-color: var(--ink-p-black);
+          fg-on-dark: var(--ink-p-white);
+          fg-on-light: var(--ink-p-black);
 
-          text-on-dark-color-weak: rgba(255, 255, 255, 0.75);
-          text-on-light-color-weak: rgba(0, 0, 0, 0.5);
+          fg-weak-on-dark: rgba(255, 255, 255, 0.75);
+          fg-weak-on-light: rgba(0, 0, 0, 0.5);
 
-          text-color:
-            var(--if-dark, var(--ink-p-text-on-dark-color))
-            var(--if-light, var(--ink-p-text-on-light-color));
-
-          text-color-weak:
-            var(--if-dark, var(--ink-p-text-on-dark-color-weak))
-            var(--if-light, var(--ink-p-text-on-light-color-weak));
+          fg:
+            var(--if-dark, var(--ink-p-fg-on-dark))
+            var(--if-light, var(--ink-p-fg-on-light));
+          fg-weak:
+            var(--if-dark, var(--ink-p-fg-weak-on-dark))
+            var(--if-light, var(--ink-p-fg-weak-on-light));
 
           /*
            * Link color definitions.
            */
-          link-on-light-color: var(--ink-p-light__blue-800);
-          link-on-light-hover-color: darken(@_light-palette[@blue-800], 10%);
-          link-on-dark-color: #AEC9FF;
-          link-on-dark-hover-color: lighten($link-on-dark-color, 10%);
+          link-fg-on-light: var(--ink-p-light__blue-800);
+          link-fg-on-dark: #AEC9FF;
 
-          link-color:
-            var(--if-dark, var(--ink-p-link-on-dark-color))
-            var(--if-light, var(--ink-p-link-on-light-color));
+          link-hover-fg-on-light: darken(@_light-palette[@blue-800], 10%);
+          link-hover-fg-on-dark: lighten($link-fg-on-dark, 10%);
 
-          link-hover-color:
-            var(--if-dark, var(--ink-p-link-on-dark-hover-color))
-            var(--if-light, var(--ink-p-link-on-light-hover-color));
+          link-fg:
+            var(--if-dark, var(--ink-p-link-fg-on-dark))
+            var(--if-light, var(--ink-p-link-fg-on-light));
+
+          link-hover-fg:
+            var(--if-dark, var(--ink-p-link-hover-fg-on-dark))
+            var(--if-light, var(--ink-p-link-hover-fg-on-light));
 
           /*
            * Icon color definitions.
            */
-          icon-color:
-            var(--ink-p-text);
+          icon-color: var(--ink-p-fg);
 
           /*
            * Header color definitions.
@@ -436,29 +435,29 @@
             var(--if-dark, #1E1F22)
             var(--if-light, var(--ink-p-blue-300));
 
-          header-border-color: var(--ink-p-container-outline);
+          header-border-color: var(--ink-p-container-border-color);
 
-          header-text-color:
-            var(--if-dark, var(--ink-p-text-on-dark-color))
+          header-fg:
+            var(--if-dark, var(--ink-p-fg-on-dark))
             var(--if-light, var(--ink-p-accent-tertiary-fg));
 
-          header-text-color-weak: var(--ink-p-text-color-weak);
+          header-fg-weak: var(--ink-p-fg-weak);
 
           /* Footer color definitions. */
           footer-bg:
             var(--if-dark, var(--ink-p-header-bg))
             var(--if-light, var(--ink-p-grey-200));
 
-          footer-border-color: var(--ink-p-container-outline);
+          footer-border-color: var(--ink-p-container-border-color);
 
-          footer-text-color:
-            var(--if-dark, var(--ink-p-header-text-color))
+          footer-fg:
+            var(--if-dark, var(--ink-p-header-fg))
             var(--if-light, var(--ink-p-surface-fg));
 
           /*
            * Input color definitions.
            */
-          input-bg-color:
+          input-bg:
             var(--if-dark, #282F32)
             var(--if-light, var(--ink-p-white));
 
@@ -466,9 +465,9 @@
             var(--if-dark, var(--ink-p-black))
             var(--if-light, var(--ink-p-grey-400));
 
-          input-text-color:
-            var(--if-dark, var(--ink-p-text-on-dark-color))
-            var(--if-light, var(--ink-p-text-on-light-color));
+          input-fg:
+            var(--if-dark, var(--ink-p-fg-on-dark))
+            var(--if-light, var(--ink-p-fg-on-light));
 
           input-selection-bg:
             var(--if-dark, rgba(200, 108, 255, 0.2))

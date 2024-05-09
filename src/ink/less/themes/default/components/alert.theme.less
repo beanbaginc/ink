@@ -12,33 +12,33 @@
 
           /* Default state */
           standard-bg: var(--ink-p-grey-200);
-          standard-border-color: var(--ink-p-container-outline);
+          standard-border-color: var(--ink-p-container-border-color);
           standard-icon: var(--ink-i-info);
-          standard-text-color: var(--ink-c-text-color);
+          standard-fg: var(--ink-p-fg);
 
           /* Error state */
           error-bg: var(--ink-p-accent-error-bg);
-          error-border-color: var(--ink-p-accent-error-outline);
+          error-border-color: var(--ink-p-accent-error-border-color);
           error-icon: var(--ink-i-error);
-          error-text-color: var(--ink-p-accent-error-fg);
+          error-fg: var(--ink-p-accent-error-fg);
 
           /* Info state */
           info-bg: var(--ink-p-accent-info-bg);
-          info-border-color: var(--ink-p-accent-info-outline);
+          info-border-color: var(--ink-p-accent-info-border-color);
           info-icon: var(--ink-i-info);
-          info-text-color: var(--ink-p-accent-info-fg);
+          info-fg: var(--ink-p-accent-info-fg);
 
           /* Success state */
           success-bg: var(--ink-p-accent-success-bg);
-          success-border-color: var(--ink-p-accent-success-outline);
+          success-border-color: var(--ink-p-accent-success-border-color);
           success-icon: var(--ink-i-success);
-          success-text-color: var(--ink-p-accent-success-fg);
+          success-fg: var(--ink-p-accent-success-fg);
 
           /* Warning state */
           warning-bg: var(--ink-p-accent-warning-bg);
-          warning-border-color: var(--ink-p-accent-warning-outline);
+          warning-border-color: var(--ink-p-accent-warning-border-color);
           warning-icon: var(--ink-i-warning);
-          warning-text-color: var(--ink-p-accent-warning-fg);
+          warning-fg: var(--ink-p-accent-warning-fg);
         };
       );
     };
@@ -52,7 +52,7 @@
         --_ink-c-alert-bg: var(--ink-c-alert-standard-bg);
         --_ink-c-alert-border-color:
           var(--ink-c-alert-standard-border-color);
-        --_ink-c-alert-text-color: var(--ink-c-alert-standard-text-color);
+        --_ink-c-alert-fg: var(--ink-c-alert-standard-fg);
         --_ink-c-alert-icon: var(--ink-c-alert-standard-icon);
 
         background: var(--_ink-c-alert-bg);
@@ -62,7 +62,7 @@
                 solid;
         box-shadow: var(--ink-c-panel-box-shadow);
         box-sizing: border-box;
-        color: var(--_ink-c-alert-text-color);
+        color: var(--_ink-c-alert-fg);
         font-size: var(--ink-u-font-std);
         padding: var(--ink-u-spacing-std);
       };
@@ -120,7 +120,7 @@
         --_ink-c-alert-bg: var(--ink-c-alert-error-bg);
         --_ink-c-alert-border-color: var(--ink-c-alert-error-border-color);
         --_ink-c-alert-icon: var(--ink-c-alert-error-icon);
-        --_ink-c-alert-text-color: var(--ink-c-alert-error-text-color);
+        --_ink-c-alert-fg: var(--ink-c-alert-error-fg);
       };
 
       /*
@@ -130,7 +130,7 @@
         --_ink-c-alert-bg: var(--ink-c-alert-info-bg);
         --_ink-c-alert-border-color: var(--ink-c-alert-info-border-color);
         --_ink-c-alert-icon: var(--ink-c-alert-info-icon);
-        --_ink-c-alert-text-color: var(--ink-c-alert-info-text-color);
+        --_ink-c-alert-fg: var(--ink-c-alert-info-fg);
       };
 
       /*
@@ -140,7 +140,7 @@
         --_ink-c-alert-bg: var(--ink-c-alert-success-bg);
         --_ink-c-alert-border-color: var(--ink-c-alert-success-border-color);
         --_ink-c-alert-icon: var(--ink-c-alert-success-icon);
-        --_ink-c-alert-text-color: var(--ink-c-alert-success-text-color);
+        --_ink-c-alert-fg: var(--ink-c-alert-success-fg);
       };
 
       /*
@@ -150,7 +150,7 @@
         --_ink-c-alert-bg: var(--ink-c-alert-warning-bg);
         --_ink-c-alert-border-color: var(--ink-c-alert-warning-border-color);
         --_ink-c-alert-icon: var(--ink-c-alert-warning-icon);
-        --_ink-c-alert-text-color: var(--ink-c-alert-warning-text-color);
+        --_ink-c-alert-fg: var(--ink-c-alert-warning-fg);
       };
     };
   };

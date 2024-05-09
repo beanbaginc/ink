@@ -7,20 +7,20 @@
 
 :root {
   --ink-c-data-table-border-color:
-    var(--if-dark, var(--ink-p-container-outline-weak))
-    var(--if-light, var(--ink-p-container-outline));
+    var(--if-dark, var(--ink-p-container-border-color))
+    var(--if-light, var(--ink-p-container-border-color));
   --ink-c-data-table-border: var(--ink-u-border-thin)
                              var(--ink-c-data-table-border-color)
                              solid;
   --ink-c-data-table-cell-padding: var(--ink-u-spacing-sm)
                                    var(--ink-u-spacing-m);
   --ink-c-data-table-header-bg: var(--ink-p-header-bg);
-  --ink-c-data-table-header-text-color: var(--ink-p-header-text-color);
-  --ink-c-data-table-header-hover-text-color: var(--ink-p-link-color);
+  --ink-c-data-table-header-fg: var(--ink-p-header-fg);
+  --ink-c-data-table-header-hover-fg: var(--ink-p-link-fg);
   --ink-c-data-table-body-bg:
     var(--if-dark, black)
     var(--if-light, white);
-  --ink-c-data-table-body-text-color: var(--ink-p-text-color);
+  --ink-c-data-table-body-fg: var(--ink-p-fg);
   --ink-c-data-table-row-border-color:
     var(--if-dark, rgba(255, 255, 255, 0.08))
     var(--if-light, rgba(0, 0, 0, 0.08));
