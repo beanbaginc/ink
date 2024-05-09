@@ -55,6 +55,17 @@
 
             /* Make sure there's no space between buttons. */
             font-size: 0;
+
+            #ink-ns-ui.base.customize-component(
+              @name: @button-name;
+              @schema: @button-schema;
+              @schema-rules: {
+                @__default__: {
+                  /* Avoid margins from outer styles. */
+                  margin: 0;
+                };
+              };
+            );
           };
 
           /*
@@ -75,7 +86,8 @@
                    */
                   width: 100%;
                 };
-              });
+              };
+            );
           };
         };
       );
