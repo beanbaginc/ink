@@ -1,0 +1,83 @@
+/**
+ * Theme for ink-c-menu-label.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "../../../components/menu-label.component.less";
+
+
+#ink-ns-default-theme() {
+  .menu-label() {
+    @vars: {
+    };
+
+    @rules: {
+      /*
+       * Default styles for the component.
+       */
+      @__default__: {
+        color: var(--ink-p-fg);
+      };
+
+      /*
+       * Styles for the disabled state.
+       */
+      @state-disabled: {
+        color: var(--ink-p-fg-weak);
+      };
+
+      /*
+       * Styles for the hover state.
+       */
+      @state-hover: {
+        color: var(--ink-p-fg);
+      };
+
+      /*
+       * Styles for when a menu is opened.
+       */
+      @state-menu-open: {
+        background: var(--ink-p-accent-secondary-bg);
+        color: var(--ink-p-accent-secondary-fg);
+      };
+
+      /*
+       * Styles for when a menu is opened below the label.
+       */
+      @state-menu-opened-down: {
+        border-radius: var(--ink-u-border-radius-std)
+                       var(--ink-u-border-radius-std)
+                       0 0;
+      };
+
+      /*
+       * Styles for when a menu is opened above the label.
+       */
+      @state-menu-opened-up: {
+        border-radius: 0 0
+                       var(--ink-u-border-radius-std)
+                       var(--ink-u-border-radius-std);
+      };
+
+      /*
+       * Styles for the inner content wrapper.
+       */
+      @inner: {
+        gap: var(--ink-u-spacing-xs);
+        padding: var(--ink-u-spacing-s);
+      };
+    };
+  }
+}
+
+
+& {
+  @_menu-label: #ink-ns-default-theme.menu-label();
+
+  #ink-ns-ui.menu-label.create(
+    @vars: @_menu-label[@vars];
+    @rules: @_menu-label[@rules];
+  );
+}

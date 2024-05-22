@@ -1,0 +1,170 @@
+/**
+ * Schema for a menu label.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @menu-label: {
+    /**
+     * Populate a menu label schema.
+     *
+     * This will provide the structure for a menu label component, populating
+     * the parts of the component with the provided style rules.
+     *
+     * Menu labels contain text, an optional icon, and an optional drop-down
+     * icon.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the menu label component.
+       *
+       * DOM Attributes:
+       *     aria-controls (string):
+       *         This must be set to the ID of the contained menu that this
+       *         label manages.
+       *
+       *     aria-expanded (boolean, optional):
+       *         This must be set to ``true`` when the menu is open.
+       *
+       *     aria-haspopup (boolean):
+       *         This must be set to ``true``.
+       *
+       *     role (string):
+       *         This must be set to ``menuitem``.
+       *
+       * Modifiers:
+       *     -opens-up:
+       *         The menu will appear above the label.
+       *
+       * Structure:
+       *     <a class="@{name}
+       *               [-opens-up]"
+       *        aria-controls="..."
+       *        aria-haspopup="true"
+       *        role="menuitem"
+       *        [aria-disabled="true"]
+       *        [aria-expanded="true"]>
+       *      <span class="@{name}__inner" ...>
+       *       ...
+       *      </span>
+       *      <menu class="@{name}__menu ..." ...>
+       *       ...
+       *      </menu>
+       *     </a>
+       */
+      & {
+        &,
+        &:link,
+        &:visited {
+          .add-rules('__default__');
+        }
+
+        &:hover {
+          .add-rules('state-hover');
+        }
+
+        &[aria-disabled="true"] {
+          .add-rules('state-disabled');
+        }
+
+        &[aria-expanded="true"] {
+          .add-rules('state-menu-open');
+
+          &.-opens-up {
+            .add-rules('state-menu-opened-up');
+          }
+
+          &:not(.-opens-up) {
+            .add-rules('state-menu-opened-down');
+          }
+        }
+      }
+
+      /**
+       * The drop-down icon.
+       *
+       * This is an optional dropdown icon shown alongside the label.
+       *
+       * Structure:
+       *     <span class="@{name}__dropdown-icon ..."</span>
+       */
+      &__dropdown-icon {
+        .add-rules('dropdown-icon');
+      }
+
+      /**
+       * The icon shown alongside the text.
+       *
+       * Structure:
+       *     <span class="@{name}__icon ..."></span>
+       */
+      &__icon {
+        .add-rules('icon');
+      }
+
+      /**
+       * The inner element containing presentational information.
+       *
+       * Structure:
+       *     <span class="@{name}__inner">
+       *      [<span class="@{name}__icon ..." ...></span>]
+       *      <span class="@{name}__text ..." ...></span>
+       *      [<span class="@{name}__dropdown-icon ..." ...></span>]
+       *     </span>
+       */
+      &__inner {
+        .add-rules('inner');
+      }
+
+      /**
+       * The menu controlled by the label.
+       *
+       * See the Menu component for the full list of attributes and
+       * customization options.
+       *
+       * Structure:
+       *     <menu class="@{name}__menu @{menu:name} ..." ...>
+       *      ...
+       *     </menu>
+       */
+      &__menu {
+        .add-rules('menu');
+      }
+
+      /**
+       * The text shown for the label.
+       *
+       * Structure:
+       *     <span class="@{name}__text"></span>
+       */
+      &__text {
+        .add-rules('text');
+      }
+    }
+  }
+}

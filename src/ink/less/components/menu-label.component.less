@@ -1,0 +1,74 @@
+/**
+ * Component management for ink-c-menu-label.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/menu-label.schema.less";
+
+
+#ink-ns-ui() {
+  .menu-label() {
+    /**
+     * Create an ink-c-menu-label component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rules (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-menu-label;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@menu-label];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            cursor: pointer;
+            display: inline-flex;
+            position: relative;
+            text-decoration: none;
+          };
+
+          /*
+           * Styles for the disabled state.
+           */
+          @state-disabled: {
+            cursor: not-allowed;
+          };
+
+          /*
+           * Styles for the hover state.
+           */
+          @state-hover: {
+            text-decoration: none;
+          };
+
+          /*
+           * Styles for the inner container.
+           */
+          @inner: {
+            display: inline-flex;
+            align-items: center;
+          };
+        };
+      );
+    }
+  }
+}
