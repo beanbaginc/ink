@@ -7,45 +7,24 @@
 
 import {
     BaseModel,
-    EventsHash,
     spina,
 } from '@beanbag/spina';
 import _ from 'underscore';
 
 import {
-    SubcomponentInfo,
     craft,
     inkComponent,
     paint,
     renderInto,
 } from '../../core';
-import type { MenuItemsCollection } from '../collections/menuItemsCollection';
-import {
-    BaseComponentView,
-    BaseComponentViewOptions,
-} from './baseComponentView';
 import type {
     ButtonType,
     ButtonView,
 } from './buttonView';
-import { MenuView } from './menuView';
-
-
-/**
- * The direction in which a menu will open from a menu button.
- *
- * Menu buttons compute this automatically, based on available screen space.
- *
- * Version Added:
- *     1.0
- */
-export enum MenuButtonOpenDirection {
-    /** The menu opens in an up direction. */
-    UP = 'up',
-
-    /** The menu opens in a down direction. */
-    DOWN = 'down',
-}
+import {
+    type BaseMenuHandleViewOptions,
+    BaseMenuHandleView,
+} from './baseMenuHandleView';
 
 
 /**
@@ -54,7 +33,7 @@ export enum MenuButtonOpenDirection {
  * Version Added:
  *     1.0
  */
-export interface MenuButtonViewOptions extends BaseComponentViewOptions {
+export interface MenuButtonViewOptions extends BaseMenuHandleViewOptions {
     /**
      * Whether the menu button should show a busy state.
      */
@@ -84,22 +63,9 @@ export interface MenuButtonViewOptions extends BaseComponentViewOptions {
     menuIconName?: string;
 
     /**
-     * A list of menu items.
-     *
-     * Each will be passed to :js:meth:RB.MenuView.addItem` If not provided,
-     * explicit items should be added to the menu.
-     */
-    menuItems?: MenuItemsCollection;
-
-    /**
      * An ARIA label to apply to the dropdown handle button.
      */
     dropdownButtonAriaLabel?: string;
-
-    /**
-     * An ARIA label to apply to the menu.
-     */
-    menuAriaLabel?: string;
 
     /**
      * The handler for click events on the action button.
@@ -137,24 +103,14 @@ export interface MenuButtonViewOptions extends BaseComponentViewOptions {
 @inkComponent('Ink.MenuButton')
 @spina
 export class MenuButtonView<
-    T extends BaseModel = BaseModel,
+    TModel extends BaseModel = BaseModel,
     TOptions extends MenuButtonViewOptions = MenuButtonViewOptions,
-> extends BaseComponentView<
-    T,
-    HTMLElement,
+> extends BaseMenuHandleView<
+    TModel,
+    HTMLDivElement,
     TOptions
 > {
     static className = 'ink-c-menu-button';
-    static allowComponentChildren = true;
-
-    static subcomponents = MenuView.subcomponents;
-
-    static events: EventsHash = {
-        'keydown .ink-c-menu-button__dropdown-button':
-            '_onDropdownButtonKeyDown',
-        'mouseenter .ink-c-menu-button__dropdown-button':
-            '_onDropdownButtonMouseEnter',
-    };
 
     /**********************
      * Instance variables *
@@ -168,12 +124,6 @@ export class MenuButtonView<
 
     /** The drop-down button. */
     dropdownButtonView: ButtonView | null = null;
-
-    /** The menu associated with the button. */
-    menuView: MenuView | null = null;
-
-    /** The direction that the menu will open. */
-    private _openDirection = MenuButtonOpenDirection.DOWN;
 
     /**
      * Return whether the menu button is in a busy state.
@@ -313,19 +263,6 @@ export class MenuButtonView<
     }
 
     /**
-     * Return the menu items collection for the drop-down menu.
-     *
-     * This can be used to fetch or manipulate the items in the menu.
-     *
-     * Returns:
-     *     MenuItemsCollection:
-     *     The collection of menu items.
-     */
-    get menuItems(): MenuItemsCollection {
-        return this.menuView.menuItems;
-    }
-
-    /**
      * Handle initially rendering the button.
      *
      * This will set up the button, based on any provided options, and
@@ -339,10 +276,7 @@ export class MenuButtonView<
         el.setAttribute('role', 'group');
 
         const buttonLabel = options.label || '';
-        const menuLabel = options.menuAriaLabel || `Menu for ${buttonLabel}`;
         const cid = this.cid;
-        const menuID = `ink-menu-button__menu__${cid}`;
-        const labelID = `ink-menu-button__dropdown__${cid}`;
 
         /*
          * Build the internal buttons.
@@ -357,12 +291,7 @@ export class MenuButtonView<
             'aria-label': options.dropdownButtonAriaLabel || 'Open menu',
             'class': 'ink-c-menu-button__dropdown-button',
             'iconName': options.menuIconName || 'ink-i-dropdown',
-            'id': labelID,
-            'onClick': () => {
-                this.menuView.open({
-                    sticky: true,
-                });
-            },
+            'id': `ink-menu-button__dropdown__${cid}`,
         };
 
         const dropdownButton = craft<ButtonView>`
@@ -393,30 +322,13 @@ export class MenuButtonView<
         this.dropdownButtonView = dropdownButton;
 
         /* Build the internal menu and listen for events. */
-        const menu = craft<MenuView>`
-            <Ink.Menu aria-label=${menuLabel}
-                      class="ink-c-menu-button__menu"
-                      controllerEl=${dropdownButton.el}
-                      id="${menuID}"
-                      menuItems=${options.menuItems}>
-             ${state.subcomponents['_MenuItem']}
-            </Ink.Menu>
-        `;
-
-        this.listenTo(
-            menu,
-            'opening',
-            () => this.dropdownButtonView.el.classList.add('js-hover'));
-
-        this.listenTo(
-            menu,
-            'closing',
-            () => this.dropdownButtonView.el.classList.remove('js-hover'));
-
-        this.listenTo(menu, 'opened', () => this.#updateMenuPosition());
-
-        renderInto(el, menu);
-        this.menuView = menu;
+        renderInto(el, this.buildMenu({
+            controllerEl: dropdownButton.el,
+            menuAriaLabel: options.menuAriaLabel || `Menu for ${buttonLabel}`,
+            menuClassName: 'ink-c-menu-button__menu',
+            menuID: `ink-menu-button__menu__${cid}`,
+            openOnHover: true,
+        }));
 
         Object.assign(this, _.pick(
             options,
@@ -433,158 +345,7 @@ export class MenuButtonView<
      */
     protected onRemove() {
         this.dropdownButtonView.remove();
-        this.menuView.remove();
-    }
 
-    /**
-     * Record a menu item subcomponent.
-     *
-     * The subcomponent will be updated to work with ``Ink.Menu`` so that it
-     * can be passed in during render.
-     *
-     * Args:
-     *     subcomponent (SubcomponentInfo):
-     *         Information on the subcomponent.
-     */
-    private _recordMenuItem(subcomponent: SubcomponentInfo) {
-        const subcomponents = this.initialComponentState.subcomponents;
-        let menuItems: SubcomponentInfo[] = subcomponents['_MenuItem'];
-
-        if (!menuItems) {
-            menuItems = [];
-            subcomponents['_MenuItem'] = menuItems;
-        }
-
-        /* Transform this for the internal Ink.Menu, and store it. */
-        subcomponent.fullName = `Ink.Menu.${subcomponent.name}`;
-
-        menuItems.push(subcomponent);
-    }
-
-    /**
-     * Handle a keydown event.
-     *
-     * When the drop-down button has focus, this will take care of handling
-     * keyboard-based navigation, allowing the menu to be opened or closed.
-     * Opening the menu will transfer focus to the menu items.
-     *
-     * Args:
-     *     evt (KeyboardEvent):
-     *         The keydown event.
-     */
-    private _onDropdownButtonKeyDown(evt: KeyboardEvent) {
-        if (evt.key === 'ArrowDown' ||
-            evt.key === 'ArrowUp' ||
-            evt.key === 'Enter' ||
-            evt.key === ' ') {
-            /*
-             * Open the menu and set the current item, based on the open
-             * direction.
-             */
-            evt.stopPropagation();
-            evt.preventDefault();
-
-            const menu = this.menuView;
-            menu.open({
-                animate: false,
-                sticky: true,
-            });
-
-            if (this._openDirection === MenuButtonOpenDirection.UP) {
-                menu.setCurrentItem(-1);
-            } else {
-                menu.setCurrentItem(0);
-            }
-        } else if (evt.key === 'Escape') {
-            /* Close out of the menu. */
-            evt.stopPropagation();
-            evt.preventDefault();
-
-            this.menuView.close({
-                animate: false,
-            });
-        }
-    }
-
-    /**
-     * Handle a mouseenter event on the dropdown button.
-     *
-     * This will open the menu.
-     *
-     * Args:
-     *     e (MouseEvent):
-     *         The mouseenter event.
-     */
-    private _onDropdownButtonMouseEnter(evt: MouseEvent) {
-        evt.stopPropagation();
-        evt.preventDefault();
-
-        this.menuView.open();
-    }
-
-    /**
-     * Position the drop-down menu above or below the button.
-     *
-     * This will attempt to determine whether there's enough space below
-     * the button for the menu to fully appear. If there is not, then the
-     * menu will appear above the button instead.
-     *
-     * The resulting direction will also impact the styling of the button and
-     * menu, helping to create a connected appearance.
-     */
-    #updateMenuPosition() {
-        const buttonEl = this.dropdownButtonView.el;
-        const buttonY1 = buttonEl.getBoundingClientRect().top +
-                         window.pageYOffset -
-                         document.documentElement.clientTop;
-        const buttonY2 = buttonY1 + buttonEl.clientHeight;
-        const pageY1 = window.pageYOffset;
-        const pageY2 = window.pageYOffset + window.innerHeight;
-        const menuEl = this.menuView.el;
-        let direction: MenuButtonOpenDirection;
-
-        if (pageY1 >= buttonY1) {
-            /*
-             * The button is at least partially off-screen, above the current
-             * viewport. Drop the menu down.
-             */
-            direction = MenuButtonOpenDirection.DOWN;
-        } else if (pageY2 <= buttonY2) {
-            /*
-             * The button is at least partially off-screen, below the current
-             * viewport. Drop the menu up.
-             */
-            direction = MenuButtonOpenDirection.UP;
-        } else {
-            const menuHeight = menuEl.offsetHeight;
-
-            /*
-             * The button is fully on-screen. See if there's enough room below
-             * the button for the menu.
-             */
-            if (pageY2 >= buttonY2 + menuHeight ||
-                buttonY1 - pageY1 - menuHeight < 0) {
-                /* The menu can fully fit below the button. */
-                direction = MenuButtonOpenDirection.DOWN;
-            } else {
-                /* The menu cannot fully fit below the button. */
-                direction = MenuButtonOpenDirection.UP;
-            }
-        }
-
-        this._openDirection = direction;
-
-        this.el.classList.toggle(
-            '-opens-up',
-            direction === MenuButtonOpenDirection.UP);
-
-        /* Position the menu relative to the button. */
-        const offsetPx = `${buttonEl.clientHeight}px`;
-        menuEl.style.top = (direction === MenuButtonOpenDirection.DOWN
-                            ? offsetPx
-                            : '');
-        menuEl.style.bottom = (direction === MenuButtonOpenDirection.UP
-                               ? offsetPx
-                               : '');
+        super.onRemove();
     }
 }

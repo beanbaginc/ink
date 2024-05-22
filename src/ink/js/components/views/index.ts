@@ -1,5 +1,6 @@
 export * from './alertView';
 export * from './baseComponentView';
+export * from './baseMenuHandleView';
 export * from './buttonGroupView';
 export * from './buttonView';
 export * from './keyboardShortcutView';
