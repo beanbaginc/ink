@@ -139,6 +139,21 @@ export abstract class BaseMenuHandleView<
         return this.menuView.menuItems;
     }
 
+    /**
+     * Whether the menu can be opened.
+     *
+     * Subclasses can override this to only allow opening a menu based on
+     * a disabled state or similar.
+     *
+     * Returns:
+     *     boolean:
+     *     ``true`` if the menu is allowed to be opened. ``false`` if it is
+     *     not.
+     */
+    canOpenMenu(): boolean {
+        return true;
+    }
+
     protected buildMenu(
         options: BuildMenuOptions,
     ): MenuView {
@@ -314,9 +329,11 @@ export abstract class BaseMenuHandleView<
         evt.stopPropagation();
         evt.preventDefault();
 
-        this.menuView.open({
-            sticky: true,
-        });
+        if (this.canOpenMenu()) {
+            this.menuView.open({
+                sticky: true,
+            });
+        }
     }
 
     /**
@@ -342,16 +359,18 @@ export abstract class BaseMenuHandleView<
             evt.stopPropagation();
             evt.preventDefault();
 
-            const menu = this.menuView;
-            menu.open({
-                animate: false,
-                sticky: true,
-            });
+            if (this.canOpenMenu()) {
+                const menu = this.menuView;
+                menu.open({
+                    animate: false,
+                    sticky: true,
+                });
 
-            if (this._openDirection === MenuHandleOpenDirection.UP) {
-                menu.setCurrentItem(-1);
-            } else {
-                menu.setCurrentItem(0);
+                if (this._openDirection === MenuHandleOpenDirection.UP) {
+                    menu.setCurrentItem(-1);
+                } else {
+                    menu.setCurrentItem(0);
+                }
             }
         } else if (evt.key === 'Escape') {
             /* Close out of the menu. */
@@ -377,6 +396,8 @@ export abstract class BaseMenuHandleView<
         evt.stopPropagation();
         evt.preventDefault();
 
-        this.menuView.open();
+        if (this.canOpenMenu()) {
+            this.menuView.open();
+        }
     }
 }

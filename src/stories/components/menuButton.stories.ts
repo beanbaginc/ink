@@ -9,29 +9,6 @@ export default {
     title: 'Ink/Components/MenuButton',
     tags: ['autodocs'],
     render: args => {
-        const menuItems = new MenuItemsCollection([
-            {
-                iconName: 'ink-i-success',
-                label: 'Item 1',
-                shortcut: 'Cmd-X',
-            },
-            {
-                iconName: 'ink-i-warning',
-                label: 'Item 2',
-                url: '#',
-            },
-            {
-                label: 'Item 3',
-                shortcut: 'Control-G',
-            },
-            {
-                type: MenuItemType.SEPARATOR,
-            },
-            {
-                label: 'Item 4 and this is a long one people',
-            },
-        ]);
-
         return paint`
             <div style="height: 200px">
              <Ink.MenuButton ...${args}>
@@ -53,6 +30,10 @@ export default {
         hasActionButton: {
             description:
                 'Whether the menu button has its own distinct action button.',
+            control: 'boolean',
+        },
+        disabled: {
+            description: 'Whether the menu button is disabled.',
             control: 'boolean',
         },
         label: {

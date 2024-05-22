@@ -263,6 +263,20 @@ export class MenuButtonView<
     }
 
     /**
+     * Whether the menu can be opened.
+     *
+     * Menus can be opened if the button is not disabled.
+     *
+     * Returns:
+     *     boolean:
+     *     ``true`` if the menu is allowed to be opened. ``false`` if it is
+     *     not.
+     */
+    canOpenMenu(): boolean {
+        return !this.disabled;
+    }
+
+    /**
      * Handle initially rendering the button.
      *
      * This will set up the button, based on any provided options, and

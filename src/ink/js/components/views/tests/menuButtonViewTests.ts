@@ -457,6 +457,29 @@ suite('components/views/MenuButtonView', () => {
                 expect(menuView.isOpen).toBeTrue();
                 expect(menuView.isStickyOpen).toBeTrue();
             });
+
+            it('When disabled', () => {
+                menuButton = craft<MenuButtonView>`
+                    <Ink.MenuButton disabled hasActionButton>
+                     <Ink.MenuButton.Item>Item 1</Ink.MenuButton.Item>
+                    </Ink.MenuButton>
+                `;
+                document.body.appendChild(menuButton.el);
+
+                const menuView = menuButton.menuView;
+                expect(menuView.isOpen).toBeFalse();
+                expect(menuView.isStickyOpen).toBeNull();
+
+                menuButton.el
+                    .querySelector('.ink-c-menu-button__dropdown-button')
+                    .dispatchEvent(new window.MouseEvent('click', {
+                        bubbles: true,
+                        cancelable: true,
+                    }));
+
+                expect(menuView.isOpen).toBeFalse();
+                expect(menuView.isStickyOpen).toBeNull();
+            });
         });
 
         describe('focusout', () => {
@@ -485,29 +508,51 @@ suite('components/views/MenuButtonView', () => {
                 expect(menu.isStickyOpen).toBeNull();
             });
 
-            it('To dropdown handle button', () => {
-                menuButton = craft<MenuButtonView>`
-                    <Ink.MenuButton hasActionButton>
-                     <Ink.MenuButton.Item>Item 1</Ink.MenuButton.Item>
-                    </Ink.MenuButton>
-                `;
-                document.body.appendChild(menuButton.el);
+            describe('To dropdown handle button', () => {
+                it('When enabled', () => {
+                    menuButton = craft<MenuButtonView>`
+                        <Ink.MenuButton hasActionButton>
+                         <Ink.MenuButton.Item>Item 1</Ink.MenuButton.Item>
+                        </Ink.MenuButton>
+                    `;
+                    document.body.appendChild(menuButton.el);
 
-                const menu = menuButton.menuView;
-                menu.open();
-                menu.el.focus();
+                    const menu = menuButton.menuView;
+                    menu.open();
+                    menu.el.focus();
 
-                expect(menu.isOpen).toBeTrue();
-                expect(menu.isStickyOpen).toBeFalse();
+                    expect(menu.isOpen).toBeTrue();
+                    expect(menu.isStickyOpen).toBeFalse();
 
-                menuButton.el
-                    .querySelector<HTMLElement>(
-                        '.ink-c-menu-button__dropdown-button'
-                    )
-                    .focus();
+                    menuButton.el
+                        .querySelector<HTMLElement>(
+                            '.ink-c-menu-button__dropdown-button'
+                        )
+                        .focus();
 
-                expect(menu.isOpen).toBeTrue();
-                expect(menu.isStickyOpen).toBeFalse();
+                    expect(menu.isOpen).toBeTrue();
+                    expect(menu.isStickyOpen).toBeFalse();
+                });
+
+                it('When disabled', () => {
+                    menuButton = craft<MenuButtonView>`
+                        <Ink.MenuButton disabled hasActionButton>
+                         <Ink.MenuButton.Item>Item 1</Ink.MenuButton.Item>
+                        </Ink.MenuButton>
+                    `;
+                    document.body.appendChild(menuButton.el);
+
+                    const menu = menuButton.menuView;
+
+                    menuButton.el
+                        .querySelector<HTMLElement>(
+                            '.ink-c-menu-button__dropdown-button'
+                        )
+                        .focus();
+
+                    expect(menu.isOpen).toBeFalse();
+                    expect(menu.isStickyOpen).toBeNull();
+                });
             });
 
             it('Outside component', () => {
@@ -567,6 +612,22 @@ suite('components/views/MenuButtonView', () => {
                             .getAttribute('aria-selected')
                         ).toBe('true');
                     });
+
+                    it('When disabled', () => {
+                        const dropdownButtonEl =
+                            menuButton.el
+                            .querySelector<HTMLElement>(
+                                '.ink-c-menu-button__dropdown-button'
+                            );
+
+                        menuButton.disabled =true;
+                        sendKeys(dropdownButtonEl, [key]);
+
+                        const menuView = menuButton.menuView;
+
+                        expect(menuView.isOpen).toBeFalse();
+                        expect(menuView.isStickyOpen).toBeNull();
+                    });
                 });
             }
 
@@ -616,27 +677,50 @@ suite('components/views/MenuButtonView', () => {
                 expect(menuView.isStickyOpen).toBeNull();
             });
 
-            it('Over dropdown button', () => {
-                menuButton = craft<MenuButtonView>`
-                    <Ink.MenuButton hasActionButton>
-                     <Ink.MenuButton.Item>Item 1</Ink.MenuButton.Item>
-                    </Ink.MenuButton>
-                `;
-                document.body.appendChild(menuButton.el);
+            describe('Over dropdown button', () => {
+                it('When enabled', () => {
+                    menuButton = craft<MenuButtonView>`
+                        <Ink.MenuButton hasActionButton>
+                         <Ink.MenuButton.Item>Item 1</Ink.MenuButton.Item>
+                        </Ink.MenuButton>
+                    `;
+                    document.body.appendChild(menuButton.el);
 
-                const menuView = menuButton.menuView;
-                expect(menuView.isOpen).toBeFalse();
-                expect(menuView.isStickyOpen).toBeNull();
+                    const menuView = menuButton.menuView;
+                    expect(menuView.isOpen).toBeFalse();
+                    expect(menuView.isStickyOpen).toBeNull();
 
-                menuButton.el
-                    .querySelector('.ink-c-menu-button__dropdown-button')
-                    .dispatchEvent(new window.MouseEvent('mouseover', {
-                        bubbles: true,
-                        cancelable: true,
-                    }));
+                    menuButton.el
+                        .querySelector('.ink-c-menu-button__dropdown-button')
+                        .dispatchEvent(new window.MouseEvent('mouseover', {
+                            bubbles: true,
+                            cancelable: true,
+                        }));
 
-                expect(menuView.isOpen).toBeTrue();
-                expect(menuView.isStickyOpen).toBeFalse();
+                    expect(menuView.isOpen).toBeTrue();
+                    expect(menuView.isStickyOpen).toBeFalse();
+                });
+
+                it('When disabled', () => {
+                    menuButton = craft<MenuButtonView>`
+                        <Ink.MenuButton disabled hasActionButton>
+                         <Ink.MenuButton.Item>Item 1</Ink.MenuButton.Item>
+                        </Ink.MenuButton>
+                    `;
+                    document.body.appendChild(menuButton.el);
+
+                    const menuView = menuButton.menuView;
+
+                    menuButton.el
+                        .querySelector('.ink-c-menu-button__dropdown-button')
+                        .dispatchEvent(new window.MouseEvent('mouseover', {
+                            bubbles: true,
+                            cancelable: true,
+                        }));
+
+                    expect(menuView.isOpen).toBeFalse();
+                    expect(menuView.isStickyOpen).toBeNull();
+                });
             });
         });
     });
