@@ -497,6 +497,40 @@
           code-literal-border-color:
             var(--if-dark, rgba(255, 255, 255, 0.15))
             var(--if-light, rgba(0, 0, 0, 0.1));
+
+          /*
+           * Standard side panel background definitions.
+           *
+           * These define background colors for side panel elements, such as
+           * navigation or tool menus.
+           *
+           * Side panels are expected to be placed in a container.
+           */
+          side-panel-bg:
+            var(--if-dark, var(--ink-p-grey-100))
+            var(--if-light, var(--ink-p-grey-150));
+
+          side-panel-active-bg:
+            var(--if-dark, rgba(255, 255, 255, 0.12))
+            var(--if-light, rgba(0, 0, 0, 0.12));
+
+          side-panel-hover-bg:
+            var(--if-dark, rgba(255, 255, 255, 0.05))
+            var(--if-light, rgba(0, 0, 0, 0.05));
+
+          /*
+           * Standard side panel foreground definitions.
+           */
+          side-panel-fg:
+            var(--if-dark, var(--ink-p-fg-on-dark))
+            var(--if-light, var(--ink-p-fg-on-light));
+
+          /*
+           * Standard side panel border colors.
+           */
+          side-panel-border-color:
+            var(--if-dark, rgba(255, 255, 255, 0.2))
+            var(--if-light, rgba(0, 0, 0, 0.2));
         };
       );
     }
