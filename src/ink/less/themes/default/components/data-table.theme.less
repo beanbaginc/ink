@@ -23,7 +23,9 @@
   --ink-c-data-table-body-bg:
     var(--if-dark, #161616)
     var(--if-light, white);
-  --ink-c-data-table-body-fg: var(--ink-p-fg);
+  --ink-c-data-table-body-fg:
+    var(--if-dark, var(--ink-p-grey-900))
+    var(--if-light, var(--ink-p-fg));
   --ink-c-data-table-row-border-color:
     var(--if-dark, rgba(255, 255, 255, 0.08))
     var(--if-light, rgba(0, 0, 0, 0.08));
