@@ -1,7 +1,7 @@
 {
     "name": "@beanbag/ink",
-    "version": "1.0",
-    "description": "A CSS component library for Beanbag products.",
+    "version": "0.5",
+    "description": "A CSS component library for crafting beautiful webapps.",
     "homepage": "https://github.com/beanbaginc/ink",
     "github": "https://github.com/beanbaginc/ink",
     "keywords": [
@@ -13,8 +13,8 @@
         "themes"
     ],
     "author": {
-        "name": "Christian Hammond",
-        "email": "christian@beanbaginc.com",
+        "name": "Beanbag, Inc.",
+        "email": "questions@beanbaginc.com",
         "url": "https://www.beanbaginc.com"
     },
     "license": "MIT",
@@ -41,9 +41,10 @@
         "./babel-preset": "./lib/babel-preset/index.js"
     },
     "files": [
-        "lib/ink.css.map",
-        "lib/ink.min.css",
-        "lib/ink.min.css.map"
+        "LICENSE",
+        "NEWS.md",
+        "README.md",
+        "lib"
     ],
     "types": "lib/index.d.ts",
     "engines": {
