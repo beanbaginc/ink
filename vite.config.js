@@ -14,8 +14,7 @@ export default defineConfig({
                     path.resolve(__dirname, 'src'),
                 ],
                 modifyVars: {
-                    'images-path': path.resolve(__dirname, 'src', 'ink',
-                                                'images'),
+                    'ink-path': path.resolve(__dirname, 'src', 'ink'),
                     'tabler-path': path.resolve(__dirname, 'node_modules',
                                                 '\\@tabler', 'icons'),
                 },

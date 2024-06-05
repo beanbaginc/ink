@@ -4,16 +4,30 @@ import alias from '@rollup/plugin-alias';
 import babel from '@rollup/plugin-babel';
 import copy from 'rollup-plugin-copy';
 import dts from 'rollup-plugin-dts';
+import execute from 'rollup-plugin-shell';
 import resolve from '@rollup/plugin-node-resolve';
 
 
 const extensions = ['.ts'];
 
 const globalsMap = {
+    '@beanbag/spina': 'Spina',
     backbone: 'Backbone',
-    spina: 'Spina',
+    'htm/mini': 'htm',
     underscore: '_',
 };
+
+
+const inkPath = path.resolve(__dirname, 'src', 'ink');
+const lessArgs = [
+    '--source-map',
+    '--include-path=src:node_modules',
+    `--modify-var="ink-path=${inkPath}"`,
+].join(' ');
+const cleanCSSArgs = [
+    '-O2',
+    '--source-map',
+].join(' ');
 
 
 export default [
@@ -67,14 +81,6 @@ export default [
                 babelHelpers: 'external',
                 extensions: extensions,
             }),
-            copy({
-                targets: [
-                    {
-                        dest: 'lib/esm',
-                        src: 'src/ink/js/index-all.js',
-                    },
-                ],
-            }),
             resolve({
                 extensions: extensions,
                 modulePaths: [],
@@ -111,6 +117,60 @@ export default [
         ],
         plugins: [
             dts.default(),
+            copy({
+                targets: [
+                    {
+                        dest: 'lib/esm',
+                        src: 'src/ink/js/index-all.js',
+                    },
+                    {
+                        dest: 'lib',
+                        src: [
+                            'src/ink/less',
+                            'src/ink/images',
+                            'src/ink/ink.less',
+                        ],
+                    },
+                ],
+            }),
+
+            /*
+             * We'll piggy-back off this build, so we only run it once (for the
+             * one output.
+             *
+             * We can't create a build target just for CSS, so this is our
+             * best option right now.
+             */
+            execute({
+                commands: [
+                    `lessc ${lessArgs}` +
+                    ' lib/less/index.less' +
+                    ' lib/ink.css',
+
+                    `cd lib && cleancss ${cleanCSSArgs}` +
+                    ' --format beautify' +
+                    ' -o ink.css' +
+                    ' ink.css',
+
+                    `cd lib && cleancss ${cleanCSSArgs}` +
+                    ' -o ink.min.css' +
+                    ' ink.css',
+
+                    `lessc ${lessArgs}` +
+                    ' lib/less/auto/index.less' +
+                    ' lib/ink-auto.css',
+
+                    `cd lib && cleancss ${cleanCSSArgs}` +
+                    ' --format beautify' +
+                    ' -o ink-auto.css' +
+                    ' ink-auto.css',
+
+                    `cd lib && cleancss ${cleanCSSArgs}` +
+                    ' -o ink-auto.min.css' +
+                    ' ink-auto.css',
+                ],
+                sync: true,
+            }),
         ],
     },
 ];
