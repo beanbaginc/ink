@@ -8,33 +8,14 @@
 import htm from 'htm/mini';
 
 import {
-    type Component,
-    type ComponentChild,
-    type ComponentCtr,
-    type ComponentProps,
-    type SubcomponentInfo,
-    isSubcomponentInfo,
-} from './components';
-import {
     type CraftComponentItem,
-    type CraftedComponent,
-    craftComponent,
     craftComponents,
 } from './craft';
-
-
-/**
- * An item that can be painted to an element.
- *
- * Version Added:
- *     1.0
- */
-export type PaintableItem = (
-    CraftedComponent |
-    ComponentChild |
-    Node |
-    false
-);
+import {
+    type PaintableItem,
+    paintComponent,
+    paintCraftedElements,
+} from './_craftAndPaint';
 
 
 /**
@@ -53,87 +34,6 @@ interface PaintFunction {
 }
 
 
-/* Type stubs for paintComponent(). */
-export function paintComponent<
-    TTag extends keyof HTMLElementTagNameMap,
->(
-    name: TTag,
-    props: ComponentProps,
-    ...children: ComponentChild[]
-): HTMLElementTagNameMap[TTag];
-
-
-export function paintComponent<
-    TElement extends HTMLElement,
-    TComponent extends Component<TElement>,
->(
-    name: string | ComponentCtr<TComponent>,
-    props?: ComponentProps,
-    ...children: ComponentChild[]
-): TElement;
-
-
-/**
- * Paint a component or HTML element.
- *
- * This will craft and then paint a component or HTML element, returning an
- * element that can be inserted into the DOM.
- *
- * If painting a component, the component instance will be instantiated (if
- * not already an instance), rendered to an element, and returned.
- *
- * If painting an HTML element, the Element instance will be returned.
- *
- * Version Added:
- *     1.0
- *
- * Args:
- *     name (string):
- *         The name of the component or HTML element to craft.
- *
- *     props (object):
- *         Properties to pass to the component constructor, or Element
- *         attributes.
- *
- *         If painting an Ink component, these will be passed to the
- *         constructor.
- *
- *         If painting an HTML element, these will be set as attributes on the
- *         DOM Element object.
- *
- *     ...children (ComponentChild[]):
- *         Any children to nest within the crafted component.
- *
- *         If painting a component, then children will not be painted
- *         automatically. It's up to the component to handle each item.
- *
- *         If painting an HTML element, then children will be painted
- *         automatically.
- *
- *         This is not supported for all components or HTML tags.
- *
- * Returns:
- *     HTMLElement:
- *     The HTML Element instance.
- */
-export function paintComponent<
-    TElement extends HTMLElement,
-    TComponent extends Component<TElement, TChild>,
-    TTag extends keyof HTMLElementTagNameMap,
-    TChild extends ComponentChild,
->(
-    nameOrClass: string | TTag | ComponentCtr<TComponent>,
-    props: ComponentProps,
-    ...children: TChild[]
-): TElement | HTMLElementTagNameMap[TTag] | SubcomponentInfo {
-    const component = craftComponent(nameOrClass, props, ...children);
-
-    return (isSubcomponentInfo(component)
-            ? component
-            : paintCraftedElements([component])[0] as TElement);
-}
-
-
 /**
  * Template tag for painting components using an HTML-like language.
  *
@@ -148,6 +48,23 @@ export function paintComponent<
 export const paint: PaintFunction = htm.bind(paintComponent) as PaintFunction;
 
 
+/**
+ * Paint an array of components.
+ *
+ * This will paint each component item, returning an array with each resulting
+ * populated element in the order specified.
+ *
+ * Version Added:
+ *     1.0
+ *
+ * Args:
+ *     items (Array of object):
+ *         The component information items.
+ *
+ * Returns:
+ *     Array:
+ *     The resulting painted elements.
+ */
 export function paintComponents(
     items: CraftComponentItem[],
 ): Node[] {
@@ -155,65 +72,11 @@ export function paintComponents(
 }
 
 
-/**
- * Paint an array of crafted components/elements or children to DOM nodes.
- *
- * This will loop through the items and convert each to an element using the
- * following rules:
- *
- * 1. If it's an element already, it will be used as-is.
- * 2. If it's a string, it will be converted to a :js:class:`Text` node.
- * 3. If it's a component instance, it will be rendered and its element
- *    returned.
- *
- * Note:
- *     This will not craft components to instances.
- *
- *     It's the responsibility of the caller to ensure these are already
- *     instantiated.
- *
- * Version Added:
- *     1.0
- *
- * Args:
- *     items (PaintableItem or PaintableItem[]):
- *         The item or items to paint.
- *
- * Returns:
- *     Node[]:
- *     The painted nodes to insert into the DOM.
+/*
+ * Export the types and functions from _craftAndPaint.ts that we want public.
  */
-export function paintCraftedElements(
-    items: PaintableItem | PaintableItem[],
-): Node[] {
-    if (!Array.isArray(items)) {
-        items = [items];
-    }
-
-    const nodes: Node[] = [];
-
-    for (const item of items) {
-        if (item === null || item === undefined || item === false) {
-            continue;
-        }
-
-        if (item instanceof Node) {
-            nodes.push(item);
-        } else if (typeof item === 'string') {
-            nodes.push(document.createTextNode(item));
-        } else if (Array.isArray(item)) {
-            /*
-             * This is the result of an inner paintCraftedElements() call for
-             * children of a node. We should have a 1-element array of nodes
-             * that we can inline.
-             */
-            nodes.push(...paintCraftedElements(item));
-        } else if (item['el']) {
-            nodes.push(item['el']);
-        } else {
-            console.assert(false, 'Unsupported render item %o', item);
-        }
-    }
-
-    return nodes;
-}
+export {
+    type PaintableItem,
+    paintComponent,
+    paintCraftedElements,
+};
