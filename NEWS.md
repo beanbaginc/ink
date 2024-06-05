@@ -1,6 +1,6 @@
 # Ink Releases
 
-## Ink 0.5 (TBD)
+## Ink 0.5 (4-June-2024)
 
 * Initial public preview release.
 
