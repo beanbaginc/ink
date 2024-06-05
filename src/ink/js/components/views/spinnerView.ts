@@ -6,13 +6,15 @@
  */
 
 import {
-    BaseModel,
+    type BaseModel,
     BaseView,
     spina,
 } from '@beanbag/spina';
 
 import { inkComponent } from '../../core';
-import { BaseComponentViewOptions } from './baseComponentView';
+import {
+    type BaseComponentViewOptions,
+} from './baseComponentView';
 
 
 /**

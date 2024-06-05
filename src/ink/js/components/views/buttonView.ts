@@ -6,7 +6,7 @@
  */
 
 import {
-    BaseModel,
+    type BaseModel,
     spina,
 } from '@beanbag/spina';
 import _ from 'underscore';
@@ -19,14 +19,14 @@ import {
     setProps,
 } from '../../core';
 import {
-    KeyboardShortcutRegistry,
+    type KeyboardShortcutRegistry,
 } from '../../foundation';
 import {
+    type BaseComponentViewOptions,
     BaseComponentView,
-    BaseComponentViewOptions,
 } from './baseComponentView';
 import {
-    KeyboardShortcutView,
+    type KeyboardShortcutView,
 } from './keyboardShortcutView';
 
 

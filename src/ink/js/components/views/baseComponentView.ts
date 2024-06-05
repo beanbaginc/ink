@@ -6,16 +6,14 @@
  */
 
 import {
-    BaseModel,
+    type BaseModel,
     BaseView,
-    spina,
 } from '@beanbag/spina';
-import { dedent } from 'babel-plugin-dedent';
 
 import {
-    Component,
-    ComponentChild,
-    SubcomponentInfo,
+    type Component,
+    type ComponentChild,
+    type SubcomponentInfo,
 } from '../../core';
 
 

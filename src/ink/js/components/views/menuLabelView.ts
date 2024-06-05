@@ -6,7 +6,7 @@
  */
 
 import {
-    BaseModel,
+    type BaseModel,
     spina,
 } from '@beanbag/spina';
 import _ from 'underscore';

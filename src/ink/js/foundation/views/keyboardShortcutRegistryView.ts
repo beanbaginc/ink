@@ -6,13 +6,13 @@
  */
 
 import {
+    type EventsHash,
     BaseView,
-    EventsHash,
     spina,
 } from '@beanbag/spina';
 
 import {
-    KeyboardShortcutRegistry,
+    type KeyboardShortcutRegistry,
 } from '../models/keyboardShortcutRegistry';
 
 

@@ -8,11 +8,11 @@
 import htm from 'htm/mini';
 
 import {
-    Component,
-    ComponentChild,
-    ComponentCtr,
-    ComponentProps,
-    SubcomponentInfo,
+    type SubcomponentInfo,
+    type ComponentChild,
+    type Component,
+    type ComponentCtr,
+    type ComponentProps,
     componentRegistry,
     isSubcomponentInfo,
 } from './components';

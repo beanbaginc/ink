@@ -6,13 +6,10 @@
  */
 
 import {
-    BaseModel,
-    EventsHash,
+    type BaseModel,
+    type EventsHash,
     spina,
 } from '@beanbag/spina';
-
-import { _ } from 'babel-plugin-django-gettext';
-
 
 import {
     inkComponent,
@@ -20,8 +17,8 @@ import {
     renderInto,
 } from '../../core';
 import {
+    type BaseComponentViewOptions,
     BaseComponentView,
-    BaseComponentViewOptions,
 } from './baseComponentView';
 
 

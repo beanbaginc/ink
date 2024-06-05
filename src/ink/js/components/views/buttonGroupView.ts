@@ -6,7 +6,7 @@
  */
 
 import {
-    BaseModel,
+    type BaseModel,
     spina,
 } from '@beanbag/spina';
 
@@ -17,8 +17,8 @@ import {
     renderInto,
 } from '../../core';
 import {
+    type BaseComponentViewOptions,
     BaseComponentView,
-    BaseComponentViewOptions,
 } from './baseComponentView';
 
 

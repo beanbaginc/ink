@@ -6,8 +6,6 @@
  */
 
 import {
-    BaseCollection,
-    Class,
     spina,
 } from '@beanbag/spina';
 

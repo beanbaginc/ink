@@ -5,16 +5,20 @@
  *     1.0
  */
 
-import { BaseModel } from '@beanbag/spina';
+import {
+    type BaseModel,
+} from '@beanbag/spina';
 
 import {
-    SubcomponentInfo,
+    type SubcomponentInfo,
     craft,
 } from '../../core';
-import type { MenuItemsCollection } from '../collections/menuItemsCollection';
 import {
+    type MenuItemsCollection,
+} from '../collections/menuItemsCollection';
+import {
+    type BaseComponentViewOptions,
     BaseComponentView,
-    BaseComponentViewOptions,
 } from './baseComponentView';
 import { MenuView } from './menuView';
 

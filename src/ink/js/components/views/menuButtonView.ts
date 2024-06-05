@@ -6,7 +6,7 @@
  */
 
 import {
-    BaseModel,
+    type BaseModel,
     spina,
 } from '@beanbag/spina';
 import _ from 'underscore';
@@ -17,9 +17,9 @@ import {
     paint,
     renderInto,
 } from '../../core';
-import type {
-    ButtonType,
-    ButtonView,
+import {
+    type ButtonType,
+    type ButtonView,
 } from './buttonView';
 import {
     type BaseMenuHandleViewOptions,

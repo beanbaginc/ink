@@ -9,14 +9,14 @@ import _ from 'underscore';
 
 import {
     type ElementAttributes,
-    BaseModel,
-    EventsHash,
+    type BaseModel,
+    type EventsHash,
     spina,
 } from '@beanbag/spina';
 
 import {
-    ComponentProps,
-    SubcomponentInfo,
+    type ComponentProps,
+    type SubcomponentInfo,
     craft,
     inkComponent,
     paint,
@@ -29,8 +29,8 @@ import {
     MenuItemType,
 } from '../models/menuItemModel';
 import {
+    type BaseComponentViewOptions,
     BaseComponentView,
-    BaseComponentViewOptions,
 } from './baseComponentView';
 import {
     type KeyboardShortcutView,
