@@ -169,11 +169,20 @@
         }
 
         /* Button types */
-        &:is([type="reset"], .-is-danger) {
+        &:is([type="reset"]) {
           .add-rules('type-danger');
         }
 
-        &:is([type="submit"], .-is-primary) {
+        &:is([type="submit"]) {
+          .add-rules('type-primary');
+        }
+
+        /* Button type classes. These take priority over the type rules. */
+        &.-is-danger {
+          .add-rules('type-danger');
+        }
+
+        &.-is-primary {
           .add-rules('type-primary');
         }
       }
