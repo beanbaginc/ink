@@ -1,6 +1,6 @@
 # Ink Releases
 
-## Ink 0.5.2 (TBD)
+## Ink 0.5.2 (1-July-2024)
 
 * ``-is-*`` classes for buttons (such as ``-is-primary``) now take precedent
   over ``type="submit"`` and ``type="reset"``.
