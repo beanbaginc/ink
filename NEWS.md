@@ -1,5 +1,16 @@
 # Ink Releases
 
+## Ink 0.5.2 (TBD)
+
+* ``-is-*`` classes for buttons (such as ``-is-primary``) now take precedent
+  over ``type="submit"`` and ``type="reset"``.
+
+* Fixed the box shadow used for alerts.
+
+  The box shadow for alerts was referencing a variable that didn't exist,
+  causing shadows to break.
+
+
 ## Ink 0.5.1 (5-June-2024)
 
 * Added an `ink-auto.min.css` stylesheet.
