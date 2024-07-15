@@ -62,7 +62,7 @@ export enum ButtonType {
  */
 export interface ButtonViewOptions extends BaseComponentViewOptions {
     /**
-     * Arbitary elements to set on the button element.
+     * Arbitrary elements to set on the button element.
      */
     attrs?: Partial<HTMLButtonElement>;
 

@@ -151,7 +151,7 @@ export class TypeaheadBuffer extends BaseModel<TypeaheadBufferAttrs> {
     /**
      * Clear the buffer.
      *
-     * This wil reset the buffer and auto-clear timeout.
+     * This will reset the buffer and auto-clear timeout.
      */
     clearBuffer() {
         this.#setBuffer('');

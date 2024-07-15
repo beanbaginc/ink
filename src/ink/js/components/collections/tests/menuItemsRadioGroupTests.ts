@@ -118,7 +118,7 @@ suite('components/collections/MenuItemsRadioGroup', () => {
                 expect(radioGroup.checkedMenuItem).toBeNull();
             });
 
-            it('With checked=true and exising items (all unchecked)', () => {
+            it('With checked=true and existing items (all unchecked)', () => {
                 radioGroup.add(createMenuItem());
                 radioGroup.add(createMenuItem());
 

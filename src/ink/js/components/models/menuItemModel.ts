@@ -246,7 +246,7 @@ export class MenuItem<
                 break;
 
             case MenuItemType.ITEM:
-                /* Commom case. */
+                /* Common case. */
                 break;
 
             case MenuItemType.RADIO_ITEM:

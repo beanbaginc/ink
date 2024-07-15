@@ -318,7 +318,7 @@ export function paintCraftedElements(
  *     1.0
  *
  * Args:
- *     ComponentCls (CompnentCtr):
+ *     ComponentCls (ComponentCtr):
  *         The class constructor for instantiating the component.
  *
  *     name (string):
