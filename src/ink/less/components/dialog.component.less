@@ -1,0 +1,134 @@
+/**
+ * Component management for ink-c-dialog.
+ *
+ * Version Added:
+ *     0.6
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/dialog.schema.less";
+
+
+#ink-ns-ui() {
+  .dialog() {
+    /**
+     * Create an ink-c-dialog component.
+     *
+     * Version Added:
+     *     0.6
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rules (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-dialog;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@dialog];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            border: 0;
+            padding: 0;
+            max-width: 100%;
+            max-height: 100%;
+          }
+
+          /*
+           * Styles for when the dialog is open.
+           */
+          @state-open: {
+            display: flex;
+          }
+
+          /*
+           * Styles for when the size is set to DialogSize.FIT.
+           */
+          @state-size-fit: {
+            width: fit-content;
+            height: fit-content;
+            min-width: 35%;
+          }
+
+          /*
+           * Styles for when the size is set to DialogSize.MEDIUM.
+           */
+          @state-size-medium: {
+            width: 60%;
+            max-height: 60%;
+          }
+
+          /*
+           * Styles for when the size is set to DialogSize.LARGE.
+           */
+          @state-size-large: {
+            width: 80%;
+            max-height: 80%;
+          }
+
+          /*
+           * Styles for when the size is set to DialogSize.MAX.
+           */
+          @state-size-max: {
+            width: calc(100% - var(--ink-u-spacing-xxl));
+            height: calc(100% - var(--ink-u-spacing-xxl));
+          }
+
+          /*
+           * Styles for the inner container.
+           */
+          @inner: {
+            display: grid;
+            flex-grow: 1;
+            grid-template-areas:
+              "title"
+              "body"
+              "actions";
+            grid-template-rows: min-content 1fr min-content;
+          }
+
+          /*
+           * Styles for the title area.
+           */
+          @title: {
+            grid-area: title;
+            height: min-content;
+          }
+
+          /*
+           * Styles for the body area.
+           */
+          @body: {
+            grid-area: body;
+          }
+
+          /*
+           * Styles for the actions area.
+           */
+          @actions-common: {
+            display: flex;
+          }
+
+          @actions-container: {
+            display: flex;
+            grid-area: actions;
+            justify-content: space-between;
+            height: min-content
+          }
+        };
+      );
+    };
+  }
+}

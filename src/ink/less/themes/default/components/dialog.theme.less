@@ -1,0 +1,88 @@
+@import (reference) "../../../components/dialog.component.less";
+
+
+#ink-ns-default-theme() {
+  .dialog() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-dialog;
+        @vars: {
+          title-bg: var(--ink-p-header-bg);
+          title-border-color: var(--ink-p-header-border-color);
+          width: 80%;
+          height: 80%;
+        };
+      );
+    };
+
+    @rules: {
+      /**
+       * Styles for the default state of the main dialog element.
+       */
+      @__default__: {
+        background: var(--ink-p-container-bg);
+        border: var(--ink-u-border-thin)
+		var(--ink-p-container-border-color-strong)
+		solid;
+        border-radius: var(--ink-u-border-radius-m);
+        box-shadow: var(--ink-g-shadow-l-dark);
+        color: var(--ink-p-container-fg);
+        padding: 0;
+        z-index: var(--ink-z-dialog);
+      }
+
+      /**
+       * Styles for the dialog body.
+       */
+      @body: {
+        padding: var(--ink-u-spacing-m);
+      }
+
+      /**
+       * Styles for the dialog title.
+       */
+      @title: {
+        background: var(--ink-c-dialog-title-bg);
+        border-bottom: var(--ink-u-border-thin)
+                       var(--ink-c-dialog-title-border-color) solid;
+        border-radius: var(--ink-u-border-radius-m-inner)
+                       var(--ink-u-border-radius-m-inner)
+                       0 0;
+        font-weight: bold;
+        padding: var(--ink-u-spacing-m);
+      }
+
+      /**
+       * Styles for action areas.
+       */
+      @actions-common: {
+        gap: var(--ink-u-spacing-m);
+      }
+
+      /**
+       * Styles for the container around action areas.
+       */
+      @actions-container: {
+        padding: var(--ink-u-spacing-m);
+        gap: var(--ink-u-spacing-m);
+      }
+
+      /**
+       * Styles for the page backdrop when the dialog is modal.
+       */
+      @backdrop: {
+        background: rgba(0, 0, 0, 0.85);
+      }
+    }
+  };
+}
+
+
+& {
+  @_dialog: #ink-ns-default-theme.dialog();
+
+  #ink-ns-ui.dialog.create(
+    @vars: @_dialog[@vars];
+    @rules: @_dialog[@rules];
+  );
+}
