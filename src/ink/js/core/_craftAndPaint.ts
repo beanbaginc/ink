@@ -430,7 +430,7 @@ function _craftComponentCtr<
                         'Subcomponent %s is not a direct child of %s',
                         subcomponentFullName, name);
 
-                    const func: ((SubcomponentInfo) => void) =
+                    const func: ((info: SubcomponentInfo) => void) =
                         component[subcomponentFuncName];
 
                     console.assert(
