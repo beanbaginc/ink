@@ -33,7 +33,17 @@
             "import": "./lib/esm/index-all.js",
             "require": "./lib/cjs/index.js"
         },
-        "./babel-preset": "./lib/babel-preset/index.js"
+        "./babel-preset": "./lib/babel-preset/index.js",
+        "./ink-auto.css": "./lib/ink-auto.css",
+        "./ink-auto.min.css": "./lib/ink-auto.min.css",
+        "./ink.css": "./lib/ink.css",
+        "./ink.less": "./lib/ink.less",
+        "./ink.min.css": "./lib/ink.min.css",
+        "./lib/ink-auto.css": "./lib/ink-auto.css",
+        "./lib/ink-auto.min.css": "./lib/ink-auto.min.css",
+        "./lib/ink.css": "./lib/ink.css",
+        "./lib/ink.less": "./lib/ink.less",
+        "./lib/ink.min.css": "./lib/ink.min.css"
     },
     "files": [
         "LICENSE",
