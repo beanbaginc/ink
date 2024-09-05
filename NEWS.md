@@ -1,5 +1,59 @@
 # Ink Releases
 
+## Ink 0.6.0 (14-September-2024)
+
+* Added a new ``Ink.Dialog`` component.
+
+  This new component provides modal and non-modal dialogs, using the modern
+  ``<dialog>`` HTML element. It contains three areas that can be customized:
+
+  1. The title
+  2. The body content
+  3. The actions area (buttons and other elements), which can be separated
+     into primary (right-aligned) and secondary (left-aligned) actions.
+
+  Actions may optionally include ``DialogAction`` sub-components, which
+  can automatically close or invoke a callback, helping to simplify creating
+  dialogs.
+
+  If a callback returns a promise, all actions will be disabled and the dialog
+  remaining open while the promise runs. The action invoking the promise will
+  show as busy.
+
+  Dialogs may appear in 4 sizes:
+
+  1. Fit (the dialog fits to the size of the content)
+  2. Medium (takes 60% of the viewport width)
+  3. Large (takes 80% of the viewport width)
+  4. Max (takes the full viewport width, minus some spacing)
+
+* Added new icons:
+
+  * ``ink-i-circle-arrow-right``
+  * ``ink-i-clock``
+  * ``ink-i-copy``
+  * ``ink-i-user``
+  * ``ink-i-vcs-commit``
+
+* Added package exports for all built CSS and LessCSS files.
+
+  These are now available as:
+
+  * ``@beanbag/ink/ink-auto.css``
+  * ``@beanbag/ink/ink-auto.min.css``
+  * ``@beanbag/ink/ink.css``
+  * ``@beanbag/ink/ink.min.css``
+  * ``@beanbag/ink/ink.less``
+  * ``@beanbag/ink/lib/ink-auto.css``
+  * ``@beanbag/ink/lib/ink-auto.min.css``
+  * ``@beanbag/ink/lib/ink.css``
+  * ``@beanbag/ink/lib/ink.min.css``
+  * ``@beanbag/ink/lib/ink.less``
+
+  The ``lib/`` variants are helpful when bridging the gap between standard
+  LessCSS compilation and `package.json`-aware build systems.
+
+
 ## Ink 0.5.2 (1-July-2024)
 
 * ``-is-*`` classes for buttons (such as ``-is-primary``) now take precedent
