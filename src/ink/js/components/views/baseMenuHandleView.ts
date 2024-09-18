@@ -251,7 +251,7 @@ export abstract class BaseMenuHandleView<
     }
 
     /**
-     * Position the drop-down menu above or below the controller.
+     * Position the drop-down menu.
      *
      * This will attempt to determine whether there's enough space below
      * the controller for the menu to fully appear. If there is not, then the
@@ -260,13 +260,17 @@ export abstract class BaseMenuHandleView<
      * The resulting direction will also impact the styling of the controller
      * and menu, helping to create a connected appearance.
      *
+     * This also ensures that the menu will always appear fully on screen
+     * according to the width of the viewport.
+     *
      * Args:
      *     controllerEl (HTMLElement):
      *         The controller for the menu that the element will be positioned
      *         relative to.
      */
     protected _updateMenuPosition(controllerEl: HTMLElement) {
-        const controllerY1 = controllerEl.getBoundingClientRect().top +
+        const controllerElBoundingRect = controllerEl.getBoundingClientRect();
+        const controllerY1 = controllerElBoundingRect.top +
                              window.pageYOffset -
                              document.documentElement.clientTop;
         const controllerY2 = controllerY1 + controllerEl.clientHeight;
@@ -318,6 +322,31 @@ export abstract class BaseMenuHandleView<
         menuEl.style.bottom = (direction === MenuHandleOpenDirection.UP
                                ? offsetPx
                                : '');
+
+        /* Position the menu laterally according to the viewport width. */
+        const menuWidth = menuEl.offsetWidth;
+        const windowWidth = window.innerWidth;
+        const elOffsetLeft = controllerElBoundingRect.left;
+
+        let newMenuLeft: string = '';
+
+        if (elOffsetLeft + menuWidth > windowWidth) {
+            /*
+             * The right side of the menu is being clipped. Move to the left
+             * so that the full menu fits on screen.
+             */
+            const newMenuLeftNum = (
+                windowWidth -
+                (elOffsetLeft + Math.min(menuWidth, windowWidth))
+            );
+
+            newMenuLeft = `${newMenuLeftNum}px`;
+        }
+
+        menuEl.style.left = newMenuLeft;
+
+        /* Make sure the menu is never wider than the viewport. */
+        menuEl.style.maxWidth = `${windowWidth}px`;
     }
 
     /**
