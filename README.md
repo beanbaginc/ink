@@ -49,7 +49,7 @@ Ink can be installed using `npm`:
 $ npm install @beanbag/ink
 ```
 
-See the [@beanbag/ink package on npm.js](npmjs.com/package/@beanbag/ink) for more.
+See the [@beanbag/ink package on npm.js](https://npmjs.com/package/@beanbag/ink) for more.
 
 
 ## Consuming Ink
