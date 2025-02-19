@@ -1,5 +1,37 @@
 # Ink Releases
 
+## Ink 0.7.0 (18-February-2024)
+
+* Added a new `ink-i-help` icon.
+
+* Added a new `ink-u-font-xs` size, based on a 10 pixel font.
+
+* Added a new `ink-u-rem-10px` unit size.
+
+* Updated `ink-u-rem-11px` and `ink-u-rem-13px` sizes to avoid fractional
+  pixel sizes.
+
+  The old values led to sizes like 13.008px, and ended up causing subtle
+  issues with layout.
+
+* Drop-down menus are now responsive to changing browser widths.
+
+  This improves anything using `Ink.BaseMenuHandleView`, including
+  `Ink.MenuButtonView` and `Ink.MenuLabelView`.
+
+* Fixed the appearance of focus indicators on `ink-c-button` components.
+
+* Fixed the appearance of links in `ink-c-alert` components.
+
+  Depending on the alert type and whether dark mode was used, links could be
+  very hard to see. Alerts now always use an appropriate color for the mode
+  and alert type.
+
+* Updated our Storybook to 8.x.
+
+* Improved build reliability for developers and packagers of Ink.
+
+
 ## Ink 0.6.0 (14-September-2024)
 
 * Added a new ``Ink.Dialog`` component.
