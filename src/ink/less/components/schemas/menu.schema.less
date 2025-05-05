@@ -200,8 +200,12 @@
        *         This must be ``true`` when the menu item is selected by
        *         either mouse or keyboard navigation.
        *
+       * Modifiers:
+       *     -is-header:
+       *         The item functions as a non-interactive header.
+       *
        * Structure:
-       *     <li class="@{name}__item"
+       *     <li class="@{name}__item [-is-header]"
        *         id="..."
        *         role="<menuitem | menuitemcheckbox | menuitemradio>"
        *         [aria-checked="...">]
@@ -225,6 +229,10 @@
 
         &:focus {
           .add-rules('item-state-focus');
+        }
+
+        &.-is-header {
+          .add-rules('item-type-header');
         }
       }
 

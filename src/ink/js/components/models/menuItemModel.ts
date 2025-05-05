@@ -27,6 +27,14 @@ export enum MenuItemType {
     /** A menu item that can be toggled on or off. */
     CHECKBOX_ITEM = 'checkbox-item',
 
+    /**
+     * A menu item that provides a header above other items.
+     *
+     * Version Added:
+     *     0.8
+     */
+    HEADER = 'header',
+
     /** A menu item that can be toggled on or off in a radio group. */
     RADIO_ITEM = 'radio-item',
 
@@ -214,7 +222,8 @@ export class MenuItem<
                 this.get('radioGroup')?.add(this);
                 break;
 
-            case MenuItemType.ITEM: /* Fall-through */
+            case MenuItemType.HEADER: /* Fall-through */
+            case MenuItemType.ITEM:
             case MenuItemType.SEPARATOR:
                 break;
 

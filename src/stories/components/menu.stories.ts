@@ -118,6 +118,9 @@ export default {
                   Checkbox Item 3
                  </>
                  <Ink.Menu.Separator/>
+                 <Ink.Menu.Header>
+                  These are radio buttons:
+                 </>
                  <Ink.Menu.RadioItem checked radioGroup=${radioGroup1}>
                   Radio Item 1
                  </>

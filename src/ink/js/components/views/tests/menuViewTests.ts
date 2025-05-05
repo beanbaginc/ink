@@ -331,6 +331,47 @@ suite('components/views/MenuView', () => {
             );
         });
 
+        it('Header items', () => {
+            menuView = craft`
+                <Ink.Menu embedded id="my-menu">
+                 <Ink.Menu.Header>
+                  Title
+                 </Ink.Menu.Header>
+                </Ink.Menu>
+            `;
+
+            const menuItems = menuView.menuItems;
+
+            expect(menuItems).toHaveSize(1);
+            expect(menuItems.at(0).attributes).toEqual({
+                checked: null,
+                childEl: null,
+                disabled: false,
+                iconName: null,
+                id: null,
+                keyboardShortcut: null,
+                keyboardShortcutRegistry: null,
+                label: 'Title',
+                onClick: null,
+                radioGroup: null,
+                type: MenuItemType.HEADER,
+                url: null,
+            });
+
+            expect(menuView.el.outerHTML).toBe(
+                '<menu id="my-menu" class="ink-c-menu -is-embedded -is-open"' +
+                ' role="menu" tabindex="0">' +
+                '<li role="separator" draggable="false" tabindex="-1"' +
+                ' class="ink-c-menu__item -is-header">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
+                '<label class="ink-c-menu__item-label">Title</label>' +
+                '</span>' +
+                '</li>' +
+                '</menu>'
+            );
+        });
+
         it('Separator items', () => {
             menuView = craft`
                 <Ink.Menu embedded id="my-menu">
@@ -988,6 +1029,25 @@ suite('components/views/MenuView', () => {
                     expect(menuView.isOpen).toBeFalse();
                 });
 
+                it('On header', () => {
+                    const onClick = jasmine.createSpy('onClick');
+
+                    menuView = craft`
+                        <Ink.Menu>
+                         <Ink.Menu.Header onClick=${onClick}/>
+                        </Ink.Menu>
+                    `;
+                    menuView.open();
+
+                    menuView.setCurrentItem(0);
+                    sendKeys(menuView.el, ['Enter']);
+
+                    expect(onClick).not.toHaveBeenCalled();
+
+                    expectNoMenuItemSelected(menuView);
+                    expect(menuView.isOpen).toBeTrue();
+                });
+
                 it('On separator', () => {
                     const onClick = jasmine.createSpy('onClick');
 
@@ -1155,6 +1215,25 @@ suite('components/views/MenuView', () => {
                     expect(onClick).toHaveBeenCalled();
 
                     expectMenuItemSelected(menuView, menuItemEl);
+                    expect(menuView.isOpen).toBeTrue();
+                });
+
+                it('On header', () => {
+                    const onClick = jasmine.createSpy('onClick');
+
+                    menuView = craft`
+                        <Ink.Menu>
+                         <Ink.Menu.Header onClick=${onClick}/>
+                        </Ink.Menu>
+                    `;
+                    menuView.open();
+
+                    menuView.setCurrentItem(0);
+                    sendKeys(menuView.el, ' ');
+
+                    expect(onClick).not.toHaveBeenCalled();
+
+                    expectNoMenuItemSelected(menuView);
                     expect(menuView.isOpen).toBeTrue();
                 });
 
@@ -1520,7 +1599,34 @@ suite('components/views/MenuView', () => {
                 expectMenuItemSelected(menuView, menuItemEl);
             });
 
-            it('To non-item', () => {
+            it('To header', () => {
+                menuView = craft`
+                    <Ink.Menu embedded>
+                     <Ink.Menu.Item>
+                      Item 1
+                     </Ink.Menu.Item>
+                     <Ink.Menu.Header>
+                      Title
+                     </Ink.Menu.Header>
+                     <Ink.Menu.Item>
+                      Item 2
+                     </Ink.Menu.Item>
+                    </Ink.Menu>
+                `;
+                document.body.appendChild(menuView.el);
+
+                const menuItemEl = menuView.el.children[1] as HTMLElement;
+
+                menuItemEl.dispatchEvent(
+                    new window.MouseEvent('mouseover', {
+                        bubbles: true,
+                        cancelable: true,
+                    }));
+
+                expectNoMenuItemSelected(menuView);
+            });
+
+            it('To separator', () => {
                 menuView = craft`
                     <Ink.Menu embedded>
                      <Ink.Menu.Item>
@@ -1703,6 +1809,30 @@ suite('components/views/MenuView', () => {
 
                 expect(menuView.isOpen).toBeTrue();
             });
+        });
+
+        it('Header clicked', () => {
+            const onClick = jasmine.createSpy('onClick');
+            const onParentClick = jasmine.createSpy('onClick');
+
+            menuView = craft`
+                <Ink.Menu>
+                 <Ink.Menu.Header onClick=${onClick}>
+                  Title
+                 </Ink.Menu.Header>
+                </Ink.Menu>
+            `;
+            menuView.open();
+
+            const parentEl = paint<HTMLDivElement>`<div>${menuView}</div>`;
+            parentEl.addEventListener('click', onParentClick);
+
+            (menuView.el.children[0] as HTMLElement).click();
+
+            expect(onClick).not.toHaveBeenCalled();
+            expect(onParentClick).not.toHaveBeenCalled();
+
+            expect(menuView.isOpen).toBeTrue();
         });
 
         it('Separator clicked', () => {

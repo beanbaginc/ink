@@ -191,6 +191,7 @@ export class MenuView<
 
     static subcomponents = {
         'CheckboxItem': '_recordMenuItem',
+        'Header': '_recordMenuItem',
         'Item': '_recordMenuItem',
         'RadioItem': '_recordMenuItem',
         'Separator': '_recordMenuItem',
@@ -645,6 +646,8 @@ export class MenuView<
         const itemViews: BaseMenuItemView[] = [];
         const menuItemEls: HTMLLIElement[] = [];
 
+        const cid = this.cid;
+
         for (const menuItem of this.menuItems) {
             const menuItemType = menuItem.get('type');
             const menuItemViewCls = _menuItemViews[menuItemType];
@@ -655,12 +658,12 @@ export class MenuView<
                 continue;
             }
 
-            const interactive = menuItemViewCls !== SeparatorMenuItemView;
+            const interactive = !menuItemViewCls.isDecorative;
 
             const menuItemID =
                 menuItem.id ||
                 (interactive
-                 ? `menuitem-${this.cid}-${menuItemEls.length}`
+                 ? `menuitem-${cid}-${menuItemEls.length}`
                  : null);
 
             const menuItemView = craft<BaseMenuItemView>`
@@ -838,6 +841,18 @@ export class MenuView<
                     menuItemProps['type'] = MenuItemType.ITEM;
                 }
 
+                break;
+
+            case 'Header':
+                menuItemProps = {
+                    childEl: props.childEl,
+                    iconName: props.iconName,
+                    id: props.id,
+                    label: (children.length === 1
+                            ? children[0]
+                            : null),
+                    type: MenuItemType.HEADER,
+                };
                 break;
 
             case 'Separator':
@@ -1197,7 +1212,13 @@ export class MenuView<
             .closest<HTMLLIElement>('.ink-c-menu__item');
 
         if (itemEl) {
-            this.setCurrentItem(parseInt(itemEl.dataset.itemIndex, 10));
+            const itemIndex = itemEl.dataset.itemIndex;
+
+            if (itemIndex !== undefined) {
+                this.setCurrentItem(parseInt(itemIndex, 10));
+            } else {
+                this.#clearCurrentItem(false);
+            }
         }
     }
 
@@ -1234,7 +1255,11 @@ export class MenuView<
  * Version Added:
  *     1.0
  */
-@spina
+@spina({
+    prototypeAttrs: [
+        'isDecorative',
+    ],
+})
 class BaseMenuItemView extends BaseComponentView<
     MenuItem,
     HTMLLIElement
@@ -1244,6 +1269,17 @@ class BaseMenuItemView extends BaseComponentView<
         'draggable': false,
         'tabIndex': '-1',
     };
+
+    /**
+     * Whether the menu item is purely decorational/informative.
+     *
+     * Decorative menu items cannot be selected or invoked.
+     *
+     * Version Added:
+     *     0.8
+     */
+    static isDecorative: boolean = false;
+    isDecorative: boolean;
 
     /**********************
      * Instance variables *
@@ -1570,6 +1606,28 @@ class RadioMenuItemView extends BaseCheckableMenuItemView {
 
 
 /**
+ * A header menu item.
+ *
+ * This can't be clicked, but can be used to group together related menu
+ * items.
+ *
+ * Version Added:
+ *     0.8
+ */
+@spina
+class HeaderMenuItemView extends MenuItemView {
+    static className = 'ink-c-menu__item -is-header';
+    static attributes: ElementAttributes = {
+        /* Headers are essentially titled separators. */
+        'role': 'separator',
+    };
+    static isDecorative: boolean = true;
+
+    closeOnClick = false;
+}
+
+
+/**
  * A separator menu item.
  *
  * Version Added:
@@ -1581,6 +1639,7 @@ class SeparatorMenuItemView extends BaseMenuItemView {
     static attributes: ElementAttributes = {
         'role': 'separator',
     };
+    static isDecorative: boolean = true;
 }
 
 
@@ -1593,6 +1652,7 @@ class SeparatorMenuItemView extends BaseMenuItemView {
 const _menuItemViews = {
     [MenuItemType.ITEM]: MenuItemView,
     [MenuItemType.CHECKBOX_ITEM]: CheckboxMenuItemView,
+    [MenuItemType.HEADER]: HeaderMenuItemView,
     [MenuItemType.RADIO_ITEM]: RadioMenuItemView,
     [MenuItemType.SEPARATOR]: SeparatorMenuItemView,
 };
