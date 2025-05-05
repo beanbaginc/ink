@@ -63,6 +63,14 @@ export interface MenuItemAttrs {
     checked?: boolean | null;
 
     /**
+     * The disabled state a menu item.
+     *
+     * Version Added:
+     *     0.8
+     */
+    disabled?: boolean | null;
+
+    /**
      * An icon to use for the menu item.
      */
     iconName?: string | null;
@@ -147,6 +155,7 @@ export class MenuItem<
     static defaults: MenuItemAttrs = {
         checked: null,
         childEl: null,
+        disabled: false,
         iconName: null,
         id: null,
         keyboardShortcut: null,
@@ -230,11 +239,17 @@ export class MenuItem<
      *
      * Separators don't perform any kind of action.
      *
+     * If the menu item is disabled, nothing will happen.
+     *
      * Args:
      *     e (MouseEvent, optional):
      *         The mouse event triggering this action, if any.
      */
     invokeAction(e?: MouseEvent) {
+        if (this.get('disabled')) {
+            return;
+        }
+
         switch (this.get('type')) {
             case MenuItemType.CHECKBOX_ITEM:
                 /*

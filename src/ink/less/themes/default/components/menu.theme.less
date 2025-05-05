@@ -23,6 +23,7 @@
 
           /* Menu item variables */
           item-padding: var(--ink-u-spacing-m);
+          item-disabled-fg: var(--ink-p-fg-weak);
           item-selected-bg: var(--ink-p-accent-primary-bg);
           item-selected-fg: var(--ink-p-accent-primary-fg);
 
@@ -72,6 +73,13 @@
        */
       @state-is-embedded: {
         border-radius: var(--ink-c-menu-border-radius);
+      };
+
+      /*
+       * Styles for disabled menu items.
+       */
+      @item-state-is-disabled: {
+        color: var(--ink-c-menu-item-disabled-fg);
       };
 
       /*

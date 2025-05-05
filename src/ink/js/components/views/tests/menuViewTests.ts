@@ -163,6 +163,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: null,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item',
                 keyboardShortcut: null,
@@ -205,6 +206,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: false,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item-1',
                 keyboardShortcut: null,
@@ -218,6 +220,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(1).attributes).toEqual({
                 checked: true,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item-2',
                 keyboardShortcut: null,
@@ -277,6 +280,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: false,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item-1',
                 keyboardShortcut: null,
@@ -290,6 +294,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(1).attributes).toEqual({
                 checked: true,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item-2',
                 keyboardShortcut: null,
@@ -339,6 +344,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: null,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: null,
                 keyboardShortcut: null,
@@ -376,6 +382,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: null,
                 childEl: customItemEl,
+                disabled: false,
                 iconName: null,
                 id: 'my-item',
                 keyboardShortcut: null,
@@ -417,6 +424,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: null,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item',
                 keyboardShortcut: null,
@@ -445,6 +453,47 @@ suite('components/views/MenuView', () => {
             );
         });
 
+        it('With disabled', () => {
+            menuView = craft`
+                <Ink.Menu embedded id="my-menu">
+                 <Ink.Menu.Item id="my-item"
+                                disabled>
+                  Item 1
+                 </Ink.Menu.Item>
+                </Ink.Menu>
+            `;
+
+            const menuItems = menuView.menuItems;
+
+            expect(menuItems).toHaveSize(1);
+            expect(menuItems.at(0).attributes).toEqual({
+                checked: null,
+                childEl: null,
+                disabled: true,
+                iconName: null,
+                id: 'my-item',
+                keyboardShortcut: null,
+                keyboardShortcutRegistry: null,
+                label: 'Item 1',
+                onClick: null,
+                radioGroup: null,
+                type: MenuItemType.ITEM,
+                url: null,
+            });
+
+            expect(menuView.el.outerHTML).toBe(
+                '<menu id="my-menu" class="ink-c-menu -is-embedded' +
+                ' -is-open" role="menu" tabindex="0">' +
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" aria-disabled="true"' +
+                ' data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
+                '<label class="ink-c-menu__item-label">Item 1</label>' +
+                '</span></li></menu>'
+            );
+        });
+
         it('With icons', () => {
             menuView = craft`
                 <Ink.Menu embedded id="my-menu">
@@ -461,6 +510,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: null,
                 childEl: null,
+                disabled: false,
                 iconName: 'ink-i-success',
                 id: 'my-item',
                 keyboardShortcut: null,
@@ -505,6 +555,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: null,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item',
                 keyboardShortcut: 'Control-Alt-Delete',
@@ -570,6 +621,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(0).attributes).toEqual({
                 checked: null,
                 childEl: null,
+                disabled: false,
                 iconName: null,
                 id: 'my-item-1',
                 keyboardShortcut: null,
@@ -584,6 +636,7 @@ suite('components/views/MenuView', () => {
             expect(menuItems.at(1).attributes).toEqual({
                 checked: null,
                 childEl: null,
+                disabled: false,
                 iconName: 'ink-i-success',
                 id: 'my-item-2',
                 keyboardShortcut: null,
@@ -810,6 +863,36 @@ suite('components/views/MenuView', () => {
                     expect(menuView.isOpen).toBeTrue();
                 });
 
+                it('On disabled item', () => {
+                    const onClick = jasmine.createSpy('onClick');
+
+                    menuView = craft`
+                        <Ink.Menu>
+                         <Ink.Menu.Item disabled
+                                        onClick=${onClick}>
+                          Item 1
+                         </Ink.Menu.Item>
+                         <Ink.Menu.Item>
+                          Item 123
+                         </Ink.Menu.Item>
+                         <Ink.Menu.Item>
+                          Item 456
+                         </Ink.Menu.Item>
+                        </Ink.Menu>
+                    `;
+                    menuView.open();
+
+                    menuView.setCurrentItem(0);
+                    sendKeys(menuView.el, ['Enter']);
+
+                    expect(onClick).not.toHaveBeenCalled();
+
+                    expectMenuItemSelected(
+                        menuView,
+                        menuView.el.children[0] as HTMLElement);
+                    expect(menuView.isOpen).toBeTrue();
+                });
+
                 it('On menu item', () => {
                     const onClick = jasmine.createSpy('onClick');
 
@@ -947,6 +1030,36 @@ suite('components/views/MenuView', () => {
                     sendKeys(menuView.el, ' ');
 
                     expectNoMenuItemSelected(menuView);
+                    expect(menuView.isOpen).toBeTrue();
+                });
+
+                it('On disabled item', () => {
+                    const onClick = jasmine.createSpy('onClick');
+
+                    menuView = craft`
+                        <Ink.Menu>
+                         <Ink.Menu.Item disabled
+                                        onClick=${onClick}>
+                          Item 1
+                         </Ink.Menu.Item>
+                         <Ink.Menu.Item>
+                          Item 123
+                         </Ink.Menu.Item>
+                         <Ink.Menu.Item>
+                          Item 456
+                         </Ink.Menu.Item>
+                        </Ink.Menu>
+                    `;
+                    menuView.open();
+
+                    menuView.setCurrentItem(0);
+                    sendKeys(menuView.el, ' ');
+
+                    expect(onClick).not.toHaveBeenCalled();
+
+                    expectMenuItemSelected(
+                        menuView,
+                        menuView.el.children[0] as HTMLElement);
                     expect(menuView.isOpen).toBeTrue();
                 });
 
@@ -1092,6 +1205,29 @@ suite('components/views/MenuView', () => {
                             menuView.el.children[1] as HTMLElement);
                     });
 
+                    it('With disabled item below', () => {
+                        menuView = craft`
+                            <Ink.Menu embedded>
+                             <Ink.Menu.Item>
+                              Item 1
+                             </Ink.Menu.Item>
+                             <Ink.Menu.Item disabled>
+                              Item 123
+                             </Ink.Menu.Item>
+                             <Ink.Menu.Item>
+                              Item 456
+                             </Ink.Menu.Item>
+                            </Ink.Menu>
+                        `;
+
+                        menuView.setCurrentItem(0);
+                        sendKeys(menuView.el, [key]);
+
+                        expectMenuItemSelected(
+                            menuView,
+                            menuView.el.children[1] as HTMLElement);
+                    });
+
                     it('At last item', () => {
                         menuView = craft`
                             <Ink.Menu embedded>
@@ -1123,6 +1259,29 @@ suite('components/views/MenuView', () => {
                         menuView = craft`
                             <Ink.Menu embedded>
                              <Ink.Menu.Item>
+                              Item 1
+                             </Ink.Menu.Item>
+                             <Ink.Menu.Item>
+                              Item 123
+                             </Ink.Menu.Item>
+                             <Ink.Menu.Item>
+                              Item 456
+                             </Ink.Menu.Item>
+                            </Ink.Menu>
+                        `;
+
+                        menuView.setCurrentItem(1);
+                        sendKeys(menuView.el, [key]);
+
+                        expectMenuItemSelected(
+                            menuView,
+                            menuView.el.children[0] as HTMLElement);
+                    });
+
+                    it('With disabled item above', () => {
+                        menuView = craft`
+                            <Ink.Menu embedded>
+                             <Ink.Menu.Item disabled>
                               Item 1
                              </Ink.Menu.Item>
                              <Ink.Menu.Item>
@@ -1340,6 +1499,27 @@ suite('components/views/MenuView', () => {
                 expectMenuItemSelected(menuView, menuItemEl);
             });
 
+            it('To disabled item', () => {
+                menuView = craft`
+                    <Ink.Menu embedded>
+                     <Ink.Menu.Item disabled>
+                      Item 1
+                     </Ink.Menu.Item>
+                    </Ink.Menu>
+                `;
+                document.body.appendChild(menuView.el);
+
+                const menuItemEl = menuView.el.children[0] as HTMLElement;
+
+                menuItemEl.dispatchEvent(
+                    new window.MouseEvent('mouseover', {
+                        bubbles: true,
+                        cancelable: true,
+                    }));
+
+                expectMenuItemSelected(menuView, menuItemEl);
+            });
+
             it('To non-item', () => {
                 menuView = craft`
                     <Ink.Menu embedded>
@@ -1474,28 +1654,55 @@ suite('components/views/MenuView', () => {
     });
 
     describe('Menu Item Events', () => {
-        it('Item clicked', () => {
-            const onClick = jasmine.createSpy('onClick');
-            const onParentClick = jasmine.createSpy('onClick');
+        describe('Item clicked', () => {
+            it('When enabled', () => {
+                const onClick = jasmine.createSpy('onClick');
+                const onParentClick = jasmine.createSpy('onClick');
 
-            menuView = craft`
-                <Ink.Menu>
-                 <Ink.Menu.Item onClick=${onClick}>
-                  Item 1
-                 </Ink.Menu.Item>
-                </Ink.Menu>
-            `;
-            menuView.open();
+                menuView = craft`
+                    <Ink.Menu>
+                     <Ink.Menu.Item onClick=${onClick}>
+                      Item 1
+                     </Ink.Menu.Item>
+                    </Ink.Menu>
+                `;
+                menuView.open();
 
-            const parentEl = paint<HTMLDivElement>`<div>${menuView}</div>`;
-            parentEl.addEventListener('click', onParentClick);
+                const parentEl = paint<HTMLDivElement>`<div>${menuView}</div>`;
+                parentEl.addEventListener('click', onParentClick);
 
-            (menuView.el.children[0] as HTMLElement).click();
+                (menuView.el.children[0] as HTMLElement).click();
 
-            expect(onClick).toHaveBeenCalled();
-            expect(onParentClick).not.toHaveBeenCalled();
+                expect(onClick).toHaveBeenCalled();
+                expect(onParentClick).not.toHaveBeenCalled();
 
-            expect(menuView.isOpen).toBeFalse();
+                expect(menuView.isOpen).toBeFalse();
+            });
+
+            it('When disabled', () => {
+                const onClick = jasmine.createSpy('onClick');
+                const onParentClick = jasmine.createSpy('onClick');
+
+                menuView = craft`
+                    <Ink.Menu>
+                     <Ink.Menu.Item disabled
+                                    onClick=${onClick}>
+                      Item 1
+                     </Ink.Menu.Item>
+                    </Ink.Menu>
+                `;
+                menuView.open();
+
+                const parentEl = paint<HTMLDivElement>`<div>${menuView}</div>`;
+                parentEl.addEventListener('click', onParentClick);
+
+                (menuView.el.children[0] as HTMLElement).click();
+
+                expect(onClick).not.toHaveBeenCalled();
+                expect(onParentClick).not.toHaveBeenCalled();
+
+                expect(menuView.isOpen).toBeTrue();
+            });
         });
 
         it('Separator clicked', () => {
@@ -1654,6 +1861,46 @@ suite('components/views/MenuView', () => {
                 expectMenuItemNotChecked(menuView, menuItemEl2);
                 expect(menuView.isOpen).toBeTrue();
             });
+        });
+
+        it('Disabled state updated', () => {
+            menuView = craft`
+                <Ink.Menu embedded>
+                 <Ink.Menu.Item id="my-item">
+                  Item 1
+                 </Ink.Menu.Item>
+                </Ink.Menu>
+            `;
+
+            const menuItems = menuView.menuItems;
+            const menuItemEls = menuView.el.children;
+            const menuItemEl1 = menuItemEls[0] as HTMLElement;
+            const menuItem = menuItems.at(0);
+
+            menuItem.set('disabled', true);
+
+            expect(menuItemEl1.outerHTML).toBe(
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item"' +
+                ' data-item-index="0" aria-disabled="true">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
+                '<label class="ink-c-menu__item-label">Item 1</label>' +
+                '</span>' +
+                '</li>'
+            );
+
+            menuItem.set('disabled', false);
+
+            expect(menuItemEl1.outerHTML).toBe(
+                '<li role="menuitem" draggable="false" tabindex="-1"' +
+                ' id="my-item" class="ink-c-menu__item" data-item-index="0">' +
+                '<span class="ink-c-menu__item-inner" role="presentation"' +
+                ' tabindex="-1">' +
+                '<label class="ink-c-menu__item-label">Item 1</label>' +
+                '</span>' +
+                '</li>'
+            );
         });
 
         it('Label updated', () => {
@@ -2295,6 +2542,7 @@ suite('components/views/MenuView', () => {
                     <Ink.Menu embedded>
                      <Ink.Menu.Item>Item 1</Ink.Menu.Item>
                      <Ink.Menu.Item>Item 2</Ink.Menu.Item>
+                     <Ink.Menu.Item disabled>Item 2</Ink.Menu.Item>
                     </Ink.Menu>
                 `;
 
@@ -2318,12 +2566,29 @@ suite('components/views/MenuView', () => {
                 expectMenuItemNotSelected(menuView, itemEl1);
             });
 
+            it('To disabled item', () => {
+                /* Set it once. */
+                menuView.setCurrentItem(0);
+
+                const children = menuView.el.children;
+                const itemEl1 = children[0] as HTMLElement;
+                const itemEl3 = children[2] as HTMLElement;
+
+                expectMenuItemSelected(menuView, itemEl1);
+
+                /* Set it a second time. */
+                menuView.setCurrentItem(2);
+
+                expectMenuItemSelected(menuView, itemEl3);
+                expectMenuItemNotSelected(menuView, itemEl1);
+            });
+
             it('To negative index', () => {
                 menuView.setCurrentItem(-5);
 
                 expectMenuItemSelected(
                     menuView,
-                    menuView.el.children[1] as HTMLElement);
+                    menuView.el.children[2] as HTMLElement);
             });
 
             it('To index past length', () => {

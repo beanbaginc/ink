@@ -177,7 +177,7 @@
           @item-inner: {
             /* Appearance */
             color: inherit;
-            cursor: pointer;
+            cursor: inherit;
             font-weight: normal;
             text-decoration: none;
 
@@ -192,6 +192,13 @@
            */
           @item-shortcut: {
             justify-self: end;
+          };
+
+          /*
+           * Styles for the disabled state.
+           */
+          @item-state-is-disabled: {
+            cursor: not-allowed;
           };
 
           /*

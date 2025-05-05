@@ -245,6 +245,14 @@ export class MenuView<
     menuItems: MenuItemsCollection;
 
     /**
+     * The list of all all item views.
+     *
+     * Version Added:
+     *     0.5
+     */
+    #allItemViews: BaseMenuItemView[] = [];
+
+    /**
      * A timeout handle ID for closing a menu with a delay.
      */
     #closeTimeoutHandle: ReturnType<typeof setTimeout> = null;
@@ -260,7 +268,7 @@ export class MenuView<
     #items: HTMLLIElement[] = [];
 
     /**
-     * The list of all menu item views.
+     * The list of all interactive item views.
      */
     #itemViews: BaseMenuItemView[] = [];
 
@@ -535,6 +543,11 @@ export class MenuView<
      */
     setCurrentItem(index: number | null) {
         const items = this.#items;
+        const curItemIndex = this.#curItemIndex;
+
+        if (index === curItemIndex) {
+            return;
+        }
 
         if (index === null || items.length === 0) {
             this.#clearCurrentItem(true);
@@ -629,6 +642,7 @@ export class MenuView<
         let hasShortcuts = false;
 
         const allItems: BaseMenuItemView[] = [];
+        const itemViews: BaseMenuItemView[] = [];
         const menuItemEls: HTMLLIElement[] = [];
 
         for (const menuItem of this.menuItems) {
@@ -661,6 +675,7 @@ export class MenuView<
 
                 menuItemEl.dataset.itemIndex = menuItemEls.length.toString();
                 menuItemEls.push(menuItemEl);
+                itemViews.push(menuItemView);
 
                 /*
                  * Check and handle menu items that should close the menu
@@ -693,8 +708,9 @@ export class MenuView<
             hasShortcuts: hasShortcuts,
         });
 
+        this.#allItemViews = allItems;
         this.#items = menuItemEls;
-        this.#itemViews = allItems;
+        this.#itemViews = itemViews;
 
         /*
          * If a current menu item was already set, and is in the range,
@@ -732,7 +748,7 @@ export class MenuView<
             hasIcons = false;
             hasShortcuts = false;
 
-            for (const menuItemView of this.#itemViews) {
+            for (const menuItemView of this.#allItemViews) {
                 if (menuItemView.hasIcon) {
                     hasIcons = true;
                 }
@@ -760,10 +776,11 @@ export class MenuView<
      * to the items will no longer impact the menu.
      */
     #clearMenuItems() {
-        for (const menuItemView of this.#itemViews) {
+        for (const menuItemView of this.#allItemViews) {
             menuItemView.remove();
         }
 
+        this.#allItemViews = [];
         this.#items = [];
         this.#itemViews = [];
     }
@@ -798,6 +815,7 @@ export class MenuView<
             case 'RadioItem':
                 menuItemProps = {
                     childEl: props.childEl,
+                    disabled: !!props.disabled,
                     iconName: props.iconName,
                     id: props.id,
                     keyboardShortcut: props.keyboardShortcut,
@@ -1114,17 +1132,21 @@ export class MenuView<
                     evt.preventDefault();
                     evt.stopPropagation();
 
-                    const itemEl = this.#items[this.#curItemIndex];
-                    this.#activateItem(itemEl);
+                    const index = this.#curItemIndex;
 
-                    /*
-                     * For checkbox and radio menu items, Space should
-                     * activate but not close. For standard menu items, it
-                     * should close.
-                     */
-                    if (key === 'Enter' ||
-                        itemEl.getAttribute('role') === 'menuitem') {
-                        this.close();
+                    if (!this.#itemViews[index].model.get('disabled')) {
+                        const itemEl = this.#items[index];
+                        this.#activateItem(itemEl);
+
+                        /*
+                         * For checkbox and radio menu items, Space should
+                         * activate but not close. For standard menu items, it
+                         * should close.
+                         */
+                        if (key === 'Enter' ||
+                            itemEl.getAttribute('role') === 'menuitem') {
+                            this.close();
+                        }
                     }
                 }
 
@@ -1264,6 +1286,7 @@ class MenuItemView extends BaseMenuItemView {
 
     static modelEvents: EventsHash = {
         'change:childEl': '_onMenuItemChanged',
+        'change:disabled': '_onMenuItemChanged',
         'change:iconName': '_onMenuItemChanged',
         'change:keyboardShortcut': '_onMenuItemChanged',
         'change:keyboardShortcutRegistry': '_onMenuItemChanged',
@@ -1328,6 +1351,7 @@ class MenuItemView extends BaseMenuItemView {
      * menu item state.
      */
     protected onRender() {
+        const el = this.el;
         const model = this.model;
         const iconName = model.get('iconName');
         const label = model.get('label');
@@ -1370,8 +1394,14 @@ class MenuItemView extends BaseMenuItemView {
             `;
         }
 
+        if (model.get('disabled')) {
+            el.setAttribute('aria-disabled', 'true');
+        } else {
+            el.removeAttribute('aria-disabled');
+        }
+
         renderInto(
-            this.el,
+            el,
             paint`
                 <${innerTag} class="ink-c-menu__item-inner"
                              role="presentation"
@@ -1414,11 +1444,19 @@ class MenuItemView extends BaseMenuItemView {
     private _onClick(evt: MouseEvent) {
         evt.stopPropagation();
 
-        if (!this.model.get('url')) {
+        const model = this.model;
+        const disabled = model.get('disabled');
+
+        if (model.get('disabled')) {
+            evt.preventDefault();
+            return;
+        }
+
+        if (!model.get('url')) {
             evt.preventDefault();
         }
 
-        this.model.invokeAction(evt);
+        model.invokeAction(evt);
         this.trigger('clicked');
     }
 }

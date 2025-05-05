@@ -188,6 +188,12 @@
        *
        *         This is only used for checkbox and radio menu items.
        *
+       *     aria-disabled (boolean, optional):
+       *         Whether the menu item is disabled.
+       *
+       *         Version Added:
+       *             0.8
+       *
        *     aria-selected (boolean, optional):
        *         Whether the menu item is currently selected.
        *
@@ -199,7 +205,7 @@
        *         id="..."
        *         role="<menuitem | menuitemcheckbox | menuitemradio>"
        *         [aria-checked="...">]
-       *         [aria-selected="...">]
+       *         [aria-disabled="...">]
        *         [aria-selected="...">]
        *      <span class="@{name}__inner" ...</span>
        *      |
@@ -208,6 +214,10 @@
        */
       &__item {
         .add-rules('item');
+
+        &[aria-disabled="true"] {
+          .add-rules('item-state-is-disabled');
+        }
 
         &[aria-selected="true"] {
           .add-rules('item-state-is-selected');

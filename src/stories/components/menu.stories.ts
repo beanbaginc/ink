@@ -103,6 +103,9 @@ export default {
                  <Ink.Menu.Item onClick=${onMenuItemClicked}>
                   Item 4 and this is a long one people
                  </>
+                 <Ink.Menu.Item disabled>
+                  This item is disabled
+                 </>
                  <Ink.Menu.Separator/>
                  <Ink.Menu.CheckboxItem checked
                                         onClick=${updateMenuItemChecked}>
@@ -111,6 +114,9 @@ export default {
                  <Ink.Menu.CheckboxItem>
                   Checkbox Item 2
                  </>
+                 <Ink.Menu.CheckboxItem disabled>
+                  Checkbox Item 3
+                 </>
                  <Ink.Menu.Separator/>
                  <Ink.Menu.RadioItem checked radioGroup=${radioGroup1}>
                   Radio Item 1
@@ -118,7 +124,8 @@ export default {
                  <Ink.Menu.RadioItem radioGroup=${radioGroup1}>
                   Radio Item 2
                  </>
-                 <Ink.Menu.RadioItem radioGroup=${radioGroup1}>
+                 <Ink.Menu.RadioItem disabled
+                                     radioGroup=${radioGroup1}>
                   Radio Item 3
                  </>
                 </>
@@ -152,6 +159,10 @@ export default {
                 {
                     label: 'Item 4 and this is a long one people',
                     onClick: onMenuItemClicked,
+                },
+                {
+                    disabled: true,
+                    label: 'This item is disabled',
                 },
             ]);
 
