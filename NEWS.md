@@ -1,6 +1,15 @@
 # Ink Releases
 
-## Ink 0.7.0 (18-February-2024)
+## Ink 0.8.0 (6-May-2025)
+
+* `Ink.Menu`:
+
+  * Added support for header items in menus.
+  * Added support for marking items as disabled.
+  * Fixed the position of menus when partially off-screen.
+
+
+## Ink 0.7.0 (18-February-2025)
 
 * Added a new `ink-i-help` icon.
 
