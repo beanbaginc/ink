@@ -325,20 +325,33 @@ export abstract class BaseMenuHandleView<
 
         /* Position the menu laterally according to the viewport width. */
         const menuWidth = menuEl.offsetWidth;
-        const windowWidth = window.innerWidth;
+        const windowWidth = document.documentElement.clientWidth;
         const elOffsetLeft = controllerElBoundingRect.left;
 
         let newMenuLeft: string = '';
 
         if (elOffsetLeft + menuWidth > windowWidth) {
             /*
-             * The right side of the menu is being clipped. Move to the left
-             * so that the full menu fits on screen.
+             * The right side of the menu is being clipped. Try to right-align
+             * it with the handle first.
              */
-            const newMenuLeftNum = (
-                windowWidth -
-                (elOffsetLeft + Math.min(menuWidth, windowWidth))
-            );
+            let newMenuLeftNum = controllerElBoundingRect.width - menuWidth;
+
+            if (newMenuLeftNum + menuWidth > windowWidth) {
+                /*
+                 * That was still off-screen (meaning the handle was likely
+                 * off-screen. Align this with the right edge of the viewport.
+                 */
+                newMenuLeftNum = windowWidth - menuWidth - elOffsetLeft;
+            }
+
+            if (newMenuLeftNum + elOffsetLeft < 0) {
+                /*
+                 * It's off the left of the screen. Align this with the
+                 * left edge of the viewport.
+                 */
+                newMenuLeftNum = -elOffsetLeft;
+            }
 
             newMenuLeft = `${newMenuLeftNum}px`;
         }
