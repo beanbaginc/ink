@@ -1,5 +1,11 @@
 # Ink Releases
 
+## Ink 0.8.1 (28-July-2025)
+
+* Removed an accidental dependency on
+  [babel-plugin-dedent](https://www.npmjs.com/package/babel-plugin-dedent).
+
+
 ## Ink 0.8.0 (6-May-2025)
 
 * `Ink.Menu`:
