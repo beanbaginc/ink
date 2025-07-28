@@ -15,6 +15,14 @@
         "babel-plugin-dedent",
         "babel-plugin-django-gettext",
         [
+            "babel-plugin-transform-remove-imports", {
+                "test": [
+                    "babel-plugin-dedent",
+                    "babel-plugin-django-gettext"
+                ]
+            }
+        ],
+        [
             "htm",
             {
                 "import": {
