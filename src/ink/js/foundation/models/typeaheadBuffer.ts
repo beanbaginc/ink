@@ -2,7 +2,7 @@
  * A typeahead buffer for tracking keys typed for UI navigation purposes.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -15,7 +15,7 @@ import {
  * Options for :js:func:`TypeaheadBuffer.helpFindItemWithPrefix`.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface HelpFindItemWithPrefixOptions<TItem> {
     /** The first item to search for a match. */
@@ -36,7 +36,7 @@ export interface HelpFindItemWithPrefixOptions<TItem> {
  * Attributes for TypeaheadBuffer.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface TypeaheadBufferAttrs {
     /**
@@ -57,7 +57,7 @@ export interface TypeaheadBufferAttrs {
  * once enough time has passed.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 export class TypeaheadBuffer extends BaseModel<TypeaheadBufferAttrs> {

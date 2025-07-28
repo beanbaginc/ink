@@ -2,7 +2,7 @@
  * A collection of menu items.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -20,7 +20,7 @@ import { MenuItem } from '../models/menuItemModel';
  * This can hold and track any number of menu items.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 export class MenuItemsCollection<

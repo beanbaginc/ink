@@ -2,7 +2,7 @@
  * Base class for Spina-based Ink components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -21,7 +21,7 @@ import {
  * Base options passed into components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface BaseComponentViewOptions {
     /**
@@ -48,7 +48,7 @@ export interface BaseComponentViewOptions {
  * component.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface InitialComponentState<
     TOptions extends BaseComponentViewOptions,
@@ -94,7 +94,7 @@ export interface InitialComponentState<
  * process, and then helping facilitate the rendering of the component.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export abstract class BaseComponentView<
     TModel extends BaseModel = BaseModel,

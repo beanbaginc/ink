@@ -2,7 +2,7 @@
  * DOM event utility functions for unit testing.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 
@@ -16,7 +16,7 @@
  * bubble up and be cancelable.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     el (HTMLElement):

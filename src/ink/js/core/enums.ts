@@ -2,7 +2,7 @@
  * Standard enum types useful across components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 
@@ -10,7 +10,7 @@
  * Standard values for layout orientation.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export enum Orientation {
     /** Horizontal orientation. */

@@ -2,7 +2,7 @@
  * A base class for a component working as a menu drop-down handle.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -29,7 +29,7 @@ import { MenuView } from './menuView';
  * Menu handles compute this automatically, based on available screen space.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export enum MenuHandleOpenDirection {
     /** The menu opens in an up direction. */
@@ -44,7 +44,7 @@ export enum MenuHandleOpenDirection {
  * Options for building a menu for a menu handle.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface BuildMenuOptions {
     /** The element that controls the menu. */
@@ -79,7 +79,7 @@ export interface BuildMenuOptions {
  * Options for BaseMenuHandleView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface BaseMenuHandleViewOptions extends BaseComponentViewOptions {
     /**
@@ -106,7 +106,7 @@ export interface BaseMenuHandleViewOptions extends BaseComponentViewOptions {
  * for the menu.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export abstract class BaseMenuHandleView<
     TModel extends BaseModel = BaseModel,

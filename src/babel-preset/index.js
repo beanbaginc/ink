@@ -6,7 +6,7 @@
  * recommended for any projects using Ink.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export default function inkPreset(api, options={}) {
     api.cache(true);

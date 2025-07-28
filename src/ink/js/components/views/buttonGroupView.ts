@@ -2,7 +2,7 @@
  * A component for connected groups of buttons.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -26,7 +26,7 @@ import {
  * Options for ButtonGroupView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface ButtonGroupViewOptions extends BaseComponentViewOptions {
     /**
@@ -49,7 +49,7 @@ export interface ButtonGroupViewOptions extends BaseComponentViewOptions {
  * This is not meant to be used as a toolbar, but more of a menu of buttons.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.ButtonGroup')
 @spina

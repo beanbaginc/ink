@@ -2,14 +2,14 @@
  * Utilities for manipulating properties in the DOM.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 /**
  * A mapping of attribute names to their Element counterparts for setProps().
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 const _SetPropsAliases = {
     'class': 'className',
@@ -36,7 +36,7 @@ const _SetPropsAliases = {
  *     These will be normalized to :js:class:`Element.setAttribute` calls.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     el (Element):
@@ -77,7 +77,7 @@ export function setProps(
  * It's used internally by :js:func:`setProps`.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     el (object):

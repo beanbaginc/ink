@@ -2,7 +2,7 @@
  * Utilities for rendering content in the DOM.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import * as _ from 'underscore';
@@ -19,7 +19,7 @@ import {
  * Options for a renderInto() call.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 interface RenderIntoOptions {
     /**
@@ -42,7 +42,7 @@ interface RenderIntoOptions {
  * anything that's not already an :js:class:`Element`.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     targetEl (HTMLElement or JQuery):
@@ -76,7 +76,7 @@ export function renderInto(
  * :js:func:`Element.insertBefore`, handling batches of nodes at once.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     targetEl (HTMLElement or JQuery):

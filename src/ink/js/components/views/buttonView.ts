@@ -2,7 +2,7 @@
  * A component for a standard button.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -34,7 +34,7 @@ import {
  * The type of a button.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export enum ButtonType {
     /** A button representing a dangerous or destructive operation. */
@@ -58,7 +58,7 @@ export enum ButtonType {
  * Options for ButtonView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface ButtonViewOptions extends BaseComponentViewOptions {
     /**
@@ -142,7 +142,7 @@ export interface ButtonViewOptions extends BaseComponentViewOptions {
  * They may also be ``<button>`` elements (default) or ``<a>`` elements.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.Button')
 @spina

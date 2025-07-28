@@ -2,7 +2,7 @@
  * Support for painting components into DOM elements.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import htm from 'htm/mini';
@@ -24,7 +24,7 @@ import {
  * This is used internally by :js:func:`paint`.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 interface PaintFunction {
     <TResult extends (HTMLElement | HTMLElement[])>(
@@ -43,7 +43,7 @@ interface PaintFunction {
  * more precise type as a generic.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export const paint: PaintFunction = htm.bind(paintComponent) as PaintFunction;
 
@@ -55,7 +55,7 @@ export const paint: PaintFunction = htm.bind(paintComponent) as PaintFunction;
  * populated element in the order specified.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     items (Array of object):

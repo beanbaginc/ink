@@ -2,7 +2,7 @@
  * A collection for a group of radio menu items
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -21,7 +21,7 @@ import { MenuItemsCollection } from './menuItemsCollection';
  * at most only one menu item is ever checked at a time.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 export class MenuItemsRadioGroup<

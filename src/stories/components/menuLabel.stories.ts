@@ -2,7 +2,7 @@
  * Storybook story for the MenuLabel component.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {

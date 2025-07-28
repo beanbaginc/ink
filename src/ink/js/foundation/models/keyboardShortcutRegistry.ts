@@ -2,7 +2,7 @@
  * A registry for keyboard shortcuts.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -18,7 +18,7 @@ import {
  * :js:class:`KeyboardEvent`.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface KeyboardModifiers {
     /** Whether the Alt key is pressed. */
@@ -39,7 +39,7 @@ export interface KeyboardModifiers {
  * Information on a registered keyboard shortcut.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface RegisteredKeyboardShortcut {
     /**
@@ -85,7 +85,7 @@ export interface RegisteredKeyboardShortcut {
  * Options for registering a keyboard shortcut.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface RegisterKeyboardShortcutOptions extends KeyboardModifiers {
     /**
@@ -145,7 +145,7 @@ export interface UnregisterKeyboardShortcutOptions extends KeyboardModifiers {
  * bound to the element that should handle these shortcuts.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 export class KeyboardShortcutRegistry extends BaseModel implements Iterable<

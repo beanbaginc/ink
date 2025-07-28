@@ -2,7 +2,7 @@
  * A component for showing an available keyboard shortcut.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -33,7 +33,7 @@ import {
  * symbols or strings, depending on the platform.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 const SYMBOL_MAP =
     window.navigator.platform === 'MacIntel'
@@ -71,7 +71,7 @@ const SYMBOL_MAP =
  * ``aria-keyshortcuts``.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 const KEY_ALIAS_MAP = {
     'Cmd': 'Meta',
@@ -87,7 +87,7 @@ const KEY_ALIAS_MAP = {
  * A mapping of normalized key modifier labels to flags.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 const KEY_EVENT_MODIFIER_MAP = {
     'Alt': 'altKey',
@@ -103,7 +103,7 @@ const KEY_EVENT_MODIFIER_MAP = {
  * Options for KeyboardShortcutView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface KeyboardShortcutViewOptions extends BaseComponentViewOptions {
     /**
@@ -163,7 +163,7 @@ export interface KeyboardShortcutViewOptions extends BaseComponentViewOptions {
  * and ``registry`` are provided).
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.KeyboardShortcut')
 @spina

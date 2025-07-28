@@ -2,7 +2,7 @@
  * Support for defining, registering, and accessing components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 
@@ -10,7 +10,7 @@
  * Type for a child of a component.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export type ComponentChild = (
     Node |
@@ -30,7 +30,7 @@ export type ComponentChild = (
  * and are passed to the component during construction.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export type ComponentProps = Record<string, unknown>;
 
@@ -39,7 +39,7 @@ export type ComponentProps = Record<string, unknown>;
  * A mapping of subcomponent names to handler function names.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export type Subcomponents = Record<string, string>;
 
@@ -51,7 +51,7 @@ export type Subcomponents = Record<string, string>;
  * to validate and handle the subcomponent.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface SubcomponentInfo {
     /**
@@ -96,7 +96,7 @@ export interface SubcomponentInfo {
  * Type for a component.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface Component<
     TElement extends Element = HTMLElement,
@@ -134,7 +134,7 @@ export interface Component<
  * Type for a constructor for a component.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface ComponentCtr<
     TComponent extends Component = Component,
@@ -164,7 +164,7 @@ export interface ComponentCtr<
  * A component tracked in the registry.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface RegisteredSubcomponent {
     /**
@@ -195,7 +195,7 @@ export interface RegisteredSubcomponent {
  * retrieval by name.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export class ComponentRegistry {
     /**
@@ -328,7 +328,7 @@ export class ComponentRegistry {
  * can be accessed, crafted, and painted.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     name (string):
@@ -355,7 +355,7 @@ export function inkComponent<
  * Return whether an object is a parsed subcomponent.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     subcomponentInfo (object):
@@ -376,6 +376,6 @@ export function isSubcomponentInfo(
  * The main registry for components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export const componentRegistry = new ComponentRegistry();

@@ -2,7 +2,7 @@
  * Unit tests for MenuView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import { suite } from '@beanbag/jasmine-suites';

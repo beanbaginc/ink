@@ -2,7 +2,7 @@
  * A component for an embedded or drop-down/pop-out menu.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import _ from 'underscore';
@@ -41,7 +41,7 @@ import {
  * Base options for menu open/close methods.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 interface BaseOpenCloseMenuOptions {
     /**
@@ -66,7 +66,7 @@ interface BaseOpenCloseMenuOptions {
  * This is used to control animation, events, and current item selection.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface OpenMenuOptions extends BaseOpenCloseMenuOptions {
     /**
@@ -99,7 +99,7 @@ export interface OpenMenuOptions extends BaseOpenCloseMenuOptions {
  * This is used to control animation and events.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface CloseMenuOptions extends BaseOpenCloseMenuOptions {
     /**
@@ -120,7 +120,7 @@ export interface CloseMenuOptions extends BaseOpenCloseMenuOptions {
  * menu items, and accessibility information.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface MenuViewOptions extends BaseComponentViewOptions {
     /**
@@ -174,7 +174,7 @@ export interface MenuViewOptions extends BaseComponentViewOptions {
  * readers navigate the menu.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.Menu')
 @spina
@@ -1253,7 +1253,7 @@ export class MenuView<
  * to control additional state and rendering.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina({
     prototypeAttrs: [
@@ -1307,7 +1307,7 @@ class BaseMenuItemView extends BaseComponentView<
  * Subclasses can introduce additional state and rendering logic.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 class MenuItemView extends BaseMenuItemView {
@@ -1505,7 +1505,7 @@ class MenuItemView extends BaseMenuItemView {
  * and radio button items).
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 class BaseCheckableMenuItemView extends MenuItemView {
@@ -1519,7 +1519,7 @@ class BaseCheckableMenuItemView extends MenuItemView {
      * This is only for checkbox and radio items.
      *
      * Version Added:
-     *     1.0
+     *     0.5
      */
     static _CHECKED_ICONS = {
         [MenuItemType.CHECKBOX_ITEM]: 'ink-i-check',
@@ -1581,7 +1581,7 @@ class BaseCheckableMenuItemView extends MenuItemView {
  * A checkbox menu item.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 class CheckboxMenuItemView extends BaseCheckableMenuItemView {
@@ -1595,7 +1595,7 @@ class CheckboxMenuItemView extends BaseCheckableMenuItemView {
  * A radio menu item.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 class RadioMenuItemView extends BaseCheckableMenuItemView {
@@ -1631,7 +1631,7 @@ class HeaderMenuItemView extends MenuItemView {
  * A separator menu item.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 class SeparatorMenuItemView extends BaseMenuItemView {
@@ -1647,7 +1647,7 @@ class SeparatorMenuItemView extends BaseMenuItemView {
  * A mapping of menu item types to view classes.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 const _menuItemViews = {
     [MenuItemType.ITEM]: MenuItemView,

@@ -2,7 +2,7 @@
  * A component for a menu label.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -27,7 +27,7 @@ import {
  * Options for MenuLabelView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface MenuLabelViewOptions extends BaseMenuHandleViewOptions {
     /**
@@ -57,7 +57,7 @@ export interface MenuLabelViewOptions extends BaseMenuHandleViewOptions {
  * Space/Enter/arrow key, a specified menu will appear.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.MenuLabel')
 @spina

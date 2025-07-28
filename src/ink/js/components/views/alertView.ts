@@ -2,7 +2,7 @@
  * A component for an informational alert panel.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -26,7 +26,7 @@ import {
  * The type of an alert.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export enum AlertType {
     /** An alert showing an error. */
@@ -50,7 +50,7 @@ export enum AlertType {
  * Options for AlertView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface AlertViewOptions extends BaseComponentViewOptions {
     /**
@@ -101,7 +101,7 @@ export interface AlertViewOptions extends BaseComponentViewOptions {
  * and an optional description providing further detail.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.Alert')
 @spina

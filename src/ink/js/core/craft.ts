@@ -2,7 +2,7 @@
  * Support for crafting instances and trees of components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import htm from 'htm/mini';
@@ -23,7 +23,7 @@ import {
  * An item to craft, when crafting a tree of components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface CraftComponentItem {
     /**
@@ -71,7 +71,7 @@ export interface CraftComponentItem {
  * This is used internally by :js:func:`craft`.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 interface CraftFunction {
     <TResult extends (CraftedComponent<HTMLElement, Component> |
@@ -91,7 +91,7 @@ interface CraftFunction {
  * can specify a more precise type as a generic.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export const craft: CraftFunction = htm.bind(craftComponent) as CraftFunction;
 
@@ -103,7 +103,7 @@ export const craft: CraftFunction = htm.bind(craftComponent) as CraftFunction;
  * resulting populated component in the order specified.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     items (Array of object):

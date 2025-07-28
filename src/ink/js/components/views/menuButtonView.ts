@@ -2,7 +2,7 @@
  * A component for a menu button.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -31,7 +31,7 @@ import {
  * Options for MenuButtonView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface MenuButtonViewOptions extends BaseMenuHandleViewOptions {
     /**
@@ -98,7 +98,7 @@ export interface MenuButtonViewOptions extends BaseMenuHandleViewOptions {
  * intent via a color hint.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.MenuButton')
 @spina

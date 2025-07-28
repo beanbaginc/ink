@@ -2,7 +2,7 @@
  * A component for a spinner.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -21,7 +21,7 @@ import {
  * Options for SpinnerView.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export type SpinnerViewOptions = BaseComponentViewOptions;
 
@@ -45,7 +45,7 @@ export type SpinnerViewOptions = BaseComponentViewOptions;
  * if it should (and does not otherwise have accompanying text).
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @inkComponent('Ink.Spinner')
 @spina

@@ -2,7 +2,7 @@
  * Model for representing menu items.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -18,7 +18,7 @@ import { MenuItemsRadioGroup } from '../collections/menuItemsRadioGroup';
  * The type of a menu item.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export enum MenuItemType {
     /** A standard menu item. */
@@ -47,7 +47,7 @@ export enum MenuItemType {
  * Model attributes for MenuItem.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export interface MenuItemAttrs {
     /**
@@ -154,7 +154,7 @@ export interface MenuItemAttrs {
  * in the form of ``childEl``.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 export class MenuItem<

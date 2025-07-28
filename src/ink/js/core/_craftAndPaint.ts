@@ -2,7 +2,7 @@
  * Internal support for crafting and painting instances and components.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -21,7 +21,7 @@ import { setProps } from './dom/props';
  * Type for a crafted component or HTML element.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export type CraftedComponent<
     TElement extends HTMLElement = HTMLElement,
@@ -33,7 +33,7 @@ export type CraftedComponent<
  * An item that can be painted to an element.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 export type PaintableItem = (
     CraftedComponent |
@@ -73,7 +73,7 @@ export function craftComponent<
  * If crafting an HTML element, the Element instance will be returned.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     nameOrClass (string):
@@ -195,7 +195,7 @@ export function paintComponent<
  * If painting an HTML element, the Element instance will be returned.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     name (string):
@@ -262,7 +262,7 @@ export function paintComponent<
  *     instantiated.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     items (PaintableItem or PaintableItem[]):
@@ -315,7 +315,7 @@ export function paintCraftedElements(
  * children, and render it.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     ComponentCls (ComponentCtr):
@@ -494,7 +494,7 @@ function _craftComponentCtr<
  * children.
  *
  * Version Added:
- *     1.0
+ *     0.5
  *
  * Args:
  *     name (string):

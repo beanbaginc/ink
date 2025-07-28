@@ -2,7 +2,7 @@
  * A view for managing keyboard shortcut events on an element.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 import {
@@ -25,7 +25,7 @@ import {
  * ancestors.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 @spina
 export class KeyboardShortcutRegistryView extends BaseView<

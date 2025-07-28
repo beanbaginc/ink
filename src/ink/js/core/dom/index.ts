@@ -2,7 +2,7 @@
  * Utilities for working with the DOM.
  *
  * Version Added:
- *     1.0
+ *     0.5
  */
 
 export * from './props';
