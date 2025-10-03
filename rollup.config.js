@@ -22,6 +22,7 @@ const inkPath = path.resolve(__dirname, 'src', 'ink');
 const lessArgs = [
     '--source-map',
     '--include-path=src:node_modules',
+    '--quiet',
     `--modify-var="ink-path=${inkPath}"`,
 ].join(' ');
 const cleanCSSArgs = [
