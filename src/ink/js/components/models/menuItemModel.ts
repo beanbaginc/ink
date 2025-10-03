@@ -11,7 +11,7 @@ import {
 } from '@beanbag/spina';
 
 import { KeyboardShortcutRegistry } from '../../foundation';
-import { MenuItemsRadioGroup } from '../collections/menuItemsRadioGroup';
+import { type MenuItemsRadioGroup } from '../collections/menuItemsRadioGroup';
 
 
 /**

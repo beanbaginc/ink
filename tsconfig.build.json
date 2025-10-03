@@ -1,9 +1,5 @@
 {
     "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "declaration": true,
-        "declarationDir": "_build/_ts/",
-    },
     "include": [
         "src/ink/js/*",
         "src/ink/js/**/*",

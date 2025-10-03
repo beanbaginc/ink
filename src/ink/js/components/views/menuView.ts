@@ -186,6 +186,8 @@ export class MenuView<
     HTMLMenuElement,
     TOptions
 > {
+    declare ['constructor']: typeof MenuView;
+
     static tagName = 'menu';
     static className = 'ink-c-menu';
 
@@ -371,8 +373,10 @@ export class MenuView<
         const currentItemIndex = options.currentItemIndex ?? null;
 
         /* Close any existing menu. */
-        if (MenuView.openedMenu !== null) {
-            MenuView.openedMenu.close({
+        const cls = this.constructor;
+
+        if (cls.openedMenu !== null) {
+            cls.openedMenu.close({
                 animate: false,
             });
         }
@@ -395,7 +399,7 @@ export class MenuView<
             this.setCurrentItem(currentItemIndex);
         }
 
-        MenuView.openedMenu = this;
+        cls.openedMenu = this;
 
         /*
          * Set up a handler so any click on the document will close the menu.
@@ -497,7 +501,9 @@ export class MenuView<
         el.tabIndex = -1;
 
         document.removeEventListener('click', this.#onDocClick);
-        MenuView.openedMenu = null;
+
+        this.constructor.openedMenu = null;
+
         this.isStickyOpen = null;
 
         if (triggerEvents) {
@@ -1509,6 +1515,8 @@ class MenuItemView extends BaseMenuItemView {
  */
 @spina
 class BaseCheckableMenuItemView extends MenuItemView {
+    declare ['constructor']: typeof BaseCheckableMenuItemView;
+
     static modelEvents: EventsHash = {
         'change:checked': '_onCheckedChanged',
     };
@@ -1568,7 +1576,7 @@ class BaseCheckableMenuItemView extends MenuItemView {
         const model = this.model;
         const checked = model.get('checked');
         const checkIconName =
-            BaseCheckableMenuItemView._CHECKED_ICONS[model.get('type')];
+            this.constructor._CHECKED_ICONS[model.get('type')];
 
         el.setAttribute('aria-checked', `${checked}`);
         el.querySelector('.ink-c-menu__item-icon')

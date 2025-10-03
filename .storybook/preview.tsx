@@ -1,5 +1,5 @@
 import 'jquery';
-import { Preview, HtmlRenderer } from '@storybook/html';
+import { Preview, HtmlRenderer } from '@storybook/html-vite';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 import '../src/ink/js/index';
@@ -17,15 +17,15 @@ window['IS_STORYBOOK'] = true;
  * we're going to need to put together some stubs for some tagged template
  * literals we use.
  */
-window['gettext'] = (str) => str;
-window['ngettext'] = (singular, plural, count) => (count === 1
-                                                   ? singular
-                                                   : plural);
-window['interpolate'] = (fmt, obj, named) => {
+window['gettext'] = (str: string) => str;
+window['ngettext'] = (singular: string, plural: string, count: number) => (
+    count === 1 ? singular : plural);
+
+window['interpolate'] = (fmt: string, obj: any, named: any) => {
     if (named) {
         return fmt.replace(/%\(\w+\)s/g, m => String(obj[m.slice(2, -2)]));
     } else {
-        return fmt.replace(/%s/g, match => String(obj.shift()));
+        return fmt.replace(/%s/g, () => String(obj.shift()));
     }
 };
 
@@ -35,23 +35,28 @@ const preview: Preview = {
         Story => {
             const el = document.createElement('div');
             el.setAttribute('class', 'bg-white dark:bg-black');
-            el.appendChild(Story());
+            el.appendChild(Story() as Node);
 
             return el;
         },
 
         withThemeByDataAttribute<HtmlRenderer>({
-            themes: {
-                light: 'light',
-                dark: 'dark',
-                system: 'system',
-                'high-contrast': 'high-contrast',
-            },
-            defaultTheme: 'light',
             attributeName: 'data-ink-color-scheme',
+            defaultTheme: 'light',
+            themes: {
+                dark: 'dark',
+                'high-contrast': 'high-contrast',
+                light: 'light',
+                system: 'system',
+            },
         }),
     ],
     parameters: {
+        a11y: {
+            config: {},
+            context: 'body',
+            options: {},
+        },
         controls: {
             matchers: {
                 color: /(background|color)$/i,

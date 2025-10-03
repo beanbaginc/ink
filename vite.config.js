@@ -1,36 +1,41 @@
 /* Vite configuration used to compile assets for Storyboard. */
 import path from 'path';
+import resolve from 'resolve/sync';
 
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 
+const srcPath = path.resolve(__dirname, 'src');
+const tablerPath = path.dirname(
+    resolve('@tabler/icons/icons.json', { basedir: __dirname }));
+
+
 export default defineConfig({
+    build: {
+        target: 'esnext',
+    },
     css: {
         preprocessorOptions: {
             less: {
                 javascriptEnabled: true,
-                paths: [
-                    path.resolve(__dirname, 'src'),
-                ],
                 modifyVars: {
-                    'ink-path': path.resolve(__dirname, 'src', 'ink'),
-                    'tabler-path': path.resolve(__dirname, 'node_modules',
-                                                '\\@tabler', 'icons'),
+                    'ink-path': path.resolve(srcPath, 'ink'),
+                    'tabler-path': tablerPath.replace('@', '\\@'),
                 },
+                paths: [
+                    srcPath,
+                ],
             },
         },
+    },
+    esbuild: {
+        target: 'esnext',
     },
     optimizeDeps: {
         esbuildOptions: {
             target: 'esnext',
         },
-    },
-    esbuild: {
-        target: "esnext",
-    },
-    build: {
-        target: "esnext",
     },
     plugins: [
         react({
@@ -44,12 +49,15 @@ export default defineConfig({
                  */
                 plugins: [
                     '@babel/plugin-external-helpers',
-                    ['@babel/plugin-proposal-decorators', {
-                        'version': 'legacy'
-                    }],
+                    [
+                        '@babel/plugin-proposal-decorators',
+                        {
+                            'version': 'legacy',
+                        },
+                    ],
                     'babel-plugin-dedent',
                     'babel-plugin-django-gettext',
-                ]
+                ],
             },
 
             /*
@@ -63,5 +71,5 @@ export default defineConfig({
         noExternal: [
             '@beanbag/spina',
         ],
-    }
+    },
 });

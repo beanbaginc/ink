@@ -1,53 +1,64 @@
 {
     "env": {
         "development": {
-            "presets": [
-                "@babel/preset-env",
-                "@babel/preset-typescript"
-            ]
+            "plugins": [
+                "@babel/plugin-external-helpers",
+                [
+                    "htm",
+                    {
+                        "import": {
+                            "export": "craftComponent",
+                            "module": "@beanbag/ink"
+                        },
+                        "pragma": "craftComponent",
+                        "tag": "craft",
+                        "useBuiltins": true,
+                        "useNativeSpread": true
+                    },
+                    "htm-craft"
+                ],
+                [
+                    "htm", {
+                        "import": {
+                            "export": "paintComponent",
+                            "module": "@beanbag/ink"
+                        },
+                        "pragma": "paintComponent",
+                        "tag": "paint",
+                        "useBuiltins": true,
+                        "useNativeSpread": true
+                    },
+                    "htm-paint"
+                ]
+            ],
         }
     },
     "plugins": [
-        "@babel/plugin-external-helpers",
-        ["@babel/plugin-proposal-decorators", {
-            "version": "legacy"
-        }],
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "version": "legacy"
+            }
+        ],
         "babel-plugin-dedent",
         "babel-plugin-django-gettext",
         [
-            "babel-plugin-transform-remove-imports", {
-                "test": [
-                    "babel-plugin-dedent",
-                    "babel-plugin-django-gettext"
-                ]
-            }
-        ],
+            "babel-plugin-transform-remove-imports",
+                {
+                    "test": [
+                        "babel-plugin-dedent",
+                        "babel-plugin-django-gettext"
+                    ]
+                }
+        ]
+    ],
+    "presets": [
+        "@babel/preset-env",
         [
-            "htm",
+            "@babel/preset-typescript",
             {
-                "import": {
-                    "export": "craftComponent",
-                    "module": "@beanbag/ink"
-                },
-                "pragma": "craftComponent",
-                "tag": "craft",
-                "useBuiltins": true,
-                "useNativeSpread": true
-            },
-            "htm-craft"
-        ],
-        [
-            "htm", {
-                "import": {
-                    "export": "paintComponent",
-                    "module": "@beanbag/ink"
-                },
-                "pragma": "paintComponent",
-                "tag": "paint",
-                "useBuiltins": true,
-                "useNativeSpread": true
-            },
-            "htm-paint"
+                "allowDeclareFields": true
+            }
         ]
     ],
     "sourceMaps": true,

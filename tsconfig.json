@@ -1,19 +1,14 @@
 {
+    "extends": "@beanbag/js-buildkit/tsconfig.json",
     "compilerOptions": {
         "baseUrl": "./",
         "emitDeclarationOnly": true,
-        "esModuleInterop": true,
-        "experimentalDecorators": true,
-        "isolatedModules": true,
         "moduleResolution": "node",
         "paths": {
-            "backbone": ["node_modules/@beanbag/spina/lib/@types/backbone"],
+            "backbone": ["./src/@types/backbone"]
         },
-        "target": "ESNext",
-        "typeRoots": [
-            "node_modules/@beanbag/spina/lib/@types",
-            "node_modules/@types"
-        ]
+        "rewriteRelativeImportExtensions": true,
+        "strict": false
     },
     "include": [
         "src/ink/js/*",

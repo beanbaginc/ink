@@ -1,11 +1,12 @@
 import path from 'path';
+import resolve from 'resolve/sync';
 
 import alias from '@rollup/plugin-alias';
 import babel from '@rollup/plugin-babel';
+import rollupResolve from '@rollup/plugin-node-resolve';
 import copy from 'rollup-plugin-copy';
 import dts from 'rollup-plugin-dts';
 import execute from 'rollup-plugin-shell';
-import resolve from '@rollup/plugin-node-resolve';
 
 
 const extensions = ['.ts'];
@@ -19,11 +20,18 @@ const globalsMap = {
 
 
 const inkPath = path.resolve(__dirname, 'src', 'ink');
+const tablerPath =
+    path.dirname(
+        resolve('@tabler/icons/icons.json',
+                { basedir: __dirname })
+        .replace('@', '\\@')
+    );
 const lessArgs = [
     '--source-map',
     '--include-path=src:node_modules',
     '--quiet',
     `--modify-var="ink-path=${inkPath}"`,
+    `--modify-var="tabler-path=${tablerPath}"`,
 ].join(' ');
 const cleanCSSArgs = [
     '-O2',
@@ -47,7 +55,7 @@ export default [
             {
                 esModule: false,
                 exports: 'named',
-                file: `lib/ink.js`,
+                file: 'lib/ink.js',
                 format: 'umd',
                 globals: globalsMap,
                 name: 'Ink',
@@ -73,8 +81,7 @@ export default [
                 entries: [
                     {
                         find: '@beanbag/ink',
-                        replacement: path.resolve(
-                            __dirname, 'src', 'ink', 'js'),
+                        replacement: path.resolve(inkPath, 'js'),
                     },
                 ],
             }),
@@ -82,7 +89,7 @@ export default [
                 babelHelpers: 'external',
                 extensions: extensions,
             }),
-            resolve({
+            rollupResolve({
                 extensions: extensions,
                 modulePaths: [],
             }),
@@ -109,10 +116,14 @@ export default [
         ],
     },
     {
-        input: './_build/_ts/index.d.ts',
+        input: './_build/dts/index.d.ts',
         output: [
             {
                 file: 'lib/index.d.ts',
+                format: 'es',
+            },
+            {
+                file: 'lib/index.d.mts',
                 format: 'es',
             },
         ],

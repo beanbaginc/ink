@@ -4,9 +4,10 @@
         "random": true
     },
     "helpers": [
-        "../node_modules/ts-node/register/type-check.js",
+        "../spec/helpers/babel.js",
         "../spec/helpers/*.ts"
     ],
+    "jsLoader": "require",
     "reporters": [
         {
             "name": "jasmine-spec-reporter#SpecReporter",
