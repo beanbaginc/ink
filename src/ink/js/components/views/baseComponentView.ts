@@ -161,7 +161,7 @@ export abstract class BaseComponentView<
         if (!state) {
             throw Error(
                 `${this.constructor.name}.setComponentChildren() cannot ` +
-                `be called after the component is rendered.`
+                'be called after the component is rendered.'
             );
         }
 
@@ -185,7 +185,7 @@ export abstract class BaseComponentView<
         if (!state) {
             throw Error(
                 `${this.constructor.name}.recordOneSubcomponent() cannot ` +
-                `be called after the component is rendered.`
+                'be called after the component is rendered.'
             );
         }
 
@@ -217,7 +217,7 @@ export abstract class BaseComponentView<
         if (!state) {
             throw Error(
                 `${this.constructor.name}.recordAllSubcomponents() cannot ` +
-                `be called after the component is rendered.`
+                'be called after the component is rendered.'
             );
         }
 

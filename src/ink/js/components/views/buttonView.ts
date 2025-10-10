@@ -496,7 +496,7 @@ export class ButtonView<
                     newType === ButtonType.RESET) {
                     console.warn(
                         `Button type "${newType}" is not valid for ` +
-                        `button links (tagName="a").`
+                        'button links (tagName="a").'
                     );
                     newType = ButtonType.STANDARD;
                 }

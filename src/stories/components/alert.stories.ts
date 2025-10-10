@@ -12,7 +12,6 @@ export default {
         heading,
         showActions,
         type,
-        ...args
     }) => {
         return paint`
             <Ink.Alert canClose=${canClose} type="${type}">
@@ -83,7 +82,7 @@ export const Standard = {
              <li>Item</li>
             </ul>
         `,
-    }
+    },
 };
 
 

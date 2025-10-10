@@ -61,7 +61,7 @@ export class MenuItemsRadioGroup<
         this.on('add', this.#onAdd);
         this.on('remove', this.#onRemove);
         this.on('reset', this.#onReset);
-        this.on('change:checked', this.#onItemCheckedChanged)
+        this.on('change:checked', this.#onItemCheckedChanged);
 
         if (models) {
             models.forEach(this.#onAdd.bind(this));

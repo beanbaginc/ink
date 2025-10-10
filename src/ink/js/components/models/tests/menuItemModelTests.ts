@@ -151,8 +151,8 @@ suite('components/models/MenuItem', () => {
 
         it('With unsupported type', () => {
             expect(() => {
-                const menuItem = new MenuItem({
-                    // @ts-expect-error
+                new MenuItem({
+                    // @ts-expect-error: bad type
                     type: 'bad',
                 });
             }).toThrow(Error('Invalid menu item type: "bad"'));
@@ -228,8 +228,8 @@ suite('components/models/MenuItem', () => {
 
                     const menuItem = new MenuItem({
                         checked: true,
-                        radioGroup: radioGroup,
                         onClick: onClick,
+                        radioGroup: radioGroup,
                         type: MenuItemType.RADIO_ITEM,
                     });
 
@@ -248,8 +248,8 @@ suite('components/models/MenuItem', () => {
 
                     const menuItem = new MenuItem({
                         checked: false,
-                        radioGroup: radioGroup,
                         onClick: onClick,
+                        radioGroup: radioGroup,
                         type: MenuItemType.RADIO_ITEM,
                     });
 

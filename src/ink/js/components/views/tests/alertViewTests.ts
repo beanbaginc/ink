@@ -2,8 +2,6 @@ import { suite } from '@beanbag/jasmine-suites';
 import 'jasmine';
 
 import {
-    AlertView,
-    craft,
     paint,
 } from '../../../index';
 

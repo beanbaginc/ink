@@ -32,6 +32,8 @@ export class KeyboardShortcutRegistryView extends BaseView<
     KeyboardShortcutRegistry,
     HTMLElement
 > {
+    declare ['constructor']: typeof KeyboardShortcutRegistryView;
+
     static events: EventsHash = {
         'keydown': '_onKeyDown',
     };
@@ -61,7 +63,7 @@ export class KeyboardShortcutRegistryView extends BaseView<
     static findNearestRegistryView(
         startEl: HTMLElement,
     ): KeyboardShortcutRegistryView | null {
-        const registryViews = KeyboardShortcutRegistryView.registryViews;
+        const registryViews = this.registryViews;
 
         for (let el = startEl; el !== null; el = el.parentElement) {
             const view = registryViews.get(el);
@@ -92,7 +94,7 @@ export class KeyboardShortcutRegistryView extends BaseView<
         startEl: HTMLElement,
     ): KeyboardShortcutRegistry | null {
         const registryView =
-            KeyboardShortcutRegistryView.findNearestRegistryView(startEl);
+            this.findNearestRegistryView(startEl);
 
         return registryView ? registryView.model : null;
     }
@@ -105,7 +107,7 @@ export class KeyboardShortcutRegistryView extends BaseView<
     initialize(...args) {
         super.initialize(...args);
 
-        const registryViews = KeyboardShortcutRegistryView.registryViews;
+        const registryViews = this.constructor.registryViews;
         const el = this.el;
 
         if (registryViews.has(el)) {
@@ -124,7 +126,7 @@ export class KeyboardShortcutRegistryView extends BaseView<
      * This will disassociate the view's registration from the element.
      */
     protected onRemove() {
-        KeyboardShortcutRegistryView.registryViews.delete(this.el);
+        this.constructor.registryViews.delete(this.el);
     }
 
     /**

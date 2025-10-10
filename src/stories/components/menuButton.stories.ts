@@ -1,6 +1,4 @@
 import {
-    MenuItemType,
-    MenuItemsCollection,
     paint,
 } from '../../ink/js';
 

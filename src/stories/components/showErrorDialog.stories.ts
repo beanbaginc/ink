@@ -2,7 +2,6 @@ import { dedent } from 'babel-plugin-dedent';
 
 import {
     type MessageDialogBody,
-    craft,
     paint,
     showErrorDialog,
 } from '../../ink/js';

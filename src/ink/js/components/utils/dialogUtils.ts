@@ -243,7 +243,7 @@ export async function showConfirmDialog(
                    : ButtonType.PRIMARY}
             action=${DialogActionType.CLOSE}
             callback=${async () => await onConfirm()}>
-           ${options.confirmButtonText || `Okay`}
+           ${options.confirmButtonText || _`Okay`}
           </Ink.DialogAction>
     `;
 
@@ -261,7 +261,7 @@ export async function showConfirmDialog(
           <Ink.DialogAction
             id="${id}__cancel-action"
             action=${DialogActionType.CANCEL}>
-           ${options.cancelButtonText || `Cancel`}
+           ${options.cancelButtonText || _`Cancel`}
           </Ink.DialogAction>
           ${confirmButton}
          </Ink.Dialog.PrimaryActions>
@@ -319,13 +319,13 @@ export async function showErrorDialog(
             id="${id}__close-action"
             action=${DialogActionType.CLOSE}
             type=${ButtonType.PRIMARY}>
-           ${`Close`}
+           ${_`Close`}
           </Ink.DialogAction>
          </Ink.Dialog.PrimaryActions>
         </Ink.Dialog>
     `;
 
-   await dialogView.openAndWait();
+    await dialogView.openAndWait();
 }
 
 

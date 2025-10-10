@@ -190,7 +190,7 @@ export class MenuItem<
      *         There were missing or invalid attributes provided for the
      *         menu item type.
      */
-    initialize(...args) {
+    initialize(...args: any[]) {
         super.initialize(...args);
 
         const itemType = this.get('type');
@@ -222,8 +222,12 @@ export class MenuItem<
                 this.get('radioGroup')?.add(this);
                 break;
 
-            case MenuItemType.HEADER: /* Fall-through */
+            case MenuItemType.HEADER:
+                /* Fall through */
+
             case MenuItemType.ITEM:
+                /* Fall through */
+
             case MenuItemType.SEPARATOR:
                 break;
 

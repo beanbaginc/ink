@@ -94,7 +94,7 @@ export interface AlertViewOptions extends BaseComponentViewOptions {
 
 
 /**
- * Component for showing an alert panel for communicating status or information.
+ * Component for an alert panel that communicates status or information.
  *
  * Alerts are used to show helpful information or communicate status of an
  * operation. They provide an icon, color, and title to represent the summary,
@@ -116,9 +116,9 @@ export class AlertView<
     static className = 'ink-c-alert';
 
     static subcomponents = {
+        'Actions': 'recordOneSubcomponent',
         'Content': 'recordOneSubcomponent',
         'Heading': 'recordOneSubcomponent',
-        'Actions': 'recordOneSubcomponent',
     };
 
     static events: EventsHash = {

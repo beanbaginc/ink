@@ -113,7 +113,8 @@ export default {
             ],
         },
         showKeyboardShortcut: {
-            description: 'Whether to show the keyboard shortcut on the button.',
+            description:
+                'Whether to show the keyboard shortcut on the button.',
             control: 'boolean',
         },
         type: {

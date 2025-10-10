@@ -20,7 +20,7 @@ export type ComponentChild = (
     Component[] |
     SubcomponentInfo |
     SubcomponentInfo[]
-)
+);
 
 
 /**

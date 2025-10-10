@@ -182,7 +182,7 @@ suite('components/views/ButtonView', () => {
                 const attrs: Partial<HTMLButtonElement> = {
                     formMethod: 'post',
                     formNoValidate: true,
-                }
+                };
 
                 const el = paint<HTMLButtonElement>`
                     <Ink.Button attrs=${attrs}>

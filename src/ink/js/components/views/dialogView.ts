@@ -151,9 +151,6 @@ export class DialogActionView<
     /** The dialog parent. */
     dialog: DialogView;
 
-    /** The type of action to perform. */
-    #action?: DialogActionType;
-
     /** The function to call, if the action type is callback. */
     #callback?: () => Promise<unknown> | void;
 
@@ -431,9 +428,9 @@ export class DialogView<
     static tagName = 'dialog';
     static className = 'ink-c-dialog';
     static subcomponents = {
+        'Body': 'recordOneSubcomponent',
         'PrimaryActions': 'recordOneSubcomponent',
         'SecondaryActions': 'recordOneSubcomponent',
-        'Body': 'recordOneSubcomponent',
     };
 
     static events: EventsHash = {
@@ -827,6 +824,7 @@ export class DialogView<
                 e.preventDefault();
 
                 action.el.click();
+
                 return;
             }
         }

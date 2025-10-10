@@ -39,7 +39,7 @@ export const Horizontal = {
         'aria-label': 'Important Button Group',
         'orientation': 'horizontal',
     },
-}
+};
 
 
 export const Vertical = {

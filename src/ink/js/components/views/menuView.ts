@@ -463,7 +463,7 @@ export class MenuView<
              */
             this.#closeTimeoutHandle = setTimeout(
                 () => this.close(Object.assign({}, options, {delay: false})),
-                MenuView.DELAY_CLOSE_MS);
+                this.constructor.DELAY_CLOSE_MS);
 
             return;
         }
@@ -1487,10 +1487,10 @@ class MenuItemView extends BaseMenuItemView {
         evt.stopPropagation();
 
         const model = this.model;
-        const disabled = model.get('disabled');
 
         if (model.get('disabled')) {
             evt.preventDefault();
+
             return;
         }
 

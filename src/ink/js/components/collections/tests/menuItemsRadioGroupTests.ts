@@ -30,7 +30,7 @@ import { MenuItemsRadioGroup } from '../menuItemsRadioGroup';
 function createMenuItem(attrs: MenuItemAttrs = {}) {
     return new MenuItem({
         type: MenuItemType.RADIO_ITEM,
-        ...attrs
+        ...attrs,
     });
 }
 
@@ -386,4 +386,4 @@ suite('components/collections/MenuItemsRadioGroup', () => {
             expect(onChecked).not.toHaveBeenCalled();
         });
     });
-})
+});

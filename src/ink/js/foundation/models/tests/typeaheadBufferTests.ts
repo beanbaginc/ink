@@ -112,7 +112,7 @@ suite('foundation/models/TypeaheadBuffer', () => {
             {label: 'c'},
             {label: 'cd'},
             {label: 'z'},
-        ]
+        ];
 
         describe('With found', () => {
             it('As first item', () => {
@@ -120,9 +120,9 @@ suite('foundation/models/TypeaheadBuffer', () => {
 
                 expect(typeaheadBuffer.helpFindItemWithPrefix({
                     firstItem: 0,
-                    lastItem: items.length - 1,
-                    getNextItem: i => i + 1,
                     getItemText: i => items[i].label,
+                    getNextItem: i => i + 1,
+                    lastItem: items.length - 1,
                 })).toBe(0);
             });
 
@@ -131,9 +131,9 @@ suite('foundation/models/TypeaheadBuffer', () => {
 
                 expect(typeaheadBuffer.helpFindItemWithPrefix({
                     firstItem: 0,
-                    lastItem: items.length - 1,
-                    getNextItem: i => i + 1,
                     getItemText: i => items[i].label,
+                    getNextItem: i => i + 1,
+                    lastItem: items.length - 1,
                 })).toBe(3);
             });
 
@@ -142,9 +142,9 @@ suite('foundation/models/TypeaheadBuffer', () => {
 
                 expect(typeaheadBuffer.helpFindItemWithPrefix({
                     firstItem: 0,
-                    lastItem: items.length - 1,
-                    getNextItem: i => i + 1,
                     getItemText: i => items[i].label,
+                    getNextItem: i => i + 1,
+                    lastItem: items.length - 1,
                 })).toBe(4);
             });
         });
@@ -155,9 +155,9 @@ suite('foundation/models/TypeaheadBuffer', () => {
 
                 expect(typeaheadBuffer.helpFindItemWithPrefix({
                     firstItem: 1,
-                    lastItem: items.length - 1,
-                    getNextItem: i => i + 1,
                     getItemText: i => items[i].label,
+                    getNextItem: i => i + 1,
+                    lastItem: items.length - 1,
                 })).toBeNull();
             });
 
@@ -166,9 +166,9 @@ suite('foundation/models/TypeaheadBuffer', () => {
 
                 expect(typeaheadBuffer.helpFindItemWithPrefix({
                     firstItem: 0,
-                    lastItem: 2,
-                    getNextItem: i => i + 1,
                     getItemText: i => items[i].label,
+                    getNextItem: i => i + 1,
+                    lastItem: 2,
                 })).toBeNull();
             });
 
@@ -177,9 +177,9 @@ suite('foundation/models/TypeaheadBuffer', () => {
 
                 expect(typeaheadBuffer.helpFindItemWithPrefix({
                     firstItem: 0,
-                    lastItem: items.length - 1,
-                    getNextItem: i => i + 1,
                     getItemText: i => items[i].label,
+                    getNextItem: i => i + 1,
+                    lastItem: items.length - 1,
                 })).toBeNull();
             });
         });
