@@ -1,0 +1,106 @@
+@import (reference) "../../../components/form-field.component.less";
+
+
+#ink-ns-default-theme() {
+  .form-field() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-form-field;
+        @vars: {
+          required-flag-color: var(--ink-p-red-500);
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main element.
+       */
+      @__default__: {
+      };
+
+      @state-disabled: {
+      };
+
+      @state-required: {
+        .add({
+          @label: {
+            &:after {
+              color: var(--ink-c-form-field-required-flag-color);
+              content: ' *';
+              font-weight: bold;
+            }
+          };
+        });
+      };
+
+      @state-has-input-first: {
+      };
+
+      @errors: {
+      };
+
+      @help: {
+        color: var(--ink-p-fg-weak);
+        display: flex;
+        font-size: var(--ink-u-font-xs);
+        gap: var(--ink-u-spacing-s);
+        line-height: var(--ink-u-icon-std);
+        margin: 0;
+        padding: var(--ink-u-spacing-m) 0;
+
+        &:before {
+          #ink-ns-ui.icons.svg-icon(@icon: var(--ink-i-help));
+          color: var(--ink-p-blue-700);
+          flex-grow: 0;
+          flex-shrink: 0;
+        }
+      };
+
+      @input: {
+        input[type=date],
+        input[type=color],
+        input[type=email],
+        input[type=number],
+        input[type=password],
+        input[type=search],
+        input[type=text],
+        input[type=url],
+        select,
+        textarea {
+          background: var(--ink-p-input-bg);
+          border-radius: var(--ink-u-border-radius-input);
+          border: var(--ink-g-border-input);
+          box-sizing: border-box;
+          color: var(--ink-p-input-fg);
+        }
+
+        input, select {
+          font-size: inherit;
+          padding: var(--ink-u-spacing-xs) var(--ink-u-spacing-s);
+        }
+
+        textarea {
+          font-size: var(--ink-u-font-m);
+          padding: 10px; // XXX: use a spacing constant
+        }
+      };
+
+      @label: {
+      };
+
+      @readonly-value: {
+      };
+    };
+  }
+};
+
+
+& {
+  @_form-field: #ink-ns-default-theme.form-field();
+
+  #ink-ns-ui.form-field.create(
+    @vars: @_form-field[@vars];
+    @rules: @_form-field[@rules];
+  );
+}

@@ -1,0 +1,156 @@
+/**
+ * Schema for a form component.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @form: {
+    /**
+     * Populate a form schema.
+     *
+     * This will provide the structure for a form component, populating the
+     * parts of the component with the provided style rules.
+     *
+     * Forms can be in one of two modes:
+     *
+     * * Vertical (labels appearing before inputs)
+     * * Aligned (fields appearing alongside labels, in a table form)
+     *
+     * They may also contain a dedicated actions area for Save, Cancel, etc.
+     * buttons.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the component.
+       *
+       * Modifiers:
+       *     -is-aligned:
+       *         Inputs, help text, errors, and similar content should be
+       *         aligned, positioned to the right of a column of labels.
+       *
+       * Structure:
+       *     <form class="@{name}
+       *                  [-is-aligned">
+       *      [<div class="@{name}__actions">...</div>]
+       *      <div class="@{name}__fields">...</div>
+       *      [<div class="@{name}__actions">...</div>]
+       *     </form>
+       */
+      & {
+        .add-rules('__default__');
+
+        &:not(.-is-aligned, .-is-centered) {
+          .add-rules('state-layout-vertical');
+        }
+
+        &.-is-aligned {
+          .add-rules('state-layout-aligned');
+        }
+
+        &.-is-centered {
+          .add-rules('state-layout-centered');
+        }
+      }
+
+      /**
+       * An action available on the form.
+       *
+       * This can be mixed in with other action classes, or can contain them.
+       *
+       * Structure:
+       *     <div class="ink-c-form__action">
+       *      html...
+       *     </div>
+       *     |
+       *     <button class="ink-c-form__action ink-c-button ...">...</button>
+       *     |
+       *     <a class="ink-c-form__action ..." href="..." ...>...</button>
+       */
+      &__action {
+        .add-rules('action');
+      }
+
+      /**
+       * A group of action areas at the top or bottom of the form.
+       *
+       * This must contain at least a primary or a secondary group of actions.
+       * It may contain both.
+       *
+       * Structure:
+       *     <div class="ink-c-form__actions">
+       *      <div class="ink-c-form__actions-primary">...</div>
+       *      [<div class="ink-c-form__actions-secondary">...</div>]
+       *     </div>
+       */
+      &__actions {
+        .add-rules('actions');
+      }
+
+      /**
+       * A group of primary actions shown on a form.
+       *
+       * Structure:
+       *     <div class="ink-c-form__actions-primary">
+       *      <div class="ink-c-form__action">...</div> [1+]
+       *     </div>
+       */
+      &__actions-primary {
+        .add-rules('actions-primary');
+      }
+
+      /**
+       * A group of secondary actions shown on a form.
+       *
+       * These may be visually distinguished from primary actions.
+       *
+       * Structure:
+       *     <div class="ink-c-form__actions-primary">
+       *      <div class="ink-c-form__action">...</div> [1+]
+       *     </div>
+       */
+      &__actions-secondary {
+        .add-rules('actions-secondary');
+      }
+
+      /**
+       * The fields on the form.
+       *
+       * Structure:
+       *     <fieldset class="ink-c-form__fields">
+       *      [html...]
+       *     </fieldset>
+       *     <div class="ink-c-form__fields">
+       *      [html...]
+       *     </div>
+       */
+      &__fields {
+        .add-rules('fields');
+      }
+    }
+  }
+}

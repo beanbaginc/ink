@@ -1,0 +1,72 @@
+/**
+ * Component management for ink-c-form-fieldset.
+ *
+ * Version Added:
+ *     1.0
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/form-fieldset.schema.less";
+
+
+#ink-ns-ui() {
+  .form-fieldset() {
+    /**
+     * Create an ink-c-form-fieldset component.
+     *
+     * Version Added:
+     *     1.0
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rules (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-form-fieldset;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@form-fieldset];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            // Reset default browser styles.
+            all: unset;
+
+            display: flex;
+            flex-direction: column;
+            row-gap: var(--ink-u-spacing-m);
+          }
+
+          /*
+           * Styles for the fieldset legend.
+           */
+          @legend: {
+            /*
+             * This is required to get the browser to treat the legend as a
+             * normal element that fits into the flexbox instead of a
+             * special snowflake.
+             */
+            float: left;
+          }
+
+          /*
+           * Styles for the fieldset description.
+           */
+          @description: {
+          }
+        };
+      );
+    }
+  }
+}

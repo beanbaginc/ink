@@ -1,0 +1,43 @@
+@import (reference) "../../../components/form-fieldset.component.less";
+
+
+#ink-ns-default-theme() {
+  .form-fieldset() {
+    @vars: {
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main element.
+       */
+      @__default__: {
+      }
+
+      /*
+       * Styles for the fieldset legend.
+       */
+      @legend: {
+        border-bottom: 0;
+        font-weight: bold;
+        font-size: var(--ink-u-font-m);
+        text-transform: uppercase;
+      }
+
+      /*
+       * Styles for the fieldset description.
+       */
+      @description: {
+        margin: var(--ink-u-spacing-m) 0 var(--ink-u-spacing-l) 0;
+      }
+    };
+  }
+}
+
+& {
+  @_form-fieldset: #ink-ns-default-theme.form-fieldset();
+
+  #ink-ns-ui.form-fieldset.create(
+    @vars: @_form-fieldset[@vars];
+    @rules: @_form-fieldset[@rules];
+  );
+}

@@ -1,0 +1,84 @@
+@import (reference) "../../../components/form.component.less";
+
+
+#ink-ns-default-theme() {
+  .form() {
+    @vars: {
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main element.
+       */
+      @__default__: {
+        gap: var(--ink-u-spacing-xl);
+      };
+
+      /*
+       * Styles for the form's vertical layout.
+       */
+      @state-layout-vertical: {
+      };
+
+      /*
+       * Styles for the form's aligned layout.
+       */
+      @state-layout-aligned: {
+      };
+
+      /*
+       * Styles for the form's centered layout.
+       */
+      @state-layout-centered: {
+      };
+
+      /*
+       * Styles for a form action.
+       */
+      @action: {
+      };
+
+      /*
+       * Styles for a group of form action.
+       */
+      @actions: {
+        gap: var(--ink-u-spacing-std);
+        justify-content: space-between;
+      };
+
+      /*
+       * Styles for a group of primary form actions.
+       */
+      @actions-primary: {
+        gap: var(--ink-u-spacing-std);
+        justify-self: start;
+      };
+
+      /*
+       * Styles for a group of secondary form actions.
+       */
+      @actions-secondary: {
+        gap: var(--ink-u-spacing-std);
+        justify-self: end;
+      };
+
+      /*
+       * Styles for a list of fields on the form.
+       */
+      @fields: {
+        border: 0;
+        row-gap: var(--ink-u-spacing-m);
+      };
+    };
+  }
+};
+
+
+& {
+  @_form: #ink-ns-default-theme.form();
+
+  #ink-ns-ui.form.create(
+    @vars: @_form[@vars];
+    @rules: @_form[@rules];
+  );
+}
