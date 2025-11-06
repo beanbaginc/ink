@@ -59,23 +59,29 @@
           @state-size-fit: {
             width: fit-content;
             height: fit-content;
-            min-width: 35%;
+            min-width: 35vw;
+            max-width: 60vw;
+            max-height: 60vh;
           }
 
           /*
            * Styles for when the size is set to DialogSize.MEDIUM.
            */
           @state-size-medium: {
-            width: 60%;
-            max-height: 60%;
+            min-width: 60vw;
+            max-width: 70vw;
+            min-height: 60vh;
+            max-height: 70vh;
           }
 
           /*
            * Styles for when the size is set to DialogSize.LARGE.
            */
           @state-size-large: {
-            width: 80%;
-            max-height: 80%;
+            min-width: 80vw;
+            max-width: 80vw;
+            min-height: 80vh;
+            max-height: 80vh;
           }
 
           /*
@@ -112,6 +118,7 @@
            */
           @body: {
             grid-area: body;
+            overflow: auto;
           }
 
           /*
