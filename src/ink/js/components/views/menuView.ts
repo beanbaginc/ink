@@ -1285,7 +1285,7 @@ class BaseMenuItemView extends BaseComponentView<
      *     0.8
      */
     static isDecorative: boolean = false;
-    isDecorative: boolean;
+    declare isDecorative: boolean;
 
     /**********************
      * Instance variables *

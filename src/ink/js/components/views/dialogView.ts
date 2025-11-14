@@ -426,7 +426,7 @@ export class DialogView<
 > {
     /** The title for the dialog */
     static title: string | null = null;
-    title: string | null;
+    declare title: string | null;
 
     static tagName = 'dialog';
     static className = 'ink-c-dialog';
