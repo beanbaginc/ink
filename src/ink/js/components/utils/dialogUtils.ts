@@ -8,6 +8,8 @@
  *     0.9
  */
 
+import _ from 'underscore';
+
 import {
     craft,
     paint,
@@ -53,6 +55,11 @@ export interface ShowErrorDialogOptions {
      * 4. An :js:class:`Error` instance.
      */
     error: MessageDialogBody | Error;
+
+    /**
+     * An optional DOM ID for the dialog.
+     */
+    id?: string;
 
     /**
      * Optional title for a dialog showing an error.
@@ -107,6 +114,11 @@ export interface ShowConfirmDialogOptions {
      * This defaults to :guilabel:`Okay`.
      */
     confirmButtonText?: string;
+
+    /**
+     * An optional DOM ID for the dialog.
+     */
+    id?: string;
 
     /**
      * Whether the operation being confirmed is dangerous.
@@ -221,8 +233,11 @@ export async function showConfirmDialog(
         return result;
     }
 
+    const id = options.id || _.uniqueId('ink-confirm-dialog');
+
     const confirmButton = craft<DialogActionView>`
           <Ink.DialogAction
+            id="${id}__confirm-action"
             type=${options.isDangerous
                    ? ButtonType.DANGER
                    : ButtonType.PRIMARY}
@@ -235,7 +250,8 @@ export async function showConfirmDialog(
     const body = buildMessageDialogBody(options.body);
 
     const dialogView = craft<DialogView>`
-        <Ink.Dialog canSuppress=${options.canSuppress}
+        <Ink.Dialog id=${id}
+                    canSuppress=${options.canSuppress}
                     suppressText=${options.suppressText}
                     title=${options.title}>
          <Ink.Dialog.Body>
@@ -243,6 +259,7 @@ export async function showConfirmDialog(
          </Ink.Dialog.Body>
          <Ink.Dialog.PrimaryActions>
           <Ink.DialogAction
+            id="${id}__cancel-action"
             action=${DialogActionType.CANCEL}>
            ${options.cancelButtonText || `Cancel`}
           </Ink.DialogAction>
@@ -281,6 +298,8 @@ export async function showErrorDialog(
     options: ShowErrorDialogOptions,
 ): Promise<void> {
     const error = options.error;
+    const id = options.id || _.uniqueId('ink-error-dialog');
+
     let body: MessageDialogBody;
 
     if (error instanceof Error) {
@@ -290,12 +309,14 @@ export async function showErrorDialog(
     }
 
     const dialogView = craft<DialogView>`
-        <Ink.Dialog title=${options.title ?? 'Something went wrong'}>
+        <Ink.Dialog id=${id}
+                    title=${options.title ?? 'Something went wrong'}>
          <Ink.Dialog.Body>
           ${body}
          </Ink.Dialog.Body>
          <Ink.Dialog.PrimaryActions>
           <Ink.DialogAction
+            id="${id}__close-action"
             action=${DialogActionType.CLOSE}
             type=${ButtonType.PRIMARY}>
            ${`Close`}
