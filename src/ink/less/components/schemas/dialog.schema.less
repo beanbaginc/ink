@@ -45,6 +45,11 @@
        * Main part of the dialog component.
        *
        * DOM Attributes:
+       *     role (string, optional):
+       *         Set to ``alertdialog` for anything requiring attention.
+       *
+       *         This should be used for modal dialogs.
+       *
        *     size (string, optional):
        *         The dialog size.
        *
@@ -56,14 +61,7 @@
        *
        * Structure:
        *     <dialog class="@{name}">
-       *      <div class="@{name}__inner">
-       *       <header class="@{name}__title">...</header>
-       *       <main class="@{name}__body">...</main>
-       *       <footer class="@{name}__actions">
-       *        <div class="ink-c-dialog__actions-primary">...</div>
-       *        <div class="ink-c-dialog__actions-secondary">...</div>
-       *       </footer>
-       *      </div>
+       *      <div class="@{name}__inner">...</div>
        *     </dialog>
        */
       & {
@@ -100,8 +98,8 @@
        *
        * Structure:
        *     <footer class="@{name}__actions">
-       *      <div class="@{name}__actions-primary">...</div>
-       *      <div class="@{name}__actions-secondary">...</div>
+       *      [<div class="@{name}__actions-primary">...</div>]
+       *      [<div class="@{name}__actions-secondary">...</div>]
        *     </footer>
        */
       &__actions {
@@ -118,8 +116,7 @@
        *
        * Structure:
        *     <div class="@{name}__actions-primary">
-       *      <button class="ink-c-button" ...>...</button>
-       *      ...
+       *      <button class="ink-c-button" ...>...</button>  [1+]
        *     </div>
        */
       &__actions-primary {
@@ -131,8 +128,8 @@
        *
        * Structure:
        *     <div class="@{name}__actions-secondary">
-       *      <button class="ink-c-button" ...>...</button>
-       *      ...
+       *      [<label class="@{name}__suppress-label">...</label>]
+       *      <button class="ink-c-button" ...>...</button>  [1+]
        *     </div>
        */
       &__actions-secondary {
@@ -143,7 +140,9 @@
        * The body for the dialog.
        *
        * Structure:
-       *     <main class="@{name}__body">...</main>
+       *     <main class="@{name}__body">
+       *      ...
+       *     </main>
        */
       &__body {
         .add-rules('body');
@@ -153,17 +152,54 @@
        * The main container for the dialog.
        *
        * Structure:
-       *     <div class="@{name}__inner">...</div>
+       *     <div class="@{name}__inner">
+       *      <header class="@{name}__title">...</header>
+       *      <main class="@{name}__body">...</main>
+       *      <footer class="@{name}__actions">...</footer>
+       *     </div>
        */
       &__inner {
         .add-rules('inner');
       }
 
       /**
+       * The label and container for the suppression checkbox.
+       *
+       * Version Added:
+       *     0.9
+       *
+       * Structure:
+       *     <label class="@{name}__suppress-label"
+       *            for="...">
+       *      <input class="@{name}__suppress" .../>
+       *      text...
+       *     </label>
+       */
+      &__suppress-label {
+        .add-rules('suppress-label');
+      }
+
+      /**
+       * The suppression checkbox.
+       *
+       * Version Added:
+       *     0.9
+       *
+       * Structure:
+       *     <input class="@{name}__suppress"
+       *            type="checkbox">
+       */
+      &__suppress {
+        .add-rules('suppress-input');
+      }
+
+      /**
        * The title for the dialog.
        *
        * Structure:
-       *     <header class="@{name}__title">...</header>
+       *     <header class="@{name}__title">
+       *      ...
+       *     </header>
        */
       &__title {
         .add-rules('title');

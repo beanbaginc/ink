@@ -10,11 +10,10 @@ export default {
     title: 'Ink/Components/Dialog',
     tags: ['autodocs'],
     render: ({
-        size,
         ...args
     }) => {
         const dialogView = craft<DialogView>`
-            <Ink.Dialog title="Dialog title" size=${size}>
+            <Ink.Dialog title="Dialog title" ...${args}>
              <Ink.Dialog.Body>
               Dialog content.
              </>
@@ -61,7 +60,7 @@ export default {
              ${dialogView.el}
              <div style="display: flex; gap: 10px;">
               <Ink.Button onClick=${() => open(false)}>
-              Show non-modal
+               Show non-modal
               </>
               <Ink.Button onClick=${() => open(true)}>
                Show modal
@@ -71,10 +70,18 @@ export default {
         `;
     },
     argTypes: {
+        canSuppress: {
+            description: 'Whether a suppress checkbox is added.',
+            control: 'boolean',
+        },
         size: {
             description: 'The size of the dialog.',
             control: 'radio',
             options: Object.values(DialogSize),
+        },
+        suppressText: {
+            description: 'Custom text for the suppression checkbox.',
+            control: 'text',
         },
     },
     args: {

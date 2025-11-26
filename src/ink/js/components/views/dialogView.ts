@@ -176,11 +176,36 @@ export enum DialogSize {
  *     0.6
  */
 export interface DialogViewOptions extends BaseComponentViewOptions {
+    /**
+     * Whether the dialog can be suppressed in the future.
+     *
+     * If ``true``, a checkbox will be provided to suppress. The caller
+     * is responsible for handling any suppression logic.
+     *
+     * This defaults to ``false``.
+     *
+     * Version Added:
+     *     0.9
+     */
+    canSuppress?: boolean;
+
     /** A function to call when the dialog is closed. */
     onClose?: () => void;
 
     /** The size of the dialog. */
     size?: DialogSize;
+
+    /**
+     * The text for the suppression checkbox.
+     *
+     * This is only used if ``canSuppress`` is ``true``.
+     *
+     * This defaults to "Do not ask again".
+     *
+     * Version Added:
+     *     0.9
+     */
+    suppressText?: string;
 
     /** The title string for the dialog. */
     title?: string;
@@ -220,6 +245,21 @@ export interface DialogViewSetBusyOptions {
 
 /**
  * The dialog component.
+ *
+ * Dialogs display a title and messages (or other content) along with one or
+ * more action buttons (grouped into primary and secondary areas). They can
+ * be modal or non-modal.
+ *
+ * A dialog can also be marked as suppressable, allowing users to choose
+ * whether to see the dialog again in the future. If enabled, this component
+ * will handle the UI, though it's up to the caller to handle and respect
+ * the setting.
+ *
+ * Version Changed:
+ *     0.9:
+ *     * Added the ``canSuppress`` and ``suppressText`` options.
+ *     * Added max widths and heights to help dialogs size correctly.
+ *     * Modal dialogs now use the ``alertdialog`` role.
  *
  * Version Added:
  *     0.6
@@ -263,6 +303,14 @@ export class DialogView<
     #actions: DialogActionView[] = [];
 
     /**
+     * The suppress checkbox, if added to the dialog.
+     *
+     * Version Added:
+     *     0.9
+     */
+    #suppressEl: HTMLInputElement;
+
+    /**
      * Return whether the dialog is open.
      *
      * Returns:
@@ -271,6 +319,21 @@ export class DialogView<
      */
     get isOpen(): boolean {
         return this.el.open;
+    }
+
+    /**
+     * Return whether the user checked the suppressed checkbox.
+     *
+     * Version Added:
+     *     0.9
+     *
+     * Returns:
+     *     boolean:
+     *     ``true`` if the suppressed checkbox was added and checked.
+     *     ``false`` otherwise.
+     */
+    get isSuppressChecked(): boolean {
+        return !!this.#suppressEl?.checked;
     }
 
     /**
@@ -307,8 +370,10 @@ export class DialogView<
         }
 
         if (options.modal === false) {
+            el.setAttribute('role', 'dialog');
             el.show();
         } else {
+            el.setAttribute('role', 'alertdialog');
             el.showModal();
         }
     }
@@ -372,6 +437,28 @@ export class DialogView<
         this.#addActions(primaryActions);
         this.#addActions(secondaryActions);
 
+        let suppressLabel: HTMLElement = null;
+
+        if (options.canSuppress) {
+            const suppressID = `ink-dialog-suppress-${this.cid}`;
+
+            const suppressEl = paint<HTMLInputElement>`
+                <input id="${suppressID}"
+                       class="ink-c-dialog__suppress"
+                       type="checkbox"/>
+            `;
+
+            suppressLabel = paint<HTMLElement>`
+                <label class="ink-c-dialog__suppress-label"
+                       for="${suppressID}">
+                 ${suppressEl}
+                 ${options.suppressText || 'Do not ask again'}
+                </label>
+            `;
+
+            this.#suppressEl = suppressEl;
+        }
+
         renderInto(this.el, paint`
             <div class="ink-c-dialog__inner">
              <header class="ink-c-dialog__title" id="${titleID}">
@@ -380,6 +467,7 @@ export class DialogView<
              <main class="ink-c-dialog__body">${body}</main>
              <footer class="ink-c-dialog__actions">
               <div class="ink-c-dialog__actions-secondary">
+               ${suppressLabel}
                ${secondaryActions}
               </div>
               <div class="ink-c-dialog__actions-primary">
