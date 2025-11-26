@@ -7,6 +7,7 @@
 
 import {
     BaseModel,
+    EventsHash,
     spina,
 } from '@beanbag/spina';
 import { dedent } from 'babel-plugin-dedent';
@@ -35,13 +36,58 @@ import {
  *     0.6
  */
 export enum DialogActionType {
-    /** Trigger a callback. */
+    /**
+     * Trigger a callback.
+     *
+     * The dialog will stay open when clicked, allowing the caller to
+     * determine whether to close the dialog or keep it open.
+     *
+     * This is equivalent to ``null``, and will be deprecated in a future
+     * release.
+     */
     CALLBACK = 'callback',
 
-    /** Close the dialog. */
+    /**
+     * Cancel the dialog.
+     *
+     * The first action set to this type will be invoked automatically if
+     * the user presses Escape to close the dialog.
+     *
+     * Version ADded:
+     *     0.9
+     */
+    CANCEL = 'cancel',
+
+    /**
+     * Close the dialog.
+     *
+     * If a callback is provided, this will close the dialog once the
+     * callback has returned. If the callback returns a Promise, the dialog
+     * won't be closed until the Promise is resolved.
+     *
+     * If the callback errors out, the dialog will stay open. The callback
+     * should ideally render errors itself and not raise.
+     *
+     * Version Changed:
+     *     0.9:
+     *     This now supports running a callback before closing, if one is
+     *     provided.
+     */
     CLOSE = 'close',
 
-    /** Trigger a callback and then close the dialog. */
+    /**
+     * Trigger a callback and then close the dialog.
+     *
+     * This will only close the dialog once the callback has returned. If
+     * the callback returns a Promise, the dialog won't be closed until the
+     * Promise is resolved.
+     *
+     * If the callback errors out, the dialog will stay open. The callback
+     * should ideally render errors itself and not raise.
+     *
+     * This is equivalent to ``CLOSE``, and will be deprecated in a future
+     * release.
+     */
     CALLBACK_AND_CLOSE = 'callback-and-close',
 }
 
@@ -54,7 +100,7 @@ export enum DialogActionType {
  */
 export interface DialogActionViewOptions extends ButtonViewOptions {
     /** The type of action to perform. */
-    action?: DialogActionType;
+    action?: DialogActionType | null;
 
     /** The function to call, if the action type is callback. */
     callback?: () => Promise<unknown> | void;
@@ -66,6 +112,15 @@ export interface DialogActionViewOptions extends ButtonViewOptions {
  *
  * This is a specialization of ButtonView, which can be used to handle common
  * patterns with actions in a dialog.
+ *
+ * Any dialog action can trigger a callback, if provided. Along with this,
+ * dialog actions can be given a type, which indicates if they will close
+ * or cancel the dialog after the action concludes.
+ *
+ * Version Changed:
+ *     0.9:
+ *     Dialog action types no longer need to specify whether a callback
+ *     will be provided.
  *
  * Version Added:
  *     0.6
@@ -82,6 +137,16 @@ export class DialogActionView<
     /**********************
      * Instance variables *
      **********************/
+
+    /**
+     * The type of action, dictating behavior when clicked.
+     *
+     * If ``null``, it doesn't have a specific type of action.
+     *
+     * Version Added:
+     *     0.9
+     */
+    actionType: DialogActionType | null;
 
     /** The dialog parent. */
     dialog: DialogView;
@@ -102,7 +167,22 @@ export class DialogActionView<
             options.onClick = this.onClick.bind(this);
         }
 
-        this.#action = options.action || DialogActionType.CALLBACK;
+        /* Normalize the action. */
+        let action = options.action;
+
+        if (!action) {
+            /*
+             * Check if this is a legacy action type, and convert to a
+             * modern one.
+             */
+            if (action === DialogActionType.CALLBACK) {
+                action = null;
+            } else if (action === DialogActionType.CALLBACK_AND_CLOSE) {
+                action = DialogActionType.CLOSE;
+            }
+        }
+
+        this.actionType = action;
         this.#callback = options.callback;
 
         super.initialize(options);
@@ -110,17 +190,27 @@ export class DialogActionView<
 
     /**
      * Handle a click on the button.
+     *
+     * If a callback is set, it will be invoked. If it's asynchronous,
+     * the dialog will be placed in a busy state until the action finishes.
+     *
+     * If the action type closes or cancels the dialog, the dialog will be
+     * closed or canceled once any provided callback has finished.
+     *
+     * Returns:
+     *     Promise<void>:
+     *     The promise for the action.
      */
     protected async onClick() {
-        const action = this.#action;
+        const actionType = this.actionType;
         const dialog = this.dialog;
         console.assert(dialog !== undefined);
 
-        if (action === DialogActionType.CALLBACK ||
-            action === DialogActionType.CALLBACK_AND_CLOSE) {
-            console.assert(this.#callback !== undefined);
+        const callback = this.#callback;
+        let actionResult: unknown;
 
-            const result = this.#callback();
+        if (callback) {
+            const result = callback();
 
             if (result instanceof Promise) {
                 dialog.setBusy({
@@ -128,7 +218,15 @@ export class DialogActionView<
                     busy: true,
                 });
 
-                await result;
+                try {
+                    actionResult = await result;
+                } catch (e) {
+                    console.error(
+                        'Dialog action callback returned an error: %s',
+                        e);
+
+                    return;
+                }
 
                 dialog.setBusy({
                     activeAction: this,
@@ -137,9 +235,18 @@ export class DialogActionView<
             }
         }
 
-        if (action === DialogActionType.CLOSE ||
-            action === DialogActionType.CALLBACK_AND_CLOSE) {
-            this.dialog.close();
+        if (actionType === DialogActionType.CLOSE) {
+            dialog.close({
+                action: this,
+                actionResult: actionResult,
+                canceled: false,
+            });
+        } else if (actionType === DialogActionType.CANCEL) {
+            dialog.close({
+                action: this,
+                actionResult: actionResult,
+                canceled: true,
+            });
         }
     }
 }
@@ -189,8 +296,14 @@ export interface DialogViewOptions extends BaseComponentViewOptions {
      */
     canSuppress?: boolean;
 
-    /** A function to call when the dialog is closed. */
-    onClose?: () => void;
+    /**
+     * A function to call when the dialog is closed.
+     *
+     * Version Changed:
+     *     0.9:
+     *     This can now take a :js:class:`DialogCloseReason` as an argument.
+     */
+    onClose?: (DialogCloseReason) => void;
 
     /** The size of the dialog. */
     size?: DialogSize;
@@ -244,6 +357,38 @@ export interface DialogViewSetBusyOptions {
 
 
 /**
+ * A reason the dialog is closed.
+ *
+ * This can be set when closing the dialog in order to provide extra
+ * information as to what led to the closing of the dialog.
+ *
+ * It's set automatically when clicking a button or when the user or browser
+ * triggers a cancelation of the dialog.
+ *
+ * Version Added:
+ *     0.9
+ */
+export interface DialogCloseReason {
+    /** Whether the dialog was canceled. */
+    canceled: boolean;
+
+    /** The action that closed the dialog, if any. */
+    action?: DialogActionView;
+
+    /** The result of the click handler on the action. */
+    actionResult?: unknown;
+
+    /**
+     * Extra state set by the specific dialog implementation.
+     *
+     * This allows action callbacks or other code paths to provide additional
+     * state that may be useful as part of the closing of the dialog.
+     */
+    extraState?: unknown;
+}
+
+
+/**
  * The dialog component.
  *
  * Dialogs display a title and messages (or other content) along with one or
@@ -257,6 +402,7 @@ export interface DialogViewSetBusyOptions {
  *
  * Version Changed:
  *     0.9:
+ *     * Added built-in support for cancelable actions.
  *     * Added the ``canSuppress`` and ``suppressText`` options.
  *     * Added max widths and heights to help dialogs size correctly.
  *     * Modal dialogs now use the ``alertdialog`` role.
@@ -290,6 +436,11 @@ export class DialogView<
         'Body': 'recordOneSubcomponent',
     };
 
+    static events: EventsHash = {
+        'cancel': '_onCancel',
+        'close': '_onClose',
+    };
+
     /**********************
      * Instance variables *
      **********************/
@@ -301,6 +452,24 @@ export class DialogView<
      * Regular buttons or other components will not be included in this.
      */
     #actions: DialogActionView[] = [];
+
+    /**
+     * The reason the dialog was closed.
+     *
+     * This is only set once :js:meth:`close` has been called.
+     *
+     * Version Added:
+     *     0.9
+     */
+    #closeReason: (DialogCloseReason | null) = null;
+
+    /**
+     * The callback handler when the dialog is closed.
+     *
+     * Version Added:
+     *     0.9
+     */
+    #onClose: DialogViewOptions['onClose'] = null;
 
     /**
      * The suppress checkbox, if added to the dialog.
@@ -380,8 +549,21 @@ export class DialogView<
 
     /**
      * Close the dialog.
+     *
+     * Version Changed:
+     *     0.9:
+     *     Added the ``reason`` argument.
+     *
+     * Args:
+     *     reason (DialogCloseReason, optional):
+     *         The reason the dialog is closed.
      */
-    close() {
+    close(reason?: DialogCloseReason) {
+        this.#closeReason = reason ?? {
+            action: null,
+            canceled: false,
+        };
+
         this.el.close();
     }
 
@@ -419,6 +601,8 @@ export class DialogView<
         const state = this.initialComponentState;
         const options = state.options;
         const size = options.size;
+
+        this.#onClose = options.onClose || null;
 
         if (size && size !== 'custom') {
             el.dataset.size = size as string;
@@ -476,12 +660,6 @@ export class DialogView<
              </footer>
             </div>
         `);
-
-        if (state.options.onClose) {
-            this.el.addEventListener('close', () => {
-                state.options.onClose();
-            });
-        }
     }
 
     /**
@@ -489,7 +667,9 @@ export class DialogView<
      */
     protected onRemove() {
         if (this.isOpen) {
-            this.close();
+            this.close({
+                canceled: true,
+            });
         }
 
         super.onRemove();
@@ -586,5 +766,83 @@ export class DialogView<
 
             this.#actions.push(action);
         }
+    }
+
+    /**
+     * Handle a "cancel" event on the dialog element.
+     *
+     * This will attempt to locate a Cancel action, and if found, trigger it.
+     *
+     * If a Cancel action is not found, this will set a default cancel reason
+     * for the signal handlers and close callback, and then let the event
+     * bubble up, triggering :js:func:`_onClose`.
+     *
+     * Version Added:
+     *     0.9
+     *
+     * Args:
+     *     e (Event):
+     *         The "cancel" event.
+     */
+    private _onCancel(
+        e: Event,
+    ) {
+        /*
+         * Look for a Cancel action. If found, prevent default behavior and
+         * invoke it.
+         *
+         * Note that "cancel" events don't bubble up, and if not prevented
+         * will trigger a "close" event.
+         */
+        for (const action of this.#actions) {
+            if (action.actionType === DialogActionType.CANCEL) {
+                e.preventDefault();
+
+                action.el.click();
+                return;
+            }
+        }
+
+        /*
+         * Fall back to setting a generic close reason for the _onClose()
+         * handler to use.
+         */
+        this.#closeReason ??= {
+            action: null,
+            canceled: true,
+        };
+    }
+
+    /**
+     * Handle a "close" event on the dialog element.
+     *
+     * This will notify the caller-provided ``onClose`` handler and then
+     * trigger a ``closed`` event on the view. Both receive a
+     * :js:class:`DialogCloseReason` argument to indicate how the dialog
+     * was closed.
+     *
+     * Version Added:
+     *     0.9
+     */
+    private _onClose() {
+        /*
+         * If close() was not called and we didn't get a "cancel" event,
+         * then the dialog was manually closed through another mechanism.
+         * Provide a defaut, non-canceled reason.
+         */
+        const closeReason = this.#closeReason ??= {
+            action: null,
+            canceled: false,
+        };
+
+        /* If there's an onClose handler, call this. */
+        const onClose = this.#onClose;
+
+        if (onClose) {
+            onClose(closeReason);
+        }
+
+        /* Trigger any event listeners. */
+        this.trigger('closed', closeReason);
     }
 }

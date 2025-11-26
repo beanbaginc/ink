@@ -227,7 +227,7 @@ export function showConfirmDialog(
                 type=${options.isDangerous
                        ? ButtonType.DANGER
                        : ButtonType.PRIMARY}
-                action=${DialogActionType.CALLBACK_AND_CLOSE}
+                action=${DialogActionType.CLOSE}
                 callback=${async () => await onConfirm()}>
                ${options.confirmButtonText || `Okay`}
               </Ink.DialogAction>
@@ -244,7 +244,7 @@ export function showConfirmDialog(
              </Ink.Dialog.Body>
              <Ink.Dialog.PrimaryActions>
               <Ink.DialogAction
-                action=${DialogActionType.CALLBACK_AND_CLOSE}
+                action=${DialogActionType.CLOSE}
                 callback=${() => done(null)}>
                ${options.cancelButtonText || `Cancel`}
               </Ink.DialogAction>
@@ -298,7 +298,7 @@ export function showErrorDialog(
              </Ink.Dialog.Body>
              <Ink.Dialog.PrimaryActions>
               <Ink.DialogAction
-                action=${DialogActionType.CALLBACK_AND_CLOSE}
+                action=${DialogActionType.CLOSE}
                 type=${ButtonType.PRIMARY}
                 callback=${() => done()}>
                ${`Close`}

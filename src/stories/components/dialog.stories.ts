@@ -1,4 +1,5 @@
 import {
+    DialogActionType,
     DialogSize,
     DialogView,
     craft,
@@ -12,25 +13,38 @@ export default {
     render: ({
         ...args
     }) => {
+        function onDelete() {
+            return new Promise<void>(done => {
+                setTimeout(() => {
+                    alert('Deleted. Please close now.');
+                    done();
+                }, 1000);
+            });
+        }
+
         const dialogView = craft<DialogView>`
             <Ink.Dialog title="Dialog title" ...${args}>
              <Ink.Dialog.Body>
               Dialog content.
              </>
              <Ink.Dialog.PrimaryActions>
-              <Ink.Button type="primary"
-                          onClick=${() => dialogView.close()}>
-               OK
-              </Ink.Button>
-              <Ink.Button type="danger"
-                          onClick=${() => dialogView.close()}>
+              <Ink.DialogAction
+                action=${DialogActionType.CLOSE}
+                type="primary">
+               Close
+              </>
+              <Ink.DialogAction
+                callback=${onDelete}
+                type="danger">
                Delete
-              </Ink.Button>
+              </>
              </>
              <Ink.Dialog.SecondaryActions>
-              <Ink.Button onClick=${() => dialogView.close()}>
+              <Ink.DialogAction
+                action=${DialogActionType.CANCEL}
+                callback=${() => dialogView.close()}>
                Cancel
-              </Ink.Button>
+              </>
              </>
             </>
         `;
