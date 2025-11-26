@@ -199,62 +199,61 @@ export interface ShowConfirmDialogResult {
  *     Promise<ShowConfirmDialogResult | null>:
  *     The promise resolved once a choice is made.
  */
-export function showConfirmDialog(
+export async function showConfirmDialog(
     options: ShowConfirmDialogOptions,
 ): Promise<ShowConfirmDialogResult | null> {
-    return new Promise(done => {
-        async function onConfirm() {
-            let result: ShowConfirmDialogResult = {
-                confirmButton: confirmButton,
-                dialog: dialogView,
-                suppressed: dialogView.isSuppressChecked,
-            };
+    async function onConfirm() {
+        let result: ShowConfirmDialogResult = {
+            confirmButton: confirmButton,
+            dialog: dialogView,
+            suppressed: dialogView.isSuppressChecked,
+        };
 
-            if (options.onConfirm) {
-                /* Let any errors bubble up, if not handled by onConfirm. */
-                const success = await options.onConfirm(result);
+        if (options.onConfirm) {
+            /* Let any errors bubble up, if not handled by onConfirm. */
+            const success = await options.onConfirm(result);
 
-                if (success === false) {
-                    result = null;
-                }
+            if (success === false) {
+                result = null;
             }
-
-            done(result);
         }
 
-        const confirmButton = craft<DialogActionView>`
-              <Ink.DialogAction
-                type=${options.isDangerous
-                       ? ButtonType.DANGER
-                       : ButtonType.PRIMARY}
-                action=${DialogActionType.CLOSE}
-                callback=${async () => await onConfirm()}>
-               ${options.confirmButtonText || `Okay`}
-              </Ink.DialogAction>
-        `;
+        return result;
+    }
 
-        const body = buildMessageDialogBody(options.body);
+    const confirmButton = craft<DialogActionView>`
+          <Ink.DialogAction
+            type=${options.isDangerous
+                   ? ButtonType.DANGER
+                   : ButtonType.PRIMARY}
+            action=${DialogActionType.CLOSE}
+            callback=${async () => await onConfirm()}>
+           ${options.confirmButtonText || `Okay`}
+          </Ink.DialogAction>
+    `;
 
-        const dialogView = craft<DialogView>`
-            <Ink.Dialog canSuppress=${options.canSuppress}
-                        suppressText=${options.suppressText}
-                        title=${options.title}>
-             <Ink.Dialog.Body>
-              ${body}
-             </Ink.Dialog.Body>
-             <Ink.Dialog.PrimaryActions>
-              <Ink.DialogAction
-                action=${DialogActionType.CLOSE}
-                callback=${() => done(null)}>
-               ${options.cancelButtonText || `Cancel`}
-              </Ink.DialogAction>
-              ${confirmButton}
-             </Ink.Dialog.PrimaryActions>
-            </Ink.Dialog>
-        `;
+    const body = buildMessageDialogBody(options.body);
 
-        dialogView.open();
-    });
+    const dialogView = craft<DialogView>`
+        <Ink.Dialog canSuppress=${options.canSuppress}
+                    suppressText=${options.suppressText}
+                    title=${options.title}>
+         <Ink.Dialog.Body>
+          ${body}
+         </Ink.Dialog.Body>
+         <Ink.Dialog.PrimaryActions>
+          <Ink.DialogAction
+            action=${DialogActionType.CANCEL}>
+           ${options.cancelButtonText || `Cancel`}
+          </Ink.DialogAction>
+          ${confirmButton}
+         </Ink.Dialog.PrimaryActions>
+        </Ink.Dialog>
+    `;
+
+    const result = await dialogView.openAndWait();
+
+    return (result.actionResult as ShowConfirmDialogResult) ?? null;
 }
 
 
@@ -278,37 +277,34 @@ export function showConfirmDialog(
  *     Promise<void>:
  *     The promise resolved once the dialog is closed.
  */
-export function showErrorDialog(
+export async function showErrorDialog(
     options: ShowErrorDialogOptions,
 ): Promise<void> {
-    return new Promise(done => {
-        const error = options.error;
-        let body: MessageDialogBody;
+    const error = options.error;
+    let body: MessageDialogBody;
 
-        if (error instanceof Error) {
-            body = error.message;
-        } else {
-            body = buildMessageDialogBody(error);
-        }
+    if (error instanceof Error) {
+        body = error.message;
+    } else {
+        body = buildMessageDialogBody(error);
+    }
 
-        const dialogView = craft<DialogView>`
-            <Ink.Dialog title=${options.title ?? 'Something went wrong'}>
-             <Ink.Dialog.Body>
-              ${body}
-             </Ink.Dialog.Body>
-             <Ink.Dialog.PrimaryActions>
-              <Ink.DialogAction
-                action=${DialogActionType.CLOSE}
-                type=${ButtonType.PRIMARY}
-                callback=${() => done()}>
-               ${`Close`}
-              </Ink.DialogAction>
-             </Ink.Dialog.PrimaryActions>
-            </Ink.Dialog>
-        `;
+    const dialogView = craft<DialogView>`
+        <Ink.Dialog title=${options.title ?? 'Something went wrong'}>
+         <Ink.Dialog.Body>
+          ${body}
+         </Ink.Dialog.Body>
+         <Ink.Dialog.PrimaryActions>
+          <Ink.DialogAction
+            action=${DialogActionType.CLOSE}
+            type=${ButtonType.PRIMARY}>
+           ${`Close`}
+          </Ink.DialogAction>
+         </Ink.Dialog.PrimaryActions>
+        </Ink.Dialog>
+    `;
 
-        dialogView.open();
-    });
+   await dialogView.openAndWait();
 }
 
 

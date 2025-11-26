@@ -1,8 +1,10 @@
 import { dedent } from 'babel-plugin-dedent';
 
 import {
+    type ButtonView,
     type MessageDialogBody,
     type ShowConfirmDialogResult,
+    craft,
     paint,
     showConfirmDialog,
 } from '../../ink/js';
@@ -75,8 +77,8 @@ export default {
             });
         }
 
-        function open() {
-            showConfirmDialog({
+        async function open() {
+            const result = await showConfirmDialog({
                 body: body,
                 canSuppress: canSuppress,
                 cancelButtonText: cancelButtonText,
@@ -86,13 +88,25 @@ export default {
                 suppressText: suppressText,
                 title: title,
             });
+
+            if (result) {
+                if (result.suppressed) {
+                    button.label = 'Confirmed, suppressed';
+                } else {
+                    button.label = 'Confirmed';
+                }
+            } else {
+                button.label = 'Canceled';
+            }
         }
 
-        return paint`
-            <Ink.Button onClick=${() => open()}>
+        const button = craft<ButtonView>`
+            <Ink.Button onClick=${open}>
              Show
             </>
         `;
+
+        return button.el;
     },
     argTypes: {
         bodyAs: {

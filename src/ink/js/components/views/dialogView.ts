@@ -548,6 +548,34 @@ export class DialogView<
     }
 
     /**
+     * Open the dialog, returning a Promise that resolves once closed.
+     *
+     * This is a convenient way of opening a dialog and resolving when
+     * closed, helping callers build and show dialogs in a more
+     * straight-forward fashion.
+     *
+     * Version Added:
+     *     0.9
+     *
+     * Args:
+     *     options (DialogViewOpenOptions):
+     *         Whether to show the dialog as modal or not.
+     *
+     * Returns:
+     *     Promise<DialogCloseReason>:
+     *     A promise that resolves with a close reason once closed.
+     */
+    async openAndWait(
+        options: DialogViewOpenOptions = {},
+    ): Promise<DialogCloseReason> {
+        return new Promise<DialogCloseReason>(done => {
+            this.listenToOnce(this, 'closed', done);
+
+            this.open(options);
+        });
+    }
+
+    /**
      * Close the dialog.
      *
      * Version Changed:

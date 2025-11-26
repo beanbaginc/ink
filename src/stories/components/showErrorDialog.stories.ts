@@ -40,15 +40,15 @@ export default {
             `;
         }
 
-        function open() {
-            showErrorDialog({
+        async function open() {
+            await showErrorDialog({
                 error: body,
                 title: title,
             });
         }
 
         return paint`
-            <Ink.Button onClick=${() => open()}>
+            <Ink.Button onClick=${open}>
              Show
             </>
         `;

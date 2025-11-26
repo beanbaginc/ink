@@ -49,7 +49,7 @@ export default {
             </>
         `;
 
-        function open(modal: boolean) {
+        async function open(modal: boolean) {
             const dialogStyle = dialogView.el.style;
 
             if (modal) {
@@ -64,24 +64,26 @@ export default {
                 dialogStyle.transform = 'translate(-50%, -50%)';
             }
 
-            dialogView.open({
+            await dialogView.openAndWait({
                 modal: modal,
             });
         }
 
-        return paint`
+        const el = paint<HTMLElement>`
             <div style="height: 250px">
              ${dialogView.el}
              <div style="display: flex; gap: 10px;">
-              <Ink.Button onClick=${() => open(false)}>
+              <Ink.Button onClick=${async () => open(false)}>
                Show non-modal
               </>
-              <Ink.Button onClick=${() => open(true)}>
+              <Ink.Button onClick=${async () => open(true)}>
                Show modal
               </>
              </div>
             </div>
         `;
+
+        return el;
     },
     argTypes: {
         canSuppress: {
