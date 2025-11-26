@@ -1,7 +1,8 @@
 import {
+    type ButtonView,
     KeyboardShortcutRegistry,
     KeyboardShortcutRegistryView,
-    paint,
+    craft,
 } from '../../ink/js';
 
 
@@ -9,6 +10,7 @@ export default {
     title: 'Ink/Components/Button',
     tags: ['autodocs'],
     render: ({
+        asyncClickHandler,
         label,
         ...options
     }) => {
@@ -28,17 +30,50 @@ export default {
             options.keyboardShortcutRegistry = registry;
         }
 
-        const buttonEl = paint`<Ink.Button ...${options}>${label}</>`;
+        if (asyncClickHandler) {
+            options.onClick = () => new Promise<void>(done => {
+                let count = 3;
+                const origLabel = button.label;
+
+                button.label = `${count}...`;
+
+                const timer = setInterval(() => {
+                    count--;
+                    button.label = `${count}...`;
+
+                    if (count === 0) {
+                        clearInterval(timer);
+                        done();
+                        button.label = origLabel;
+                    }
+                }, 1000);
+            });
+        } else {
+            let clickCount = 0;
+
+            options.onClick = () => {
+                clickCount++;
+                button.label = `Clicked (${clickCount})`;
+            };
+        }
+
+        const button = craft<ButtonView>`
+            <Ink.Button ...${options}>${label}</>
+        `;
 
         if (registryEl) {
-            registryEl.append(buttonEl);
+            registryEl.append(button.el);
 
             return registryEl;
         }
 
-        return buttonEl;
+        return button.el;
     },
     argTypes: {
+        asyncClickHandler: {
+            description: 'Whether the click handler returns a Promise.',
+            control: 'boolean',
+        },
         autofocus: {
             description:
                 'Whether the button should auto-focus on load.',
@@ -195,5 +230,13 @@ export const ShowKeyboardShortcut = {
         label: 'Button',
         keyboardShortcut: 'Cmd-Enter',
         showKeyboardShortcut: true,
+    },
+};
+
+
+export const AsyncClickHandler = {
+    args: {
+        asyncClickHandler: true,
+        label: 'Button',
     },
 };

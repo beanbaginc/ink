@@ -441,15 +441,49 @@ suite('components/views/ButtonView', () => {
         it('onClick Handler', () => {
             const onClick = jasmine.createSpy('onClick');
 
-            const el = paint<HTMLButtonElement>`
+            const button = craft<ButtonView>`
                 <Ink.Button onClick=${onClick}>
                  My Label
                 </Ink.Button>
             `;
 
-            el.click();
+            button.el.click();
 
             expect(onClick).toHaveBeenCalled();
+            expect(button.busy).toBeFalse();
+        });
+
+        it('async onClick Handler', done => {
+            let sawBusy = false;
+
+            const obj = {
+                onClick: async () => {
+                    expect(button.busy).toBeFalse();
+
+                    await Promise.resolve();
+
+                    expect(button.busy).toBeTrue();
+                    sawBusy = true;
+                },
+            };
+
+            spyOn(obj, 'onClick').and.callThrough();
+
+            const button = craft<ButtonView>`
+                <Ink.Button onClick=${obj.onClick}>
+                 My Label
+                </Ink.Button>
+            `;
+
+            button.el.click();
+
+            setTimeout(() => {
+                expect(obj.onClick).toHaveBeenCalled();
+                expect(button.busy).toBeFalse();
+                expect(sawBusy).toBeTrue();
+
+                done();
+            }, 0);
         });
 
         describe('DOM click event', () => {

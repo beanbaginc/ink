@@ -107,8 +107,15 @@ export interface ButtonViewOptions extends BaseComponentViewOptions {
 
     /**
      * Handler to invoke when the button is clicked.
+     *
+     * If the handler returns a Promise, the button will stay in a busy
+     * state until the Promise resolves.
+     *
+     * Version Changed:
+     *     0.9:
+     *     The handler can now return a Promise.
      */
-    onClick?: () => void;
+    onClick?: () => (Promise<void> | void);
 
     /**
      * Whether to show a registered keyboard shortcut.
@@ -137,9 +144,17 @@ export interface ButtonViewOptions extends BaseComponentViewOptions {
  * state). When set, DOM "click" events will not be used. If an explicit
  * handler is not set, consumers should listen to DOM "click" events.
  *
+ * If the click handler returns a Promise, the button will stay in a busy
+ * state until the Promise resolves.
+ *
  * Button state can be modified at runtime.
  *
  * They may also be ``<button>`` elements (default) or ``<a>`` elements.
+ *
+ * Version Changed:
+ *     0.9:
+ *     Click handlers that return a Promise now cause the button to stay in
+ *     a busy state until the Promise resolves.
  *
  * Version Added:
  *     0.5
@@ -516,7 +531,7 @@ export class ButtonView<
          */
         el.addEventListener(
             'click',
-            e => {
+            async e => {
                 const isClickable = !this.busy && !this.disabled;
 
                 if (onClick || !isClickable) {
@@ -524,7 +539,21 @@ export class ButtonView<
                     e.stopPropagation();
 
                     if (onClick && isClickable) {
-                        onClick();
+                        const result = onClick();
+
+                        /*
+                         * If this returned a promise, then we'll keep the
+                         * button in a busy state until it finished.
+                         */
+                        if (result instanceof Promise) {
+                            this.busy = true;
+
+                            try {
+                                await result;
+                            } finally {
+                                this.busy = false;
+                            }
+                        }
                     }
                 }
             },
