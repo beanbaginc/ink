@@ -1,5 +1,37 @@
 # Ink Releases
 
+## Ink 0.9.0 (08-December-2025)
+
+* Added `Ink.showConfirmDialog()` and `Ink.showErrorDialog()`.
+
+  These are two new async methods make it much faster to create dialogs for
+  common interaction patterns. Confirm dialogs can also have an optional
+  suppress checkbox for future invocations (see `Ink.Dialog` for more details
+  on suppression).
+
+* `Ink.Button`:
+
+   * Added support for async click handlers, which will automatically set the
+     button into a busy state.
+
+* `Ink.Dialog`:
+
+   * Improved accessibility roles.
+   * Added support for including a checkbox to suppress the dialog. This
+     handles the UI, but storing the result and suppressing future dialogs
+     is the responsibility of the caller.
+   * Improved size constraints for wide and tall content. These now do a much
+     better job of ensuring that they fit entirely within the viewport while
+     still being able to adjust to fit their content.
+   * Simplified dialog actions. Instead of having separate action types for
+     actions without callbacks and actions with, the type can now be set to
+     either `null` (the default), `Ink.DialogActionType.CANCEL`, or
+     `Ink.DialogActionType.CLOSE`, and an optional callback can be attached to
+     any action type.
+   * Added `Ink.Dialog.openAndWait` to simplify dialog lifetime management.
+     This is an async function which will resolve once the dialog is closed.
+
+
 ## Ink 0.8.1 (28-July-2025)
 
 * Removed an accidental dependency on
