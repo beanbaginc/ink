@@ -1,6 +1,13 @@
 # Ink Releases
 
+## Ink 0.9.1 (09-December-2025)
+
+* Fixed the build issue in 0.9.0.
+
+
 ## Ink 0.9.0 (08-December-2025)
+
+This version was yanked due to a build issue.
 
 * Added `Ink.showConfirmDialog()` and `Ink.showErrorDialog()`.
 
