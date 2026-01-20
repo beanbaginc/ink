@@ -622,7 +622,7 @@ export class MenuView<
         const controllerEl = this.controllerEl;
 
         if (controllerEl !== null) {
-            console.assert(el.id, 'MenuView element ID unexpectedly unset!');
+            console.assert(!!el.id, 'MenuView element ID unexpectedly unset!');
 
             controllerEl.setAttribute('aria-controls', el.id);
             controllerEl.setAttribute('aria-expanded', 'false');

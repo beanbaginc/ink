@@ -434,7 +434,7 @@ function _craftComponentCtr<
                         component[subcomponentFuncName];
 
                     console.assert(
-                        func,
+                        !!func,
                         'Component %s is missing subcomponent handler %s',
                         name, subcomponentFuncName);
 
@@ -453,14 +453,14 @@ function _craftComponentCtr<
             if (ComponentCls.allowComponentChildren) {
                 const setComponentChildren = component.setComponentChildren;
                 console.assert(
-                    setComponentChildren,
+                    !!setComponentChildren,
                     '%s.allowComponentChildren is true, but ' +
                     '%s.setComponentChildren() does not exist!',
                     component.constructor.name);
 
                 setComponentChildren.call(component, children);
             } else {
-                console.assert('Component %s does not support children', name);
+                console.error('Component %s does not support children', name);
             }
         }
     }
