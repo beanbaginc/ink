@@ -1,0 +1,86 @@
+/**
+ * Component management for ink-c-badge.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/badge.schema.less";
+
+
+#ink-ns-ui() {
+  .badge() {
+    /**
+     * Create an ink-c-badge component.
+     *
+     * Version Added:
+     *     0.10
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rules (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-badge;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@badge];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--ink-u-spacing-xs);
+
+            /*
+             * Use a large radius so the ends are fully rounded. The browser
+             * clamps this to half the height, giving a pill shape.
+             */
+            border-radius: 999px;
+
+            font-size: var(--ink-u-font-s);
+            line-height: 1;
+            padding: var(--ink-u-spacing-xs) var(--ink-u-spacing-sm);
+            white-space: nowrap;
+          };
+
+          /*
+           * Tighten the left padding when an icon leads the badge.
+           */
+          @icon-first: {
+            padding-left: var(--ink-u-spacing-s);
+          };
+
+          /*
+           * Tighten the right padding when an icon trails the badge.
+           */
+          @icon-last: {
+            padding-right: var(--ink-u-spacing-s);
+          };
+
+          /*
+           * Styles for the optional icon.
+           */
+          @icon: {
+            flex-shrink: 0;
+            width: var(--ink-u-icon-sm);
+            height: var(--ink-u-icon-sm);
+          };
+        };
+      );
+    }
+  }
+}

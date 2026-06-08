@@ -1,4 +1,5 @@
 export * from './alertView';
+export * from './badgeView';
 export * from './baseComponentView';
 export * from './baseMenuHandleView';
 export * from './buttonGroupView';

@@ -1,0 +1,102 @@
+@import (reference) "../../../components/badge.component.less";
+
+
+#ink-ns-default-theme() {
+  .badge() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-badge;
+        @vars: {
+          /* Default state */
+          standard-bg: var(--ink-p-grey-200);
+          standard-border-color: var(--ink-p-container-border-color);
+          standard-fg: var(--ink-p-fg);
+
+          /* Error state */
+          error-bg: var(--ink-p-accent-error-bg);
+          error-border-color: var(--ink-p-accent-error-border-color);
+          error-fg: var(--ink-p-accent-error-fg);
+
+          /* Info state */
+          info-bg: var(--ink-p-accent-info-bg);
+          info-border-color: var(--ink-p-accent-info-border-color);
+          info-fg: var(--ink-p-accent-info-fg);
+
+          /* Success state */
+          success-bg: var(--ink-p-accent-success-bg);
+          success-border-color: var(--ink-p-accent-success-border-color);
+          success-fg: var(--ink-p-accent-success-fg);
+
+          /* Warning state */
+          warning-bg: var(--ink-p-accent-warning-bg);
+          warning-border-color: var(--ink-p-accent-warning-border-color);
+          warning-fg: var(--ink-p-accent-warning-fg);
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main badge element.
+       */
+      @__default__: {
+        /* State variables */
+        --_ink-c-badge-bg: var(--ink-c-badge-standard-bg);
+        --_ink-c-badge-border-color: var(--ink-c-badge-standard-border-color);
+        --_ink-c-badge-fg: var(--ink-c-badge-standard-fg);
+
+        background: var(--_ink-c-badge-bg);
+        border: var(--ink-u-border-thin)
+                var(--_ink-c-badge-border-color)
+                solid;
+        color: var(--_ink-c-badge-fg);
+      };
+
+      /*
+       * Styles for an error badge type.
+       */
+      @type-error: {
+        --_ink-c-badge-bg: var(--ink-c-badge-error-bg);
+        --_ink-c-badge-border-color: var(--ink-c-badge-error-border-color);
+        --_ink-c-badge-fg: var(--ink-c-badge-error-fg);
+      };
+
+      /*
+       * Styles for an info badge type.
+       */
+      @type-info: {
+        --_ink-c-badge-bg: var(--ink-c-badge-info-bg);
+        --_ink-c-badge-border-color: var(--ink-c-badge-info-border-color);
+        --_ink-c-badge-fg: var(--ink-c-badge-info-fg);
+      };
+
+      /*
+       * Styles for a success badge type.
+       */
+      @type-success: {
+        --_ink-c-badge-bg: var(--ink-c-badge-success-bg);
+        --_ink-c-badge-border-color: var(--ink-c-badge-success-border-color);
+        --_ink-c-badge-fg: var(--ink-c-badge-success-fg);
+      };
+
+      /*
+       * Styles for a warning badge type.
+       */
+      @type-warning: {
+        --_ink-c-badge-bg: var(--ink-c-badge-warning-bg);
+        --_ink-c-badge-border-color: var(--ink-c-badge-warning-border-color);
+        --_ink-c-badge-fg: var(--ink-c-badge-warning-fg);
+      };
+    };
+  };
+}
+
+
+& {
+  @_badge: #ink-ns-default-theme.badge();
+
+  #ink-ns-ui.badge.create(
+    @vars: @_badge[@vars];
+    @rules: @_badge[@rules];
+  );
+}

@@ -1,0 +1,127 @@
+/**
+ * Schema for a badge component.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @badge: {
+    /**
+     * Populate a badge schema.
+     *
+     * This will provide the structure for a badge component, populating the
+     * parts of the component with the provided style rules.
+     *
+     * A badge is a small inline pill used to label or annotate content. It
+     * shows a short text label, optionally accompanied by an icon at the
+     * start or end, in a color scheme chosen by the badge type.
+     *
+     * Version Added:
+     *     0.10
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the badge component.
+       *
+       * DOM Attributes:
+       *     data-type (string, optional):
+       *         The type of badge.
+       *
+       *         This can be one of:
+       *
+       *         * ``standard`` (default)
+       *         * ``error``
+       *         * ``info``
+       *         * ``success``
+       *         * ``warning``
+       *
+       * The optional icon may be placed before or after the label.
+       *
+       * Structure:
+       *     <span class="@{name}"
+       *           [data-type="standard|error|info|success|warning"]>
+       *      [<span class="@{name}__icon ink-i-..." aria-hidden="true"></span>]
+       *      <span class="@{name}__label">text...</span>
+       *      [<span class="@{name}__icon ink-i-..." aria-hidden="true"></span>]
+       *     </span>
+       */
+      & {
+        .add-rules('__default__');
+
+        /* Types */
+        &[data-type="error"] {
+          .add-rules('type-error');
+        }
+
+        &[data-type="info"] {
+          .add-rules('type-info');
+        }
+
+        &[data-type="success"] {
+          .add-rules('type-success');
+        }
+
+        &[data-type="warning"] {
+          .add-rules('type-warning');
+        }
+
+        /*
+         * Tighten the horizontal padding on whichever side holds an icon.
+         * A leading or trailing icon already reads as compact, so the full
+         * padding leaves too much space between it and the badge edge.
+         */
+        &:has(> &__icon:first-child) {
+          .add-rules('icon-first');
+        }
+
+        &:has(> &__icon:last-child) {
+          .add-rules('icon-last');
+        }
+      }
+
+      /**
+       * The optional icon for the badge.
+       *
+       * Structure:
+       *     <span class="@{name}__icon ink-i-..."
+       *           aria-hidden="true"></span>
+       */
+      &__icon {
+        .add-rules('icon');
+      }
+
+      /**
+       * The text label for the badge.
+       *
+       * Structure:
+       *     <span class="@{name}__label">
+       *      text...
+       *     </span>
+       */
+      &__label {
+        .add-rules('label');
+      }
+    }
+  }
+}
