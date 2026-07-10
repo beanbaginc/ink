@@ -1,0 +1,84 @@
+@import (reference) "../../../components/text-field.component.less";
+
+
+#ink-ns-default-theme() {
+  .text-field() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-text-field;
+        @vars: {
+          bg: var(--ink-p-input-bg);
+          border: var(--ink-g-border-input);
+          border-radius: var(--ink-u-border-radius-input);
+          fg: var(--ink-p-input-fg);
+          font-size: var(--ink-u-font-std);
+          icon-fg: var(--ink-p-fg-weak);
+          padding-horiz: var(--ink-u-spacing-sm);
+          padding-vert: var(--ink-u-spacing-s);
+          selection-bg: var(--ink-p-input-selection-bg);
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main element.
+       */
+      @__default__: {
+        background: var(--ink-c-text-field-bg);
+        border: var(--ink-c-text-field-border);
+        border-radius: var(--ink-c-text-field-border-radius);
+        color: var(--ink-c-text-field-fg);
+        font-family: var(--ink-ff-sans-serif);
+        font-size: var(--ink-c-text-field-font-size);
+        gap: var(--ink-u-spacing-s);
+        padding: var(--ink-c-text-field-padding-vert)
+                 var(--ink-c-text-field-padding-horiz);
+      };
+
+      /*
+       * Styles for the disabled state.
+       */
+      @state-disabled: {
+        opacity: 0.6;
+      };
+
+      /*
+       * Styles for the focused state.
+       */
+      @state-focused: {
+        outline: auto;
+        outline-offset: 2px;
+      };
+
+      /*
+       * Styles for the icon.
+       */
+      @icon: {
+        color: var(--ink-c-text-field-icon-fg);
+      };
+
+      /*
+       * Styles for the inner input.
+       */
+      @input: {
+        color: inherit;
+        font: inherit;
+
+        &::selection {
+          background: var(--ink-c-text-field-selection-bg);
+        }
+      };
+    };
+  }
+}
+
+
+& {
+  @_text-field: #ink-ns-default-theme.text-field();
+
+  #ink-ns-ui.text-field.create(
+    @vars: @_text-field[@vars];
+    @rules: @_text-field[@rules];
+  );
+}

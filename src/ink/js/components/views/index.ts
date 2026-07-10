@@ -11,3 +11,4 @@ export * from './menuLabelView';
 export * from './menuView';
 export * from './paginatorView';
 export * from './spinnerView';
+export * from './textFieldView';

@@ -1,0 +1,109 @@
+/**
+ * Schema for a text field component.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @text-field: {
+    /**
+     * Populate a text field schema.
+     *
+     * This will provide the structure for a text field component, populating
+     * the parts of the component with the provided style rules.
+     *
+     * Text fields wrap a native text-like input (such as ``text``,
+     * ``search``, or ``email``), drawing the field chrome on the wrapping
+     * element. They may include a leading icon, and may be disabled.
+     *
+     * Version Added:
+     *     0.10
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the component.
+       *
+       * Modifiers:
+       *     -is-disabled:
+       *         The field is disabled.
+       *
+       *     js-focus:
+       *         JavaScript-trigger focus styling state, equivalent to
+       *         ``:focus-within``.
+       *
+       *     js-hover:
+       *         JavaScript-trigger hover styling state, equivalent to
+       *         ``:hover``.
+       *
+       * Structure:
+       *     <span class="@{name}
+       *                  [-is-disabled]
+       *                  [js-focus]
+       *                  [js-hover]">
+       *      [<span class="@{name}__icon @{icon-class-name}"
+       *             aria-hidden="true"></span>]
+       *      <input class="@{name}__input"
+       *             type="email|password|search|tel|text|url"
+       *             [aria-label="..."]
+       *             [aria-labelledby="..."]
+       *             [disabled]
+       *             [name="..."]
+       *             [placeholder="..."]
+       *             [value="..."]>
+       *     </span>
+       */
+      & {
+        .add-rules('__default__');
+
+        &.-is-disabled {
+          .add-rules('state-disabled');
+        }
+
+        &:is(:focus-within, .js-focus) {
+          .add-rules('state-focused');
+        }
+
+        &:is(:hover, .js-hover):not(.-is-disabled) {
+          .add-rules('state-hover');
+        }
+      }
+
+      /**
+       * An icon shown in front of the input.
+       *
+       * This should be mixed in with an icon class name.
+       */
+      &__icon {
+        .add-rules('icon');
+      }
+
+      /**
+       * The inner input for the field.
+       */
+      &__input {
+        .add-rules('input');
+      }
+    }
+  }
+}
