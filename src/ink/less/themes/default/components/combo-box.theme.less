@@ -1,0 +1,204 @@
+@import (reference) "../../../components/combo-box.component.less";
+
+
+#ink-ns-default-theme() {
+  .combo-box() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-combo-box;
+        @vars: {
+          /* Disabled state */
+          disabled-opacity: 0.6;
+
+          /* Pop-up */
+          popup-bg: var(--ink-p-container-bg);
+          popup-border: var(--ink-g-border-container);
+          popup-border-radius: var(--ink-u-border-radius-container);
+          popup-max-height: 20em;
+          popup-shadow: var(--ink-g-shadow-std);
+          popup-z-index: var(--ink-z-menu);
+
+          /* Joined state */
+          joined-popup-inset: var(--ink-u-spacing-s);
+          joined-popup-offset: 2px;
+
+          /* Options */
+          option-fg: var(--ink-p-container-fg);
+          option-padding: var(--ink-u-spacing-s) var(--ink-u-spacing-sm);
+          option-selected-bg: var(--ink-p-accent-primary-bg);
+          option-selected-fg: var(--ink-p-accent-primary-fg);
+
+          option-description-fg: var(--ink-p-fg-weak);
+
+          /* Status area */
+          status-fg: var(--ink-p-fg-weak);
+
+          /* Tokens (multiple mode) */
+          token-bg:
+            var(--if-dark, rgba(255, 255, 255, 0.15))
+            var(--if-light, var(--ink-p-grey-200));
+          token-border-radius: var(--ink-u-border-radius-s);
+          token-fg: var(--ink-p-input-fg);
+          token-padding: var(--ink-u-spacing-xs) var(--ink-u-spacing-s);
+          token-remove-icon: var(--ink-i-close);
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the disabled state.
+       *
+       * In multiple mode the chrome is drawn by the token list rather than
+       * by the text field, so the field's own disabled styling isn't
+       * enough on its own.
+       */
+      @state-is-disabled: {
+        .add({
+          @tokens: {
+            opacity: var(--ink-c-combo-box-disabled-opacity);
+          };
+
+          @token-remove: {
+            cursor: default;
+
+            /* The token can't be removed, so don't invite a click. */
+            &:hover {
+              opacity: 0.6;
+            }
+          };
+        });
+      };
+
+      /*
+       * Styles for the pop-up.
+       */
+      @popup: {
+        background: var(--ink-c-combo-box-popup-bg);
+        border: var(--ink-c-combo-box-popup-border);
+        border-radius: var(--ink-c-combo-box-popup-border-radius);
+        box-shadow: var(--ink-c-combo-box-popup-shadow);
+        max-height: var(--ink-c-combo-box-popup-max-height);
+        z-index: var(--ink-c-combo-box-popup-z-index);
+      };
+
+      /*
+       * Styles for options in the listbox.
+       */
+      @option: {
+        color: var(--ink-c-combo-box-option-fg);
+        font-size: var(--ink-u-font-std);
+        gap: var(--ink-u-spacing-s);
+        padding: var(--ink-c-combo-box-option-padding);
+      };
+
+      /*
+       * Styles for the highlighted option.
+       */
+      @option-state-selected: {
+        background: var(--ink-c-combo-box-option-selected-bg);
+        color: var(--ink-c-combo-box-option-selected-fg);
+
+        .add({
+          @option-description: {
+            color: inherit;
+          };
+        });
+      };
+
+      /*
+       * Styles for disabled options.
+       */
+      @option-state-disabled: {
+        opacity: 0.6;
+      };
+
+      /*
+       * Styles for descriptions in options.
+       */
+      @option-description: {
+        color: var(--ink-c-combo-box-option-description-fg);
+      };
+
+      /*
+       * Styles for the status area.
+       */
+      @status: {
+        color: var(--ink-c-combo-box-status-fg);
+        font-size: var(--ink-u-font-std);
+        padding: var(--ink-c-combo-box-option-padding);
+      };
+
+      /*
+       * Styles for the hint shown below the options.
+       */
+      @hint: {
+        border-top: var(--ink-g-border-container);
+        color: var(--ink-c-combo-box-status-fg);
+        font-size: var(--ink-u-font-s);
+        padding: var(--ink-u-spacing-s) var(--ink-u-spacing-sm);
+      };
+
+      /*
+       * Styles for the token list.
+       *
+       * This is styled to look like the text field, which is displayed
+       * without its own styling within.
+       */
+      @tokens: {
+        background: var(--ink-c-text-field-bg);
+        border: var(--ink-c-text-field-border);
+        border-radius: var(--ink-c-text-field-border-radius);
+        gap: var(--ink-u-spacing-xs);
+        padding: var(--ink-u-spacing-xs);
+
+        &:focus-within {
+          outline: auto;
+        }
+      };
+
+      /*
+       * Styles for tokens.
+       */
+      @token: {
+        background: var(--ink-c-combo-box-token-bg);
+        border-radius: var(--ink-c-combo-box-token-border-radius);
+        color: var(--ink-c-combo-box-token-fg);
+        font-size: var(--ink-u-font-sm);
+        gap: var(--ink-u-spacing-xs);
+        padding: var(--ink-c-combo-box-token-padding);
+      };
+
+      /*
+       * Styles for the button used to remove a token.
+       */
+      @token-remove: {
+        color: inherit;
+        opacity: 0.6;
+        padding: 0;
+
+        &:before {
+          content: "";
+          display: block;
+          #ink-ns-ui.icons.svg-icon(
+            @icon: var(--ink-c-combo-box-token-remove-icon);
+            @size: var(--ink-u-icon-s));
+        }
+
+        &:hover {
+          opacity: 1;
+        }
+      };
+    };
+  }
+}
+
+
+& {
+  @_combo-box: #ink-ns-default-theme.combo-box();
+
+  #ink-ns-ui.combo-box.create(
+    @vars: @_combo-box[@vars];
+    @rules: @_combo-box[@rules];
+  );
+}

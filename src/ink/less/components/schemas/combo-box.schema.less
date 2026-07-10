@@ -1,0 +1,292 @@
+/**
+ * Schema for a combo box component.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @combo-box: {
+    /**
+     * Populate a combo box schema.
+     *
+     * This will provide the structure for a combo box component, populating
+     * the parts of the component with the provided style rules.
+     *
+     * Combo boxes are text fields with a pop-up listbox of auto-complete
+     * suggestions, following the ARIA 1.2 combobox pattern. DOM focus stays
+     * on the text field, with the highlighted option tracked through
+     * ``aria-activedescendant``.
+     *
+     * The pop-up contains the listbox of options and a status area, used
+     * for loading, empty, and error states.
+     *
+     * Version Added:
+     *     0.10
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-schema-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the component.
+       *
+       * In multiple mode, the field is embedded in a token list
+       * (``__tokens``) alongside tokens for the selected items. Otherwise
+       * (including when the selection is rendered externally by the
+       * consumer), the field is a direct child.
+       *
+       * Modifiers:
+       *     -is-disabled:
+       *         The combo box is disabled.
+       *
+       *     -is-joined:
+       *         The combo box is joined with surrounding UI. The field is
+       *         drawn without its own chrome, and the pop-up is inset from
+       *         the edges.
+       *
+       *     -is-loading:
+       *         Items are being loaded for the current query.
+       *
+       *     -is-multiple:
+       *         Multiple items can be selected.
+       *
+       *     -is-open:
+       *         The pop-up is open.
+       *
+       *     -opens-up:
+       *         The pop-up opens above the field, rather than below.
+       *
+       * Structure:
+       *     <div class="@{name}
+       *                 [-is-disabled]
+       *                 [-is-joined]
+       *                 [-is-loading]
+       *                 [-is-multiple]
+       *                 [-is-open]
+       *                 [-opens-up]"
+       *          id="...">
+       *      <span class="ink-c-text-field @{name}__field">
+       *       <input class="ink-c-text-field__input"
+       *              type="text"
+       *              role="combobox"
+       *              autocomplete="off"
+       *              aria-autocomplete="list"
+       *              aria-controls="..."
+       *              aria-expanded="true|false"
+       *              [aria-activedescendant="..."]
+       *              [aria-label="..." | aria-labelledby="..."]>
+       *      </span>
+       *      |
+       *      <ul class="@{name}__tokens">
+       *       ...
+       *      </ul>
+       *      <div class="@{name}__popup">
+       *       ...
+       *      </div>
+       *      [<input type="hidden" name="..." value="...">]
+       *     </div>
+       */
+      & {
+        .add-rules('__default__');
+
+        &.-is-disabled {
+          .add-rules('state-is-disabled');
+        }
+
+        &.-is-joined {
+          .add-rules('state-is-joined');
+        }
+
+        &.-is-loading {
+          .add-rules('state-is-loading');
+        }
+
+        &.-is-multiple {
+          .add-rules('state-is-multiple');
+        }
+
+        &.-is-open {
+          .add-rules('state-is-open');
+        }
+
+        &.-opens-up {
+          .add-rules('state-opens-up');
+        }
+      }
+
+      /**
+       * The text field for the combo box.
+       *
+       * This is an ``ink-c-text-field`` element.
+       */
+      &__field {
+        .add-rules('field');
+      }
+
+      /**
+       * The token list in multiple mode.
+       *
+       * This contains a token for each selected item, followed by the
+       * text field.
+       *
+       * Structure:
+       *     <ul class="@{name}__tokens">
+       *      <li class="@{name}__token">...</li>
+       *      ...
+       *      <li class="@{name}__token-field">
+       *       <span class="ink-c-text-field @{name}__field">...</span>
+       *      </li>
+       *     </ul>
+       */
+      &__tokens {
+        .add-rules('tokens');
+      }
+
+      /**
+       * A token for a selected item.
+       *
+       * Structure:
+       *     <li class="@{name}__token">
+       *      <span class="@{name}__token-label">label-text...</span>
+       *      <button class="@{name}__token-remove"
+       *              type="button"
+       *              aria-label="Remove ..."
+       *              title="Remove ..."></button>
+       *     </li>
+       */
+      &__token {
+        .add-rules('token');
+      }
+
+      /**
+       * The label for a token.
+       */
+      &__token-label {
+        .add-rules('token-label');
+      }
+
+      /**
+       * The button used to remove a token.
+       */
+      &__token-remove {
+        .add-rules('token-remove');
+      }
+
+      /**
+       * The list item containing the text field in multiple mode.
+       */
+      &__token-field {
+        .add-rules('token-field');
+      }
+
+      /**
+       * The pop-up containing the listbox and status area.
+       *
+       * Structure:
+       *     <div class="@{name}__popup">
+       *      <ul class="@{name}__options" id="..." role="listbox">
+       *       ...
+       *      </ul>
+       *      <div class="@{name}__status" role="status" [hidden]>
+       *       status-text...
+       *      </div>
+       *      [<div class="@{name}__hint" [hidden]>hint-text...</div>]
+       *     </div>
+       */
+      &__popup {
+        .add-rules('popup');
+      }
+
+      /**
+       * The listbox containing the suggested options.
+       */
+      &__options {
+        .add-rules('options');
+      }
+
+      /**
+       * An option in the listbox.
+       *
+       * DOM Attributes:
+       *     aria-disabled (boolean, optional):
+       *         Whether the option is disabled.
+       *
+       *     aria-selected (boolean, optional):
+       *         Whether the option is currently highlighted.
+       *
+       * Structure:
+       *     <li class="@{name}__option"
+       *         id="..."
+       *         role="option"
+       *         [aria-disabled="true"]
+       *         [aria-selected="true"]>
+       *      <span class="@{name}__option-label">label-text...</span>
+       *      [<span class="@{name}__option-description">...</span>]
+       *      |
+       *      custom-content...
+       *     </li>
+       */
+      &__option {
+        .add-rules('option');
+
+        &[aria-selected="true"] {
+          .add-rules('option-state-selected');
+        }
+
+        &[aria-disabled="true"] {
+          .add-rules('option-state-disabled');
+        }
+      }
+
+      /**
+       * The label for an option.
+       */
+      &__option-label {
+        .add-rules('option-label');
+      }
+
+      /**
+       * The description for an option.
+       */
+      &__option-description {
+        .add-rules('option-description');
+      }
+
+      /**
+       * The status area for loading, empty, and error states.
+       */
+      &__status {
+        .add-rules('status');
+      }
+
+      /**
+       * A hint shown below the options.
+       *
+       * This is only shown when there are options, and is typically used
+       * to hint at keyboard shortcuts (such as pressing Tab to
+       * auto-complete).
+       */
+      &__hint {
+        .add-rules('hint');
+      }
+    }
+  }
+}

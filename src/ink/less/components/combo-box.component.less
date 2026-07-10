@@ -1,0 +1,219 @@
+/**
+ * Component management for ink-c-combo-box.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/combo-box.schema.less";
+
+
+#ink-ns-ui() {
+  .combo-box() {
+    /**
+     * Create an ink-c-combo-box component.
+     *
+     * Version Added:
+     *     0.10
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rules (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-combo-box;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@combo-box];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            display: inline-block;
+            position: relative;
+          };
+
+          /*
+           * Styles for the text field.
+           */
+          @field: {
+            box-sizing: border-box;
+            width: 100%;
+          };
+
+          /*
+           * Styles for the pop-up.
+           */
+          @popup: {
+            /* Appearance */
+            display: none;
+            overflow-y: auto;
+
+            /* Layout */
+            box-sizing: border-box;
+            min-width: 100%;
+            position: absolute;
+          };
+
+          /*
+           * Styles for the joined state.
+           *
+           * The surrounding UI provides the chrome, so the field is
+           * unstyled, and the pop-up is inset from the edges.
+           */
+          @state-is-joined: {
+            display: block;
+
+            .add({
+              @field: {
+                background: none;
+                border: none;
+                border-radius: 0;
+                outline: none;
+              };
+
+              @popup: {
+                left: var(--ink-c-combo-box-joined-popup-inset);
+                right: var(--ink-c-combo-box-joined-popup-inset);
+                margin-top: var(--ink-c-combo-box-joined-popup-offset);
+                margin-bottom: var(--ink-c-combo-box-joined-popup-offset);
+                min-width: 0;
+              };
+            });
+          };
+
+          /*
+           * Styles for the multiple-selection state.
+           */
+          @state-is-multiple: {
+            .add({
+              @field: {
+                background: none;
+                border: none;
+                outline: none;
+                flex: 1 1 auto;
+                min-width: 6em;
+                width: auto;
+
+                /*
+                 * Keep the field row taller than the tokens, so adding a
+                 * token doesn't change the height of the component. Along
+                 * with the token list's padding, this also keeps the
+                 * height consistent with a single-selection field.
+                 */
+                padding: var(--ink-u-spacing-xs) 0;
+              };
+            });
+          };
+
+          /*
+           * Styles for the open state.
+           */
+          @state-is-open: {
+            .add({
+              @popup: {
+                display: block;
+              };
+            });
+          };
+
+          /*
+           * Styles for the token list.
+           */
+          @tokens: {
+            /* Appearance */
+            list-style: none;
+
+            /* Layout */
+            box-sizing: border-box;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 0;
+            width: 100%;
+          };
+
+          /*
+           * Styles for tokens.
+           */
+          @token: {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            white-space: nowrap;
+          };
+
+          /*
+           * Styles for the button used to remove a token.
+           */
+          @token-remove: {
+            background: none;
+            border: 0;
+            cursor: pointer;
+            margin: 0;
+
+            /*
+             * Size the button to its icon, rather than to a line of text,
+             * so it doesn't add to the height of the token.
+             */
+            display: flex;
+            align-items: center;
+          };
+
+          /*
+           * Styles for the list item containing the text field.
+           */
+          @token-field: {
+            display: flex;
+            flex: 1 1 auto;
+            margin: 0;
+          };
+
+          /*
+           * Styles for the listbox.
+           */
+          @options: {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+          };
+
+          /*
+           * Styles for options in the listbox.
+           */
+          @option: {
+            cursor: pointer;
+            display: flex;
+            margin: 0;
+            white-space: nowrap;
+          };
+
+          /*
+           * Styles for disabled options.
+           */
+          @option-state-disabled: {
+            cursor: not-allowed;
+          };
+
+          /*
+           * Styles for labels in options.
+           */
+          @option-label: {
+            cursor: inherit;
+          };
+        };
+      );
+    }
+  }
+}

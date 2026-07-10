@@ -4,6 +4,7 @@ export * from './baseComponentView';
 export * from './baseMenuHandleView';
 export * from './buttonGroupView';
 export * from './buttonView';
+export * from './comboBoxView';
 export * from './dialogView';
 export * from './keyboardShortcutView';
 export * from './menuButtonView';
