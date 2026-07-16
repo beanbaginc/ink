@@ -1,0 +1,123 @@
+/**
+ * Theme for ink-c-paginator.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "../../../components/paginator.component.less";
+
+
+#ink-ns-default-theme() {
+  .paginator() {
+    @vars: {
+      #ink-ns-theme.add-css-vars(
+        @prefix: ink-c-paginator;
+        @vars: {
+          /* Default state */
+          fg: var(--ink-p-fg);
+          font-size: var(--ink-u-font-std);
+
+          /* Current page */
+          current-bg: var(--ink-p-accent-primary-bg);
+          current-fg: var(--ink-p-accent-primary-fg);
+
+          /* Hovered and pressed items */
+          item-active-bg: var(--ink-p-container-active-bg);
+          item-hover-bg: var(--ink-p-container-hover-bg);
+
+          /* Navigation controls, disabled items, and ellipses */
+          weak-fg: var(--ink-p-fg-weak);
+        };
+      );
+    };
+
+    @rules: {
+      /*
+       * Styles for the default state of the main paginator element.
+       */
+      @__default__: {
+        color: var(--ink-c-paginator-fg);
+        font-size: var(--ink-c-paginator-font-size);
+      };
+
+      /*
+       * Styles for a page number button or navigation control.
+       */
+      @item: {
+        background: transparent;
+        color: inherit;
+      };
+
+      /*
+       * Styles for a hovered item.
+       */
+      @item-hover: {
+        background: var(--ink-c-paginator-item-hover-bg);
+        color: var(--ink-c-paginator-fg);
+      };
+
+      /*
+       * Styles for a pressed item.
+       */
+      @item-active: {
+        background: var(--ink-c-paginator-item-active-bg);
+      };
+
+      /*
+       * Styles for the keyboard-focused state of an item.
+       */
+      @item-focused: {
+        outline: var(--ink-u-border-medium)
+                 solid
+                 var(--ink-c-paginator-current-bg);
+      };
+
+      /*
+       * Styles for the current page.
+       */
+      @item-current: {
+        background: var(--ink-c-paginator-current-bg);
+        color: var(--ink-c-paginator-current-fg);
+      };
+
+      /*
+       * Styles for a navigation control.
+       */
+      @item-nav: {
+        color: var(--ink-c-paginator-weak-fg);
+      };
+
+      /*
+       * Styles for a hovered navigation control.
+       */
+      @item-nav-hover: {
+        color: var(--ink-c-paginator-fg);
+      };
+
+      /*
+       * Styles for a disabled item.
+       */
+      @item-disabled: {
+        color: var(--ink-c-paginator-weak-fg);
+      };
+
+      /*
+       * Styles for an ellipsis marking truncated page numbers.
+       */
+      @ellipsis: {
+        color: var(--ink-c-paginator-weak-fg);
+      };
+    };
+  };
+}
+
+
+& {
+  @_paginator: #ink-ns-default-theme.paginator();
+
+  #ink-ns-ui.paginator.create(
+    @vars: @_paginator[@vars];
+    @rules: @_paginator[@rules];
+  );
+}

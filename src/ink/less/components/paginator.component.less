@@ -1,0 +1,165 @@
+/**
+ * Component management for ink-c-paginator.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "./base.less";
+@import (reference) "./schemas/paginator.schema.less";
+
+
+#ink-ns-ui() {
+  .paginator() {
+    /**
+     * Create an ink-c-paginator component.
+     *
+     * Version Added:
+     *     0.10
+     *
+     * Args:
+     *     @name (string, optional):
+     *         The name of the CSS class for the component.
+     *
+     *     @vars (ruleset, optional):
+     *         Any CSS variables to register on the component and root element.
+     *
+     *     @rules (ruleset, optional):
+     *         Any custom rules to apply to the schema.
+     */
+    .create(@name: ink-c-paginator;
+            @vars: null;
+            @rules: null) {
+      #ink-ns-ui.base.define-component(
+        @name: @name;
+        @vars: @vars;
+        @specialize-rules: @rules;
+        @schema: #ink-ns-schema[@paginator];
+        @schema-rules: {
+          /*
+           * Styles for the default state of the main element.
+           */
+          @__default__: {
+            /*
+             * These are sized in em so that the paginator tracks its own
+             * font size. The icon size in particular can't use
+             * --ink-u-icon-*, which is a fixed pixel scale.
+             */
+
+            /* The uniform height and minimum width of each item. */
+            --_ink-c-paginator-item-size: 2.25em;
+
+            /* The size of the icon on a navigation control. */
+            --_ink-c-paginator-icon-size: 1.15em;
+
+            /* Overridden in the -is-full-width state to center the pages. */
+            --_ink-c-paginator-pages-margin: 0;
+
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--ink-u-spacing-xs);
+            line-height: 1;
+            user-select: none;
+          };
+
+          /*
+           * Styles for the full-width state.
+           */
+          @full-width: {
+            --_ink-c-paginator-pages-margin: 0 auto;
+
+            display: flex;
+            width: 100%;
+          };
+
+          /*
+           * Styles for the disabled state.
+           */
+          @disabled: {
+            opacity: 0.5;
+            pointer-events: none;
+          };
+
+          /*
+           * Styles for the group of page numbers and ellipses.
+           */
+          @pages: {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--ink-u-spacing-xs);
+            margin: var(--_ink-c-paginator-pages-margin);
+          };
+
+          /*
+           * Styles for a page number button or navigation control.
+           */
+          @item: {
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--ink-u-spacing-xs);
+            min-width: var(--_ink-c-paginator-item-size);
+            height: var(--_ink-c-paginator-item-size);
+            padding: 0 var(--ink-u-spacing-xs);
+            border: 0;
+            border-radius: var(--ink-u-border-radius-s);
+            cursor: pointer;
+            font: inherit;
+            line-height: 1;
+            text-decoration: none;
+            transition: background 0.1s ease, color 0.1s ease;
+          };
+
+          /*
+           * Styles for the keyboard-focused state of an item.
+           */
+          @item-focused: {
+            outline-offset: 1px;
+            z-index: 1;
+          };
+
+          /*
+           * Styles for a disabled item.
+           */
+          @item-disabled: {
+            cursor: not-allowed;
+            opacity: 0.4;
+          };
+
+          /*
+           * Styles for the current page.
+           */
+          @item-current: {
+            cursor: default;
+            font-weight: bold;
+          };
+
+          /*
+           * Styles for the icon on a navigation control.
+           */
+          @icon: {
+            flex: none;
+            width: var(--_ink-c-paginator-icon-size);
+            height: var(--_ink-c-paginator-icon-size);
+          };
+
+          /*
+           * Styles for an ellipsis marking truncated page numbers.
+           */
+          @ellipsis: {
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
+            min-width: var(--_ink-c-paginator-item-size);
+            height: var(--_ink-c-paginator-item-size);
+            padding-bottom: var(--ink-u-spacing-s);
+            cursor: default;
+          };
+        };
+      );
+    }
+  }
+}

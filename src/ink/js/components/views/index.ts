@@ -9,4 +9,5 @@ export * from './keyboardShortcutView';
 export * from './menuButtonView';
 export * from './menuLabelView';
 export * from './menuView';
+export * from './paginatorView';
 export * from './spinnerView';

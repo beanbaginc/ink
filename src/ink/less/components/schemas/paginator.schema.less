@@ -1,0 +1,238 @@
+/**
+ * Schema for a paginator component.
+ *
+ * Version Added:
+ *     0.10
+ */
+
+@import (reference) "./base.less";
+
+
+#ink-ns-schema() {
+  @paginator: {
+    /**
+     * Populate a paginator schema.
+     *
+     * This will provide the structure for a paginator component, populating
+     * the parts of the component with the provided style rules.
+     *
+     * A paginator is a lightweight, borderless control for moving through
+     * paged content. It shows the page numbers around the current page,
+     * with the current one highlighted. When the page numbers are truncated,
+     * dedicated first / previous / next / last controls handle the edges.
+     *
+     * Version Added:
+     *     0.10
+     *
+     * Args:
+     *     @name (string):
+     *         The name of the CSS class that this schema would populate.
+     *
+     *     @schema-rules (ruleset, optional):
+     *         Any rules to apply to part of the schema.
+     *
+     *     @specialize-rules (ruleset, optional):
+     *         Any additional specialized rules to apply to part of the schema.
+     *
+     *         This is a convenience to allow themes or specializations of
+     *         components to easily inject additional rules into the schema.
+     */
+    .populate(@name;
+              @schema-rules: null;
+              @specialize-rules: null) {
+      #ink-ns-schema.base();
+
+      /**
+       * Main part of the paginator component.
+       *
+       * DOM Attributes:
+       *     aria-disabled (boolean, optional):
+       *         Whether the paginator is disabled.
+       *
+       *     aria-label (string):
+       *         A label describing the paginator for screen readers.
+       *
+       * Modifiers:
+       *     -is-disabled:
+       *         Dims the whole control and disables interaction.
+       *
+       *     -is-full-width:
+       *         Stretches the paginator to the full width of its container,
+       *         pinning the edge controls to the sides while the page
+       *         numbers stay centered.
+       *
+       * The first / previous / next / last navigation controls are optional,
+       * and surround the group of page numbers.
+       *
+       * The items may be either ``<button>`` or ``<a>`` elements. See the
+       * item documentation below.
+       *
+       * Structure:
+       *     <nav class="@{name} [-is-disabled] [-is-full-width]"
+       *          aria-label="..."
+       *          [aria-disabled="true"]>
+       *      [<button class="@{name}__item -is-nav" ...></button>]
+       *      [<button class="@{name}__item -is-nav" ...></button>]
+       *      <div class="@{name}__pages">...</div>
+       *      [<button class="@{name}__item -is-nav" ...></button>]
+       *      [<button class="@{name}__item -is-nav" ...></button>]
+       *     </nav>
+       */
+      & {
+        .add-rules('__default__');
+
+        &.-is-full-width {
+          .add-rules('full-width');
+        }
+
+        &.-is-disabled {
+          .add-rules('disabled');
+        }
+      }
+
+      /**
+       * A group containing the page numbers and any ellipses.
+       *
+       * Structure:
+       *     <div class="@{name}__pages">
+       *      [<span class="@{name}__ellipsis" ...>…</span>]
+       *      <button class="@{name}__item [-is-current]" ...>...</button>
+       *      ...
+       *      [<span class="@{name}__ellipsis" ...>…</span>]
+       *     </div>
+       */
+      &__pages {
+        .add-rules('pages');
+      }
+
+      /**
+       * A page number button or navigation control.
+       *
+       * These are ``<button>`` elements when the paginator is driven by
+       * JavaScript, and ``<a>`` elements when it's plain HTML that navigates
+       * to another URL.
+       *
+       * DOM Attributes:
+       *     aria-current (string, optional):
+       *         Set to "page" on the current page's item.
+       *
+       *     aria-disabled (boolean, optional):
+       *         Whether the item is disabled.
+       *
+       *         Anchors can't use the ``disabled`` attribute, so this is how
+       *         an anchor-based paginator marks its inert controls.
+       *
+       *     aria-label (string):
+       *         A label describing the item.
+       *
+       *     data-page (number, optional):
+       *         The page to navigate to when clicked.
+       *
+       *     disabled (boolean, optional):
+       *         Whether the button is disabled.
+       *
+       *     href (string, optional):
+       *         The URL for the page, when using anchors.
+       *
+       *     title (string, optional):
+       *         A tooltip describing the item.
+       *
+       *         This should be set on navigation controls, which have no
+       *         visible text.
+       *
+       * Modifiers:
+       *     -is-current:
+       *         This is the current page.
+       *
+       *     -is-nav:
+       *         This is a first / previous / next / last navigation control.
+       *
+       * Structure:
+       *     <button class="@{name}__item [-is-current] [-is-nav]"
+       *             type="button"
+       *             aria-label="..."
+       *             [aria-current="page"]
+       *             [data-page="..."]
+       *             [disabled]
+       *             [title="..."]>
+       *      page-number...
+       *      |
+       *      <span class="@{name}__icon ..." ...></span>
+       *     </button>
+       *
+       *     |
+       *
+       *     <a class="@{name}__item [-is-current] [-is-nav]"
+       *        href="..."
+       *        aria-label="..."
+       *        [aria-current="page"]
+       *        [aria-disabled="true"]
+       *        [title="..."]>
+       *      page-number...
+       *      |
+       *      <span class="@{name}__icon ..." ...></span>
+       *     </a>
+       */
+      /*
+       * The interactive states are guarded on both :disabled and
+       * aria-disabled. Anchors are never matched by :disabled or :enabled,
+       * so anchor-based paginators mark their inert controls with
+       * aria-disabled instead.
+       */
+      &__item, a&__item:link, a&__item:visited {
+        .add-rules('item');
+
+        &:hover:not(:disabled):not([aria-disabled="true"]):not(.-is-current) {
+          .add-rules('item-hover');
+        }
+
+        &:active:not(:disabled):not([aria-disabled="true"]):not(.-is-current) {
+          .add-rules('item-active');
+        }
+
+        &:focus-visible {
+          .add-rules('item-focused');
+        }
+
+        &.-is-nav {
+          .add-rules('item-nav');
+
+          &:hover:not(:disabled):not([aria-disabled="true"]) {
+            .add-rules('item-nav-hover');
+          }
+        }
+
+        &:disabled, &[aria-disabled="true"] {
+          .add-rules('item-disabled');
+        }
+
+        &.-is-current {
+          .add-rules('item-current');
+        }
+      }
+
+      /**
+       * The icon for a navigation control.
+       *
+       * This should be mixed in with an icon class name.
+       *
+       * Structure:
+       *     <span class="@{name}__icon @{icon-class-name}"
+       *           aria-hidden="true"></span>
+       */
+      &__icon {
+        .add-rules('icon');
+      }
+
+      /**
+       * An ellipsis marking truncated page numbers.
+       *
+       * Structure:
+       *     <span class="@{name}__ellipsis" aria-hidden="true">…</span>
+       */
+      &__ellipsis {
+        .add-rules('ellipsis');
+      }
+    }
+  }
+}
