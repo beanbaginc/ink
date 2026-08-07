@@ -57,6 +57,16 @@ export interface ShowErrorDialogOptions {
     error: MessageDialogBody | Error;
 
     /**
+     * Optional text for the Close button.
+     *
+     * This defaults to :guilabel:`Close`.
+     *
+     * Version Added:
+     *     0.10
+     */
+    closeButtonText?: string;
+
+    /**
      * An optional DOM ID for the dialog.
      */
     id?: string;
@@ -243,7 +253,7 @@ export async function showConfirmDialog(
                    : ButtonType.PRIMARY}
             action=${DialogActionType.CLOSE}
             callback=${async () => await onConfirm()}>
-           ${options.confirmButtonText || _`Okay`}
+           ${options.confirmButtonText || 'Okay'}
           </Ink.DialogAction>
     `;
 
@@ -261,7 +271,7 @@ export async function showConfirmDialog(
           <Ink.DialogAction
             id="${id}__cancel-action"
             action=${DialogActionType.CANCEL}>
-           ${options.cancelButtonText || _`Cancel`}
+           ${options.cancelButtonText || 'Cancel'}
           </Ink.DialogAction>
           ${confirmButton}
          </Ink.Dialog.PrimaryActions>
@@ -319,7 +329,7 @@ export async function showErrorDialog(
             id="${id}__close-action"
             action=${DialogActionType.CLOSE}
             type=${ButtonType.PRIMARY}>
-           ${_`Close`}
+           ${options.closeButtonText || 'Close'}
           </Ink.DialogAction>
          </Ink.Dialog.PrimaryActions>
         </Ink.Dialog>

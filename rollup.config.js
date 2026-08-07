@@ -44,7 +44,6 @@ export default [
         external: [
             '@beanbag/spina',
             'babel-plugin-dedent',
-            'babel-plugin-django-gettext',
             'backbone',
             'htm',
             'htm/mini',

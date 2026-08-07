@@ -70,7 +70,6 @@ export default defineConfig({
                     },
                 ],
                 'babel-plugin-dedent',
-                'babel-plugin-django-gettext',
             ],
         }),
     ],

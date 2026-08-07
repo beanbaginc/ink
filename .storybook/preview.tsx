@@ -12,24 +12,6 @@ import './theme.css';
 window['IS_STORYBOOK'] = true;
 
 
-/*
- * Babel won't transform our JavaScript within the context of Storybook, so
- * we're going to need to put together some stubs for some tagged template
- * literals we use.
- */
-window['gettext'] = (str: string) => str;
-window['ngettext'] = (singular: string, plural: string, count: number) => (
-    count === 1 ? singular : plural);
-
-window['interpolate'] = (fmt: string, obj: any, named: any) => {
-    if (named) {
-        return fmt.replace(/%\(\w+\)s/g, m => String(obj[m.slice(2, -2)]));
-    } else {
-        return fmt.replace(/%s/g, () => String(obj.shift()));
-    }
-};
-
-
 const preview: Preview = {
     decorators: [
         Story => {
